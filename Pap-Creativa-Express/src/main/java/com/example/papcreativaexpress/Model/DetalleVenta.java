@@ -1,4 +1,4 @@
-package Model;
+package com.example.papcreativaexpress.Model;
 
 public class DetalleVenta {
     private String id;
