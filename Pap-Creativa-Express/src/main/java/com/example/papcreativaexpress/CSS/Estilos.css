@@ -16,13 +16,22 @@
     -fx-font-family: "Arial";
     -fx-font-size: 16px;
 }
+.text-field.tfBuscarProducto{
+ -fx-background-color: #88779D; /* Color de fondo */
+    -fx-border-color: #000000; /* Color del borde */
+    -fx-border-width: 1.5; /* Ancho del borde */
+    -fx-text-fill: #FFFFFF; /* Color del texto */
+    -fx-font-family: "Arial"; /* Fuente */
+    -fx-font-size: 14px; /* Tamaño de fuente */
+}
+
 /* Estilo para el botón Productos */
 /* Estilo para el botón Productos */
 /* Estilo para el botón Productos con borde transparente */
 .button.productos {
     -fx-background-color: linear-gradient(to bottom, #CE65FF  88%, #FFFFFF 200%);
     -fx-background-radius: 0;
-    -fx-text-fill: white;
+    -fx-text-fill: #FFFFFF;
     -fx-font-family: "Arial";
     -fx-font-size: 16px;
     -fx-border-color: rgba(0, 0, 0, 1); /* Borde negro con transparencia (0.5) */
@@ -33,7 +42,7 @@
 .button.empleados {
     -fx-background-color: linear-gradient(to bottom,  #CE65FF  88%, #FFFFFF 200%);
     -fx-background-radius: 0;
-    -fx-text-fill: white;
+    -fx-text-fill: #FFFFFF;
     -fx-font-family: "Arial";
     -fx-font-size: 16px;
     -fx-border-color: rgba(0, 0, 0, 1); /* Borde negro con transparencia (0.5) */
@@ -44,11 +53,44 @@
 .button.proveedores {
     -fx-background-color: linear-gradient(to bottom,  #CE65FF  88%, #FFFFFF 200%);
     -fx-background-radius: 0;
-    -fx-text-fill: white;
+    -fx-text-fill-color: #FFFFFF;
     -fx-font-family: "Arial";
     -fx-font-size: 16px;
     -fx-border-color: rgba(0, 0, 0, 1); /* Borde negro con transparencia (0.5) */
     -fx-border-width: 0.5px;
 }
+
+/* Estilo para el TableView */
+#tableView {
+    -fx-background-color: #88779D; /* Color de fondo del contenido de la tabla */
+}
+
+/* Estilo para los encabezados de columna */
+.table-view .column-header {
+    -fx-background-color:#9b59b6; /* Color de fondo de los encabezados */
+    -fx-text-fill-color: #FFFFFF;
+    -fx-font-family: "Arial";
+    -fx-font-size: 16px;
+    -fx-border-color: #000000; /* Color del borde */
+    -fx-border-width: 1px; /* Grosor del borde */
+}
+
+/* Estilo para las filas de la tabla con separador */
+.table-row-cell {
+    -fx-background-color: #88779D; /* Color de fondo de las filas (gris) */
+    -fx-border-color: #000000; /* Color del borde */
+    -fx-border-width: 0.5px 0.5px 0.5px 0.5px; /* Grosor del borde (en los cuatro lados) */
+}
+
+/* Estilo para el texto en las celdas de la columna */
+.table-cell {
+    -fx-text-fill-color: #FFFFFF; /* Color del texto en las celdas (en blanco) */
+    -fx-font-family: "Arial";
+    -fx-font-size: 13px;
+    -fx-border-width: 0px 0.5px 0.5px 0px; /* Grosor del borde (en los cuatro lados) */
+}
+
+
+
 
 
