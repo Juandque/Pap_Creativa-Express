@@ -1,4 +1,4 @@
-package Model;
+package com.example.papcreativaexpress.Model;
 
 import java.util.Date;
 import java.util.List;

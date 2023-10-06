@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="369.0" prefWidth="597.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.papcreativaexpress.Controllers.ContraseniaAdminController">
+   <children>
+      <Pane layoutX="-3.0" layoutY="-7.0" prefHeight="87.0" prefWidth="611.0" style="-fx-background-color: #9b59b6;">
+         <children>
+            <Label layoutX="156.0" layoutY="28.0" text="Recuperación de contraseña" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Arial" size="26.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="59.0" fitWidth="64.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../java/com/example/papcreativaexpress/Imagenes/Security.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <SplitPane dividerPositions="0.29797979797979796" layoutY="80.0" prefHeight="293.0" prefWidth="608.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" layoutY="-2.0" prefHeight="283.0" prefWidth="178.0">
+                     <children>
+                        <Label text="Ingresa el código:">
+                           <VBox.margin>
+                              <Insets top="80.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Arial" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="tfCódigo" alignment="CENTER" prefHeight="27.0" prefWidth="168.0" promptText="Código" style="-fx-border-color: #000000;">
+                           <VBox.margin>
+                              <Insets left="10.0" right="10.0" top="60.0" />
+                           </VBox.margin>
+                           <opaqueInsets>
+                              <Insets left="10.0" right="10.0" />
+                           </opaqueInsets>
+                        </TextField>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </VBox>
+               </children>
+            </AnchorPane>
+          <AnchorPane disable="true" minHeight="0.0" minWidth="0.0" prefHeight="346.0" prefWidth="436.0">
+               <children>
+                  <TextField fx:id="tfContrasenia" layoutX="74.0" layoutY="73.0" promptText="Contraseña" style="-fx-border-color: #000000;" />
+                  <TextField fx:id="tfContrasenia2" layoutX="74.0" layoutY="178.0" promptText="Contraseña" style="-fx-border-color: #000000;" />
+                  <Label layoutX="72.0" layoutY="46.0" text="Ingrese su nueva contraseña:" />
+                  <Button fx:id="btnActualizar" layoutX="275.0" layoutY="228.0" mnemonicParsing="false" onAction="#OnActionActualizar" stylesheets="@../../../../java/com/example/papcreativaexpress/CSS/Estilos.css" text="Actualizar" />
+                  <Label layoutX="81.0" layoutY="149.0" text="Escríbala otra vez:" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
