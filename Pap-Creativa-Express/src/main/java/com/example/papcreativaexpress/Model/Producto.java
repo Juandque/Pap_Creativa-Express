@@ -14,7 +14,19 @@ public class Producto {
     private Date fechaModificacion;
     private Proveedor proveedor;
     public Producto(){
+    }
 
+    public Producto(String id, String nombre, double precioVenta, Date fechaCaducidad, double precioCosto, String marca, int nivelStockMinimo, String descripcionDetallada, Date fechaModificacion, Proveedor proveedor) {
+        this.id = id;
+        this.nombre = nombre;
+        this.precioVenta = precioVenta;
+        this.fechaCaducidad = fechaCaducidad;
+        this.precioCosto = precioCosto;
+        this.marca = marca;
+        this.nivelStockMinimo = nivelStockMinimo;
+        this.descripcionDetallada = descripcionDetallada;
+        this.fechaModificacion = fechaModificacion;
+        this.proveedor = proveedor;
     }
 
     public String getId() {

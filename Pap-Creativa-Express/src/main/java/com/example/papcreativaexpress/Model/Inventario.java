@@ -12,4 +12,44 @@ public class Inventario {
     public Inventario(){
 
     }
+
+    public Date getFechaActualizacion() {
+        return fechaActualizacion;
+    }
+
+    public void setFechaActualizacion(Date fechaActualizacion) {
+        this.fechaActualizacion = fechaActualizacion;
+    }
+
+    public double getValorTotalInventario() {
+        return valorTotalInventario;
+    }
+
+    public void setValorTotalInventario(double valorTotalInventario) {
+        this.valorTotalInventario = valorTotalInventario;
+    }
+
+    public String getNivelAlertaStock() {
+        return nivelAlertaStock;
+    }
+
+    public void setNivelAlertaStock(String nivelAlertaStock) {
+        this.nivelAlertaStock = nivelAlertaStock;
+    }
+
+    public List<Producto> getListaProductosInventario() {
+        return listaProductosInventario;
+    }
+
+    public void setListaProductosInventario(List<Producto> listaProductosInventario) {
+        this.listaProductosInventario = listaProductosInventario;
+    }
+
+    public List<Caja> getListaCajasInventario() {
+        return listaCajasInventario;
+    }
+
+    public void setListaCajasInventario(List<Caja> listaCajasInventario) {
+        this.listaCajasInventario = listaCajasInventario;
+    }
 }
