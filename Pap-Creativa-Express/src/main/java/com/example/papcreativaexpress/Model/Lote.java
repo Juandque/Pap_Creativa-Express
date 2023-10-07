@@ -1,6 +1,7 @@
 package com.example.papcreativaexpress.Model;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -19,6 +20,18 @@ public class Lote {
 
     public Lote(){
 
+    }
+
+    public Lote(Date fechaEntrada, int cantidad, String id, double precioUnitario, double costoTotalLote, Date fechaRegistro, Proveedor proveedor) {
+        this.fechaEntrada = fechaEntrada;
+        this.cantidad = cantidad;
+        this.id = id;
+        this.precioUnitario = precioUnitario;
+        this.costoTotalLote = costoTotalLote;
+        this.fechaRegistro = fechaRegistro;
+        this.listaProductosLote = new ArrayList<>();
+        this.proveedor = proveedor;
+        this.codigoBarrasImage = null;
     }
 
     public Date getFechaEntrada() {
@@ -117,6 +130,19 @@ public class Lote {
             iterator.next();
             iterator.remove();
             productosEliminar--;
+        }
+    }
+
+    public void actualizarProductosEnlistados(String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion, Proveedor proveedor){
+        for(Producto p: listaProductosLote){
+            p.setNombre(nombre);
+            p.setProveedor(proveedor);
+            p.setFechaModificacion(new Date());
+            p.setDescripcionDetallada(descripcion);
+            p.setFechaCaducidad(fechaCaducidad);
+            p.setMarca(marca);
+            p.setPrecioCosto(costo);
+            p.setPrecioVenta(precioVenta);
         }
     }
 

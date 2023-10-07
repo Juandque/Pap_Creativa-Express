@@ -18,6 +18,16 @@ public class Cargo {
 
     }
 
+    public Cargo(String nombre, String id, String descripcion, double salario, Date fechaCreacion, String estado, int empleadosRequeridos) {
+        this.nombre = nombre;
+        this.id = id;
+        this.descripcion = descripcion;
+        this.salario = salario;
+        this.fechaCreacion = fechaCreacion;
+        this.estado = estado;
+        this.empleadosRequeridos = empleadosRequeridos;
+    }
+
     public String getNombre() {
         return nombre;
     }

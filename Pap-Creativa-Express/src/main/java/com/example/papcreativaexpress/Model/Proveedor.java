@@ -19,6 +19,17 @@ public class Proveedor {
 
     }
 
+    public Proveedor(String id, String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado, Date fechaRegistro) {
+        this.id = id;
+        this.nombreEmpresa = nombreEmpresa;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.nombreContacto = nombreContacto;
+        this.comentarios = comentarios;
+        this.estado = estado;
+        this.fechaRegistro = fechaRegistro;
+    }
+
     public String getId() {
         return id;
     }

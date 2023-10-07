@@ -40,31 +40,39 @@ public class ModelFactoryController {
     public void bloquearUsuario(String correo) throws CorreoNoExisteException {
         papCreativaExpress.bloquearUsuario(correo);
     }
+    public Usuario crearEmpleado(String nombre, String NombreUsuario, String contrasenia, String correo, String id, String telefono, String direccion){
+        Usuario usuario = null;
+        try{
+            usuario = papCreativaExpress.crearEmpleado(nombre,NombreUsuario,contrasenia,correo,id,telefono,direccion);
 
-    public Usuario crearEmpleado(){
-        Usuario usr= new Usuario();
-        return usr;
+        } catch (UsuarioExisteException e) {
+            throw new RuntimeException(e);
+        }
+        return usuario;
     }
-
     public boolean eliminarEmpleado(Usuario usr){
-        return true;
+        boolean flagEliminado= papCreativaExpress.eliminarEmpleado(usr);
+        return flagEliminado;
     }
 
-    public boolean actualizarEmpleado(String nombreUsuario, String nuevoNombreUsuario, String contrasenia, String nombre, String telefono,String id,String email,String direccion,String  estado, Cargo cargo){
-        return true;
+    public boolean actualizarEmpleado(String nombreUsuario, String nuevoNombreUsuario, String contrasenia, String nombre, String telefono,String id,String email,String direccion,Estado  estado, Cargo cargo){
+        boolean flagActualizado= papCreativaExpress.actualizarEmpleado(nombreUsuario,nuevoNombreUsuario,contrasenia,nombre,telefono,id,email,direccion,estado,cargo);
+        return  flagActualizado;
     }
 
     public Cargo crearCargo(String nombre, String descripcion,double salario,String estado, int empleadosRequeridos){
-        Cargo cargo= new Cargo();
+        Cargo cargo= papCreativaExpress.anadirCargo(nombre,descripcion,salario,estado,empleadosRequeridos);
         return cargo;
     }
 
     public boolean eliminarCargo(Cargo cargo){
-        return true;
+        boolean flagEliminado= papCreativaExpress.eliminarCargo(cargo);
+        return flagEliminado;
     }
 
-    public boolean actualizarCargo(String nombre, String descripcion,double salario,String estado, int empleadosRequeridos){
-        return true;
+    public boolean actualizarCargo(String idCargo, String nombre, String descripcion,double salario,String estado, int empleadosRequeridos){
+        boolean flagActualizado= papCreativaExpress.actualizarCargo(idCargo,nombre,descripcion,salario,estado,empleadosRequeridos);
+        return flagActualizado;
     }
 
     public Lote crearLote(int cantidad, double precioUnitario, double precioTotal, Proveedor proveedor, String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion){
@@ -78,20 +86,23 @@ public class ModelFactoryController {
     }
 
     public boolean actualizarLote(String idLote,int cantidad, double precioUnitario, double precioTotal, Proveedor proveedor, String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion){
-        return true;
+        boolean flagActualizado= papCreativaExpress.actualizarLote(idLote,cantidad,precioUnitario,precioTotal,proveedor,nombre,precioVenta,fechaCaducidad,costo,marca,descripcion);
+        return flagActualizado;
     }
 
     public Proveedor anadirProveedor(String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado){
-        Proveedor proveedor= new Proveedor();
+        Proveedor proveedor= papCreativaExpress.anadirProveedor(nombreEmpresa,direccion,telefono,nombreContacto,comentarios,estado);
         return proveedor;
     }
 
     public boolean eliminarProveedor(Proveedor proveedor){
-        return true;
+        boolean flagEliminado= papCreativaExpress.eliminarProveedor(proveedor);
+        return flagEliminado;
     }
 
     public boolean actualizarProveedor(String idProveedor, String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado){
-        return true;
+        boolean flagActualizado= papCreativaExpress.actualizarProveedor(idProveedor,nombreEmpresa,direccion,telefono,nombreContacto,comentarios,estado);
+        return flagActualizado;
     }
     public void setUsuarioActual(Usuario usuario) {
         this.usuarioActual = usuario;
@@ -101,18 +112,8 @@ public class ModelFactoryController {
         return this.usuarioActual;
     }
     public void actualizarContrasenia(Usuario usuario){
-        papCreativaExpress.actualizarUsuario(usuario);
+        papCreativaExpress.actualizarContrasenaUsuario(usuario);
     }
-    public Usuario crearUsuario(String nombre, String NombreUsuario, String contrasenia, String correo,
-                                String id, String telefono, String direccion){
-        Usuario usuario = null;
-        try{
-            usuario = papCreativaExpress.crearUsuario(nombre,NombreUsuario,contrasenia,correo,id,telefono,direccion);
 
-        } catch (UsuarioExisteException e) {
-            throw new RuntimeException(e);
-        }
-        return usuario;
-    }
 
 }

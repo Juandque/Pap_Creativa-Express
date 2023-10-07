@@ -154,7 +154,7 @@ public class PapCreativaExpress {
         String id= crearId(idLotes);
         idLotes++;
         String idProducto= null;
-        Lote loteAux= new Lote();
+        Lote loteAux= new Lote(new Date(), cantidad,id, precioUnitario, precioTotal, new Date(), proveedor);
         for(int i=1; i<=cantidad; i++){
             idProducto= crearId(idProductos);
             idProductos++;
@@ -174,7 +174,7 @@ public class PapCreativaExpress {
         aux.setPrecioUnitario(precioUnitario);
         aux.setCostoTotalLote(costo);
         aux.setProveedor(proveedor);
-
+        aux.actualizarProductosEnlistados(nombre,precioVenta,fechaCaducidad,costo,marca,descripcion,proveedor);
         if(cantidad<aux.getListaProductosLote().size()){
             aux.eliminarCantidadProductos(aux.getListaProductosLote().size()-cantidad);
         }
@@ -197,6 +197,67 @@ public class PapCreativaExpress {
         return true;
     }
 
+    public Cargo anadirCargo(String nombre, String descripcion,double salario,String estado, int empleadosRequeridos){
+        String id= crearId(idCargos);
+        idCargos++;
+        Cargo aux= new Cargo(nombre, id,descripcion,salario,new Date(),estado, empleadosRequeridos);
+        listaCargos.add(aux);
+        return aux;
+    }
+
+    public boolean actualizarCargo(String id,String nombre, String descripcion,double salario,String estado, int empleadosRequeridos){
+        Cargo aux= buscarCargoId(id);
+        if(aux==null){
+            return false;
+        }
+        aux.setDescripcion(descripcion);
+        aux.setEmpleadosRequeridos(empleadosRequeridos);
+        aux.setEstado(estado);
+        aux.setFechaModificacion(new Date());
+        aux.setNombre(nombre);
+        aux.setSalario(salario);
+        return true;
+    }
+
+    public boolean eliminarCargo(Cargo cargo){
+        if(cargo==null || !listaCargos.contains(cargo)){
+            return false;
+        }
+        listaCargos.remove(cargo);
+        return true;
+    }
+
+    public Proveedor anadirProveedor(String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado){
+        String id= crearId(idProveedores);
+        idProveedores++;
+        Proveedor aux= new Proveedor(id, nombreEmpresa,direccion,telefono,nombreContacto,comentarios,estado, new Date());
+        listaProveedores.add(aux);
+        return aux;
+    }
+
+    public boolean actualizarProveedor(String idProveedor, String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado){
+        Proveedor aux= buscarProveedorId(idProveedor);
+        if(aux==null){
+            return false;
+        }
+        aux.setComentarios(comentarios);
+        aux.setDireccion(direccion);
+        aux.setEstado(estado);
+        aux.setFechaModificacion(new Date());
+        aux.setNombreContacto(nombreContacto);
+        aux.setNombreEmpresa(nombreEmpresa);
+        aux.setTelefono(telefono);
+        return true;
+    }
+
+    public boolean eliminarProveedor(Proveedor proveedor){
+        if(proveedor==null || !listaProveedores.contains(proveedor)){
+            return false;
+        }
+        listaProveedores.remove(proveedor);
+        return true;
+    }
+
     public Lote buscarLoteId(String id){
         Lote aux=null;
         for(Lote l: listaLotes){
@@ -207,10 +268,10 @@ public class PapCreativaExpress {
         return aux;
     }
 
-    public Usuario buscarEmpleadoId(String id){
+    public Usuario buscarEmpleadoNombreUsuario(String nombreUsuario){
         Usuario aux= null;
         for(Usuario usr: listaEmpleados){
-            if(usr.getId().equals(id)){
+            if(usr.getNombreUsuario().equals(nombreUsuario)){
                 aux=usr;
             }
         }
@@ -299,7 +360,7 @@ public class PapCreativaExpress {
         }
         return null;
     }
-    public void actualizarUsuario(Usuario usuario){
+    public void actualizarContrasenaUsuario(Usuario usuario){
         for(int i=0; i<listaEmpleados.size();i++){
             Usuario usuarioExistente = listaEmpleados.get(i);
             usuarioExistente.setContrasenia(usuario.getContrasenia());
@@ -307,7 +368,7 @@ public class PapCreativaExpress {
         }
 
     }
-    public  Usuario crearUsuario(String nombre, String nombreUsuario, String contrasenia, String correo,
+    public  Usuario crearEmpleado(String nombre, String nombreUsuario, String contrasenia, String correo,
                                  String id, String telefono, String direccion)throws UsuarioExisteException {
         Usuario usuarioExiste = buscarUsuarioPorCorreo(correo);
         if (usuarioExiste != null) {
@@ -325,6 +386,32 @@ public class PapCreativaExpress {
         LocalDate fechaActual = LocalDate.now();
         usuarioNuevo.setFechaRegistro(fechaActual);
         usuarioNuevo.setUltimoInicioSesion(fechaActual);
+        listaEmpleados.add(usuarioNuevo);
         return usuarioNuevo;
+    }
+
+    public boolean actualizarEmpleado(String nombreUsuario, String nuevoNombreUsuario, String contrasenia, String nombre, String telefono,String id,String email,String direccion,Estado  estado, Cargo cargo){
+        Usuario aux= buscarEmpleadoNombreUsuario(nombreUsuario);
+        if(aux==null){
+            return false;
+        }
+        aux.setNombreUsuario(nuevoNombreUsuario);
+        aux.setContrasenia(contrasenia);
+        aux.setNombre(nombre);
+        aux.setTelefono(telefono);
+        aux.setId(id);
+        aux.setEmail(email);
+        aux.setDireccion(direccion);
+        aux.setEstado(estado);
+        aux.setCargo(cargo);
+        return true;
+    }
+
+    public boolean eliminarEmpleado(Usuario usuario){
+        if(usuario==null || !listaEmpleados.contains(usuario)){
+            return  false;
+        }
+        listaEmpleados.remove(usuario);
+        return true;
     }
 }
