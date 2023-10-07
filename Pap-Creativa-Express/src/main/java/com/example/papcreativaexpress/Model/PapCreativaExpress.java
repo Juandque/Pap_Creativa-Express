@@ -145,23 +145,89 @@ public class PapCreativaExpress {
         this.listaEmpleados = listaEmpleados;
     }
 
-    public void anadirLote(int cantidad, double precioUnitario, double precioTotal, Proveedor proveedor, String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion){
+    public Lote anadirLote(int cantidad, double precioUnitario, double precioTotal, Proveedor proveedor, String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion){
         String id= crearId(idLotes);
         idLotes++;
+        String idProducto= null;
         Lote loteAux= new Lote();
         for(int i=1; i<=cantidad; i++){
-
+            idProducto= crearId(idProductos);
+            idProductos++;
+            loteAux.crearProductosLote(idProducto,nombre,precioVenta,fechaCaducidad,costo,marca,descripcion,proveedor);
         }
+        listaProductos.addAll(loteAux.getListaProductosLote());
+        listaLotes.add(loteAux);
+        return loteAux;
     }
-    public boolean crearProductosLote(String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion, Proveedor proveedor){
-        String id= crearId(idProductos);
-        idProductos++;
-        Producto aux= new Producto(id, nombre, precioVenta, fechaCaducidad, costo, marca, 0, descripcion, new Date(), proveedor);
+
+    public boolean actualizarLote(String idLote,int cantidad, double precioUnitario, double precioTotal, Proveedor proveedor, String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion){
+        Lote aux= buscarLoteId(idLote);
         if(aux==null){
             return false;
         }
-        listaProductos.add(aux);
+        aux.setCantidad(cantidad);
+        aux.setPrecioUnitario(precioUnitario);
+        aux.setCostoTotalLote(costo);
+        aux.setProveedor(proveedor);
+        aux.getListaProductosLote().clear();
+        listaProductos.
+        String idProducto= null;
+        for(int i=1; i<=cantidad; i++){
+            idProducto= crearId(idProductos);
+            idProductos++;
+            aux.crearProductosLote(idProducto,nombre,precioVenta,fechaCaducidad,costo,marca,descripcion,proveedor);
+        }
         return true;
+    }
+
+    public Lote buscarLoteId(String id){
+        Lote aux=null;
+        for(Lote l: listaLotes){
+            if(l.getId().equals(id)){
+                aux=l;
+            }
+        }
+        return aux;
+    }
+
+    public Usuario buscarEmpleadoId(String id){
+        Usuario aux= null;
+        for(Usuario usr: listaEmpleados){
+            if(usr.getId().equals(id)){
+                aux=usr;
+            }
+        }
+        return aux;
+    }
+
+    public Cargo buscarCargoId(String id){
+        Cargo aux=null;
+        for(Cargo cargo:listaCargos){
+            if(cargo.getId().equals(id)){
+                aux=cargo;
+            }
+        }
+        return aux;
+    }
+
+    public Proveedor buscarProveedorId(String id){
+        Proveedor aux=null;
+        for(Proveedor prov: listaProveedores){
+            if(prov.getId().equals(id)){
+                aux=prov;
+            }
+        }
+        return aux;
+    }
+
+    public Producto buscarProducto(String id){
+        Producto aux= null;
+        for(Producto prod: listaProductos){
+            if(prod.getId().equals(id)){
+                aux=prod;
+            }
+        }
+        return aux;
     }
 
     public String crearId(int id){

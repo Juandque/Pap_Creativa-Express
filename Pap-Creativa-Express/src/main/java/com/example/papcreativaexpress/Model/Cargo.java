@@ -85,4 +85,8 @@ public class Cargo {
     public List<Usuario> getListaEmpleadosCargo() {
         return listaEmpleadosCargo;
     }
+
+    public void setListaEmpleadosCargo(List<Usuario> listaEmpleadosCargo) {
+        this.listaEmpleadosCargo = listaEmpleadosCargo;
+    }
 }

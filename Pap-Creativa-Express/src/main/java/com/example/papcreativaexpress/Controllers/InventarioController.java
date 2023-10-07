@@ -1,5 +1,6 @@
 package com.example.papcreativaexpress.Controllers;
 
+import com.example.papcreativaexpress.Model.Lote;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -22,19 +23,19 @@ public class InventarioController {
     private Button btnVerInfo;
 
     @FXML
-    private TableColumn<?, ?> colCantidadProductos;
+    private TableColumn<Lote, Integer> colCantidadProductos;
 
     @FXML
-    private TableColumn<?, ?> colMarca;
+    private TableColumn<Lote, String> colMarca;
 
     @FXML
-    private TableColumn<?, ?> colProductos;
+    private TableColumn<Lote, String> colProductos;
 
     @FXML
-    private TableColumn<?, ?> colProveedor;
+    private TableColumn<Lote, String> colProveedor;
 
     @FXML
-    private TableView<?> tblPoductos;
+    private TableView<Lote> tblPoductos;
 
     @FXML
     private TextField tfBuscarProducto;

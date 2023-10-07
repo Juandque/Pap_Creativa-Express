@@ -99,4 +99,14 @@ public class Lote {
     public void setCodigoBarrasImage(Image codigoBarrasImage) {
         this.codigoBarrasImage = codigoBarrasImage;
     }
+
+    public boolean crearProductosLote(String id,String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion, Proveedor proveedor){
+        Producto aux= new Producto(id, nombre, precioVenta, fechaCaducidad, costo, marca, 0, descripcion, new Date(), proveedor);
+        if(aux==null){
+            return false;
+        }
+        listaProductosLote.add(aux);
+        return true;
+    }
+
 }

@@ -1,8 +1,9 @@
 package com.example.papcreativaexpress.Controllers;
 
-import com.example.papcreativaexpress.Model.PapCreativaExpress;
+import com.example.papcreativaexpress.Model.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ModelFactoryController {
@@ -32,5 +33,57 @@ public class ModelFactoryController {
     }
     public void bloquearUsuario(String correo){
         papCreativaExpress.bloquearUsuario(correo);
+    }
+
+    public Usuario crearEmpleado(){
+        Usuario usr= new Usuario();
+        return usr;
+    }
+
+    public boolean eliminarEmpleado(Usuario usr){
+        return true;
+    }
+
+    public boolean actualizarEmpleado(String nombreUsuario, String nuevoNombreUsuario, String contrasenia, String nombre, String telefono,String id,String email,String direccion,String  estado, Cargo cargo){
+        return true;
+    }
+
+    public Cargo crearCargo(String nombre, String descripcion,double salario,String estado, int empleadosRequeridos){
+        Cargo cargo= new Cargo();
+        return cargo;
+    }
+
+    public boolean eliminarCargo(Cargo cargo){
+        return true;
+    }
+
+    public boolean actualizarCargo(String nombre, String descripcion,double salario,String estado, int empleadosRequeridos){
+        return true;
+    }
+
+    public Lote crearLote(int cantidad, double precioUnitario, double precioTotal, Proveedor proveedor, String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion){
+        Lote lote= new Lote();
+        return lote;
+    }
+
+    public boolean eliminarLote(Lote lote){
+        return true;
+    }
+
+    public boolean actualizarLote(String idLote,int cantidad, double precioUnitario, double precioTotal, Proveedor proveedor, String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion){
+        return true;
+    }
+
+    public Proveedor anadirProveedor(String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado){
+        Proveedor proveedor= new Proveedor();
+        return proveedor;
+    }
+
+    public boolean eliminarProveedor(Proveedor proveedor){
+        return true;
+    }
+
+    public boolean actualizarProveedor(String idProveedor, String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado){
+        return true;
     }
 }
