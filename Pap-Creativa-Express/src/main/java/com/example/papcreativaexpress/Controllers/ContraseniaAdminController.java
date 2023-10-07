@@ -49,7 +49,7 @@ public class ContraseniaAdminController implements Initializable {
 
 
     @FXML
-    void OnActionActualizar(ActionEvent event) {
+    void OnActionActualizar(ActionEvent event) throws IOException {
         if (!tfContrasenia.getText().isEmpty() || !tfContrasenia2.getText().isEmpty()) {
             if (ValidarContrasenia.validate(tfContrasenia.getText())) {
                 if (ValidarContrasenia.validate(tfContrasenia2.getText())) {
@@ -58,6 +58,10 @@ public class ContraseniaAdminController implements Initializable {
                         if (correo != null) {
                             Usuario usuario = modelFactoryController.ObtenerUsuario(correo);
                             modelFactoryController.actualizarContrasenia(usuario);
+                            if(MensajeUtil.mostrarMensajeConfirmacion("¿Deseas cambiar tu contraseña?")){
+                                MensajeUtil.mensajeInformacion("Su contraseña se ha cambiado exitosamente");
+                                cambiarVentana("Login.fxml","Login",630,420);
+                            }
                         } else {
                             MensajeUtil.mensajeInformacion("Debe ingresar un correo válido");
                         }
@@ -123,6 +127,14 @@ public class ContraseniaAdminController implements Initializable {
         Stage stage = new Stage();
         stage.setTitle(titulo);
         stage.setScene(scene);
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/Imagenes/Papelería.png")));
+        scene.getStylesheets().add(getClass().getResource("/Css/Estilos.css").toExternalForm());
+
+
+        Stage ventanaActual = (Stage) btnActualizar.getScene().getWindow();
+
+        ventanaActual.close();
+
         stage.show();
     }
 

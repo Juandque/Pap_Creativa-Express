@@ -1,5 +1,7 @@
 package com.example.papcreativaexpress.Controllers;
 
+import com.example.papcreativaexpress.Excepciones.CorreoNoExisteException;
+import com.example.papcreativaexpress.Excepciones.UsuarioExisteException;
 import com.example.papcreativaexpress.Model.*;
 
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ public class ModelFactoryController {
         papCreativaExpress = new PapCreativaExpress();
 
     }
-    public boolean verificarInicioSesion(String correo, String contrasena) {
+    public boolean verificarInicioSesion(String correo, String contrasena) throws CorreoNoExisteException {
         return papCreativaExpress.verificarCredenciales(correo,contrasena);
     }
     public Usuario ObtenerUsuario(String correo){
@@ -35,7 +37,7 @@ public class ModelFactoryController {
     public int obtenerIntentosFallidos(String correo){
         return papCreativaExpress.obtenerIntentosFallidos(correo);
     }
-    public void bloquearUsuario(String correo){
+    public void bloquearUsuario(String correo) throws CorreoNoExisteException {
         papCreativaExpress.bloquearUsuario(correo);
     }
 
@@ -100,6 +102,17 @@ public class ModelFactoryController {
     }
     public void actualizarContrasenia(Usuario usuario){
         papCreativaExpress.actualizarUsuario(usuario);
+    }
+    public Usuario crearUsuario(String nombre, String NombreUsuario, String contrasenia, String correo,
+                                String id, String telefono, String direccion){
+        Usuario usuario = null;
+        try{
+            usuario = papCreativaExpress.crearUsuario(nombre,NombreUsuario,contrasenia,correo,id,telefono,direccion);
+
+        } catch (UsuarioExisteException e) {
+            throw new RuntimeException(e);
+        }
+        return usuario;
     }
 
 }

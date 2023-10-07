@@ -1,5 +1,7 @@
 package com.example.papcreativaexpress.Model;
 
+import java.awt.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Usuario {
@@ -10,16 +12,27 @@ public class Usuario {
     private String id;
     private String email;
     private String direccion;
-    private Date fechaRegistro;
-    private Date ultimoInicioSesion;
-    private String  estado;
+    private LocalDate fechaRegistro;
+    private LocalDate ultimoInicioSesion;
+    private Estado  estado;
     private Cargo cargo;
+    private Image fotoUsuario;
+
+
+
     public Usuario(){
 
     }
 
     public String getNombreUsuario() {
         return nombreUsuario;
+    }
+    public Image getFotoUsuario() {
+        return fotoUsuario;
+    }
+
+    public void setFotoUsuario(Image fotoUsuario) {
+        this.fotoUsuario = fotoUsuario;
     }
 
     public void setNombreUsuario(String nombreUsuario) {
@@ -74,28 +87,20 @@ public class Usuario {
         this.direccion = direccion;
     }
 
-    public Date getFechaRegistro() {
+    public LocalDate getFechaRegistro() {
         return fechaRegistro;
     }
 
-    public void setFechaRegistro(Date fechaRegistro) {
+    public void setFechaRegistro(LocalDate fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public Date getUltimoInicioSesion() {
+    public LocalDate getUltimoInicioSesion() {
         return ultimoInicioSesion;
     }
 
-    public void setUltimoInicioSesion(Date ultimoInicioSesion) {
+    public void setUltimoInicioSesion(LocalDate ultimoInicioSesion) {
         this.ultimoInicioSesion = ultimoInicioSesion;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
     }
 
     public Cargo getCargo() {
@@ -104,5 +109,13 @@ public class Usuario {
 
     public void setCargo(Cargo cargo) {
         this.cargo = cargo;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
     }
 }
