@@ -1,5 +1,6 @@
 package com.example.papcreativaexpress.Controllers;
 
+import com.example.papcreativaexpress.Excepciones.CorreoNoExisteException;
 import com.example.papcreativaexpress.HelloApplication;
 import com.example.papcreativaexpress.Model.Usuario;
 import com.example.papcreativaexpress.Utils.MensajeUtil;
@@ -35,6 +36,8 @@ public class LoginController  implements Initializable{
 
     @FXML
     private Button btnIngresar;
+    @FXML
+    private Button btnRegistrar;
 
     @FXML
     private Button btnRecuperarContrasenia;
@@ -46,7 +49,13 @@ public class LoginController  implements Initializable{
     private TextField tfCorreoElectronico;
 
     @FXML
-    void OnActionIngresar(ActionEvent event) throws IOException {
+    void OnActionRegistrar(ActionEvent event) throws IOException {
+        cambiarVentana("Registro.fxml","Registro",2,2);
+
+    }
+
+    @FXML
+    void OnActionIngresar(ActionEvent event) throws IOException, CorreoNoExisteException {
         if(!tfContrasenia.getText().isEmpty()||!tfCorreoElectronico.getText().isEmpty()){
             if(modelFactoryController.verificarInicioSesion(tfCorreoElectronico.getText(), tfContrasenia.getText())){
                 cambiarVentana("Inventario.fxml","Inventario",760,600);
@@ -102,6 +111,7 @@ public class LoginController  implements Initializable{
         tfCorreoElectronico.getStyleClass().add("text-field");
         tfContrasenia.getStyleClass().add("text-field");
         btnIngresar.getStyleClass().add("button");
+        btnRegistrar.getStyleClass().add("button");
 
     }
 }

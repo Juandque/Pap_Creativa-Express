@@ -1,5 +1,10 @@
 package com.example.papcreativaexpress.Model;
 
+import com.example.papcreativaexpress.Excepciones.CorreoNoExisteException;
+import com.example.papcreativaexpress.Excepciones.UsuarioExisteException;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -170,7 +175,6 @@ public class PapCreativaExpress {
         aux.setCostoTotalLote(costo);
         aux.setProveedor(proveedor);
         aux.getListaProductosLote().clear();
-        listaProductos.
         String idProducto= null;
         for(int i=1; i<=cantidad; i++){
             idProducto= crearId(idProductos);
@@ -246,7 +250,7 @@ public class PapCreativaExpress {
         listaLotes.remove(lote);
         return true;
     }
-    public boolean verificarCredenciales(String correo, String contrasena) {
+    public boolean verificarCredenciales(String correo, String contrasena) throws CorreoNoExisteException {
         if (obtenerIntentosFallidos(correo) >= 3) {
             bloquearUsuario(correo);
             return false;
@@ -260,8 +264,15 @@ public class PapCreativaExpress {
         intentosFallidos.add(correo);
         return false;
     }
-    public void bloquearUsuario(String correo) {
-        listaEmpleadosBloqueados.add(correo);
+    public void bloquearUsuario(String correo)  throws CorreoNoExisteException {
+        Usuario bloquearUsuario = buscarUsuarioPorCorreo(correo);
+        if(bloquearUsuario!=null){
+            bloquearUsuario.setEstado(Estado.BLOQUEADO);
+            listaEmpleadosBloqueados.add(correo);
+        }
+        else {
+            throw new CorreoNoExisteException();
+        }
     }
     public int obtenerIntentosFallidos(String correo) {
         int intentos = 0;
@@ -289,5 +300,24 @@ public class PapCreativaExpress {
         }
 
     }
-
+    public  Usuario crearUsuario(String nombre, String nombreUsuario, String contrasenia, String correo,
+                                 String id, String telefono, String direccion)throws UsuarioExisteException {
+        Usuario usuarioExiste = buscarUsuarioPorCorreo(correo);
+        if (usuarioExiste != null) {
+            throw new UsuarioExisteException();
+        }
+        Usuario usuarioNuevo = new Usuario();
+        usuarioNuevo.setNombreUsuario(nombreUsuario);
+        usuarioNuevo.setContrasenia(contrasenia);
+        usuarioNuevo.setEmail(correo);
+        usuarioNuevo.setEstado(Estado.DISPONIBLE);
+        usuarioNuevo.setNombre(nombre);
+        usuarioNuevo.setDireccion(direccion);
+        usuarioNuevo.setTelefono(telefono);
+        usuarioNuevo.setId(id);
+        LocalDate fechaActual = LocalDate.now();
+        usuarioNuevo.setFechaRegistro(fechaActual);
+        usuarioNuevo.setUltimoInicioSesion(fechaActual);
+        return usuarioNuevo;
+    }
 }
