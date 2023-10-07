@@ -1,6 +1,5 @@
 package com.example.papcreativaexpress.Model;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +16,10 @@ public class PapCreativaExpress {
     List<Producto> listaProductos;
     List<Proveedor> listaProveedores;
     List<Usuario> listaEmpleados;
+    List<String> listaEmpleadosBloqueados;
+    List<String> intentosFallidos = new ArrayList<>();
+
+
     int idProductos;
     int idLotes;
     int idCajeros;
@@ -40,6 +43,8 @@ public class PapCreativaExpress {
         listaProductos= new ArrayList<>();
         listaProveedores= new ArrayList<>();
         listaEmpleados= new ArrayList<>();
+        intentosFallidos = new ArrayList<>();
+        listaEmpleadosBloqueados = new ArrayList<String>();
         idEmpleados=1;
         idProveedores=1;
         idCajeros=1;
@@ -166,4 +171,40 @@ public class PapCreativaExpress {
         }
         return idAux;
     }
+    public boolean eliminarLote(Lote lote){
+        if(lote==null){
+            return false;
+        }if(!listaLotes.contains(lote)) {
+            return false;
+        }
+        listaLotes.remove(lote);
+        return true;
+    }
+    public boolean verificarCredenciales(String correo, String contrasena) {
+        if (obtenerIntentosFallidos(correo) >= 3) {
+            bloquearUsuario(correo);
+            return false;
+        }
+        for (Usuario usuario : listaEmpleados) {
+            if (usuario.getEmail().equals(correo) && usuario.getContrasenia().equals(contrasena)) {
+                intentosFallidos.clear();
+                return true;
+            }
+        }
+        intentosFallidos.add(correo);
+        return false;
+    }
+    public void bloquearUsuario(String correo) {
+        listaEmpleadosBloqueados.add(correo);
+    }
+    public int obtenerIntentosFallidos(String correo) {
+        int intentos = 0;
+        for (String intentoFallido : intentosFallidos) {
+            if (intentoFallido.equals(correo)) {
+                intentos++;
+            }
+        }
+        return intentos;
+    }
+
 }
