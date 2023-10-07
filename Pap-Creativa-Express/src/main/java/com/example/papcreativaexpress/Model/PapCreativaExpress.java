@@ -174,13 +174,34 @@ public class PapCreativaExpress {
         aux.setPrecioUnitario(precioUnitario);
         aux.setCostoTotalLote(costo);
         aux.setProveedor(proveedor);
+<<<<<<< Updated upstream
         aux.getListaProductosLote().clear();
         String idProducto= null;
         for(int i=1; i<=cantidad; i++){
             idProducto= crearId(idProductos);
             idProductos++;
             aux.crearProductosLote(idProducto,nombre,precioVenta,fechaCaducidad,costo,marca,descripcion,proveedor);
+=======
+        if(cantidad<aux.getListaProductosLote().size()){
+            aux.eliminarCantidadProductos(aux.getListaProductosLote().size()-cantidad);
+>>>>>>> Stashed changes
         }
+        if(cantidad>aux.getListaProductosLote().size()){
+            String idProducto= null;
+            for(int i=1; i<=cantidad-aux.getListaProductosLote().size(); i++){
+                idProducto= crearId(idProductos);
+                idProductos++;
+                aux.crearProductosLote(idProducto,nombre,precioVenta,fechaCaducidad,costo,marca,descripcion,proveedor);
+            }
+        }
+        return true;
+    }
+
+    public boolean eliminarLote(Lote lote){
+        if(lote==null || !listaLotes.contains(lote)){
+            return false;
+        }
+        listaLotes.remove(lote);
         return true;
     }
 
@@ -241,6 +262,7 @@ public class PapCreativaExpress {
         }
         return idAux;
     }
+<<<<<<< Updated upstream
     public boolean eliminarLote(Lote lote){
         if(lote==null){
             return false;
@@ -251,6 +273,10 @@ public class PapCreativaExpress {
         return true;
     }
     public boolean verificarCredenciales(String correo, String contrasena) throws CorreoNoExisteException {
+=======
+
+    public boolean verificarCredenciales(String correo, String contrasena) {
+>>>>>>> Stashed changes
         if (obtenerIntentosFallidos(correo) >= 3) {
             bloquearUsuario(correo);
             return false;
