@@ -8,6 +8,7 @@ import java.util.List;
 
 public class ModelFactoryController {
     private PapCreativaExpress papCreativaExpress;
+    private Usuario usuarioActual;
 
     private static class SingletonHolder {
         private final static ModelFactoryController eINSTANCE = new ModelFactoryController();
@@ -27,6 +28,9 @@ public class ModelFactoryController {
     }
     public boolean verificarInicioSesion(String correo, String contrasena) {
         return papCreativaExpress.verificarCredenciales(correo,contrasena);
+    }
+    public Usuario ObtenerUsuario(String correo){
+        return papCreativaExpress.buscarUsuarioPorCorreo(correo);
     }
     public int obtenerIntentosFallidos(String correo){
         return papCreativaExpress.obtenerIntentosFallidos(correo);
@@ -86,4 +90,15 @@ public class ModelFactoryController {
     public boolean actualizarProveedor(String idProveedor, String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado){
         return true;
     }
+    public void setUsuarioActual(Usuario usuario) {
+        this.usuarioActual = usuario;
+    }
+
+    public Usuario getUsuarioActual() {
+        return this.usuarioActual;
+    }
+    public void actualizarContrasenia(Usuario usuario){
+        papCreativaExpress.actualizarUsuario(usuario);
+    }
+
 }

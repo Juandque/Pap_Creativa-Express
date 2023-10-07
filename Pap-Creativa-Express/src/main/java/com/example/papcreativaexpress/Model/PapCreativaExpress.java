@@ -272,5 +272,22 @@ public class PapCreativaExpress {
         }
         return intentos;
     }
+    public Usuario buscarUsuarioPorCorreo(String correo){
+        List<Usuario>aux = getListaEmpleados();
+        for(Usuario usuario: aux){
+            if(usuario.getEmail().equals(correo)){
+                return usuario;
+            }
+        }
+        return null;
+    }
+    public void actualizarUsuario(Usuario usuario){
+        for(int i=0; i<listaEmpleados.size();i++){
+            Usuario usuarioExistente = listaEmpleados.get(i);
+            usuarioExistente.setContrasenia(usuario.getContrasenia());
+            break;
+        }
+
+    }
 
 }

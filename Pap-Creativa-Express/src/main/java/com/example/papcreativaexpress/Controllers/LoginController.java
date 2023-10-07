@@ -1,6 +1,7 @@
 package com.example.papcreativaexpress.Controllers;
 
 import com.example.papcreativaexpress.HelloApplication;
+import com.example.papcreativaexpress.Model.Usuario;
 import com.example.papcreativaexpress.Utils.MensajeUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -65,7 +66,8 @@ public class LoginController  implements Initializable{
     }
 
     @FXML
-    void OnActionRecuperarContrasenia(ActionEvent event) {
+    void OnActionRecuperarContrasenia(ActionEvent event) throws IOException {
+        cambiarVentana("ContraseniaAdmin.fxml","Recuperación de contraseña",600,400);
 
     }
     private void cambiarVentana(String fxml, String titulo, int ancho, int largo) throws IOException {
@@ -74,6 +76,9 @@ public class LoginController  implements Initializable{
         Stage stage = new Stage();
         stage.setTitle(titulo);
         stage.setScene(scene);
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/Imagenes/Papelería.png")));
+        scene.getStylesheets().add(getClass().getResource("/Css/Estilos.css").toExternalForm());
+
 
         Stage ventanaActual = (Stage) btnIngresar.getScene().getWindow();
 
