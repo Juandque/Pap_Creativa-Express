@@ -66,12 +66,13 @@ public class ModelFactoryController {
     }
 
     public Lote crearLote(int cantidad, double precioUnitario, double precioTotal, Proveedor proveedor, String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion){
-        Lote lote= new Lote();
+        Lote lote= papCreativaExpress.anadirLote(cantidad,precioUnitario,precioTotal,proveedor,nombre,precioVenta,fechaCaducidad,costo,marca,descripcion);
         return lote;
     }
 
     public boolean eliminarLote(Lote lote){
-        return true;
+        boolean flagEliminado= papCreativaExpress.eliminarLote(lote);
+        return flagEliminado;
     }
 
     public boolean actualizarLote(String idLote,int cantidad, double precioUnitario, double precioTotal, Proveedor proveedor, String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion){

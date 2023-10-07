@@ -2,6 +2,7 @@ package com.example.papcreativaexpress.Model;
 
 import java.awt.*;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class Lote {
@@ -107,6 +108,16 @@ public class Lote {
         }
         listaProductosLote.add(aux);
         return true;
+    }
+
+    public void eliminarCantidadProductos(int cantidad){
+        int productosEliminar=cantidad;
+        Iterator<Producto> iterator= listaProductosLote.iterator();
+        while (iterator.hasNext()&&productosEliminar>0){
+            iterator.next();
+            iterator.remove();
+            productosEliminar--;
+        }
     }
 
 }
