@@ -26,7 +26,10 @@ public class ModelFactoryController {
 
     public void inicializarDatos(){
         papCreativaExpress = new PapCreativaExpress();
-
+        Usuario usr= new Usuario();
+        usr.setEmail("aaa@gmail.com");
+        usr.setContrasenia("10973");
+        papCreativaExpress.getListaEmpleados().add(usr);
     }
     public boolean verificarInicioSesion(String correo, String contrasena) throws CorreoNoExisteException {
         return papCreativaExpress.verificarCredenciales(correo,contrasena);
@@ -41,13 +44,7 @@ public class ModelFactoryController {
         papCreativaExpress.bloquearUsuario(correo);
     }
     public Usuario crearEmpleado(String nombre, String NombreUsuario, String contrasenia, String correo, String id, String telefono, String direccion){
-        Usuario usuario = null;
-        try{
-            usuario = papCreativaExpress.crearEmpleado(nombre,NombreUsuario,contrasenia,correo,id,telefono,direccion);
-
-        } catch (UsuarioExisteException e) {
-            throw new RuntimeException(e);
-        }
+        Usuario usuario =papCreativaExpress.crearEmpleado(nombre,NombreUsuario,contrasenia,correo,id,telefono,direccion) ;
         return usuario;
     }
     public boolean eliminarEmpleado(Usuario usr){

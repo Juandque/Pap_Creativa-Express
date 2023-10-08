@@ -369,10 +369,10 @@ public class PapCreativaExpress {
 
     }
     public  Usuario crearEmpleado(String nombre, String nombreUsuario, String contrasenia, String correo,
-                                 String id, String telefono, String direccion)throws UsuarioExisteException {
+                                 String id, String telefono, String direccion){
         Usuario usuarioExiste = buscarUsuarioPorCorreo(correo);
         if (usuarioExiste != null) {
-            throw new UsuarioExisteException();
+            return null;
         }
         Usuario usuarioNuevo = new Usuario();
         usuarioNuevo.setNombreUsuario(nombreUsuario);
