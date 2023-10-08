@@ -1,16 +1,38 @@
 package com.example.papcreativaexpress.Controllers;
 
+import com.example.papcreativaexpress.Model.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 
-public class InventarioController {
+import java.io.File;
+import java.net.URL;
+import java.util.Objects;
+import java.util.ResourceBundle;
+import java.util.logging.Logger;
+
+
+public class InventarioController implements Initializable {
+    ModelFactoryController modelFactoryController;
+    @FXML
+    private ImageView IamgeCodigoBarras;
+    @FXML
+    private ImageView imageEmpleado;
+
+    @FXML
+    private ImageView imageRegla;
+    @FXML
+    private ImageView imageEmpleadoRegistro;
 
     @FXML
     private Button btnActualizarCargo;
@@ -53,6 +75,8 @@ public class InventarioController {
 
     @FXML
     private Button btnEliminarCargo;
+    @FXML
+    private Button btnIsertarImagen;
 
     @FXML
     private Button btnEliminarEmpleado;
@@ -77,6 +101,8 @@ public class InventarioController {
 
     @FXML
     private Button btnVerInfo;
+    @FXML
+    private Button btnCodigoBrras;
 
     @FXML
     private ComboBox<?> cbCargoEmpleado;
@@ -251,6 +277,26 @@ public class InventarioController {
 
     @FXML
     private TextField txtTelefonoProveedor;
+    private final FileChooser fileChooser= new FileChooser();
+    private Image imagenSeleccionada;
+    
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        modelFactoryController = ModelFactoryController.getInstance();
+        try {
+            System.out.println(modelFactoryController.getUsuarioActual().getEmail());
+            Image imagenRegla = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Imagenes/Regla.png")));
+            imageRegla.setImage(imagenRegla);
+            Image imagenUsuario = modelFactoryController.obtenerImagen(modelFactoryController.getUsuarioActual());
+            imageEmpleado.setImage(imagenUsuario);
+            Logger logger = Logger.getLogger(getClass().getName());
+            Image fotoUsuario = modelFactoryController.getUsuarioActual().getFotoUsuario();
+            logger.info("La imagen obtenida es: " + fotoUsuario);
+        } catch (NullPointerException e) {
+            System.err.println("No se pudo cargar la imagen" + e.getMessage());
+        }
+
+    }
 
     @FXML
     void OnActionEmpleados(ActionEvent event) {
@@ -299,6 +345,8 @@ public class InventarioController {
 
     @FXML
     void onActionAnadirEmpleado(ActionEvent event) {
+        Usuario usuario = new Usuario();
+        usuario.setFotoUsuario(imagenSeleccionada);
 
     }
 
@@ -361,5 +409,40 @@ public class InventarioController {
     void onActionLotes(ActionEvent event) {
 
     }
+    @FXML
+    void OnActionCodigoBarras(ActionEvent event) {
+
+    }
+    @FXML
+    void OnActionInsertarImagen(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+            String rutaImagen = selectedFile.toURI().toString();
+
+            Image imagen = new Image(rutaImagen);
+
+            imageEmpleadoRegistro.setImage(imagen);
+            imagenSeleccionada = imageEmpleadoRegistro.getImage();
+        }
+    }
+
+
+//    private void limpiarFormulario() {
+//        // Limpia los campos del formulario y restablece la imagen del empleado
+//        imageUsuario.setImage(null);
+//        imagenSeleccionada.setImage(null);
+//        tfNombre.clear();
+//        tfCorreo.clear();
+//        // Limpia otros campos del formulario
+//    }
+
+
+
 
 }

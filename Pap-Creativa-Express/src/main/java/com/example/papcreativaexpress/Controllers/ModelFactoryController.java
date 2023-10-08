@@ -1,18 +1,14 @@
 package com.example.papcreativaexpress.Controllers;
 
 import com.example.papcreativaexpress.Excepciones.CorreoNoExisteException;
-import com.example.papcreativaexpress.Excepciones.UsuarioExisteException;
 import com.example.papcreativaexpress.Model.*;
 import com.example.papcreativaexpress.Utils.EnviarCorreo;
+import javafx.scene.image.Image;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class ModelFactoryController {
     private PapCreativaExpress papCreativaExpress;
-    private Usuario usuarioActual;
 
     private static class SingletonHolder {
         private final static ModelFactoryController eINSTANCE = new ModelFactoryController();
@@ -29,8 +25,10 @@ public class ModelFactoryController {
     public void inicializarDatos(){
         papCreativaExpress = new PapCreativaExpress();
         Usuario usr= new Usuario();
+        Image imagen= new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Imagenes/Falcao.png")));
+        usr.setFotoUsuario(imagen);
         usr.setEmail("juans.orozcoa@uqvirtual.edu.co");
-        usr.setContrasenia("10973");
+        usr.setContrasenia("123");
         papCreativaExpress.getListaEmpleados().add(usr);
     }
     public boolean verificarInicioSesion(String correo, String contrasena) throws CorreoNoExisteException {
@@ -103,13 +101,7 @@ public class ModelFactoryController {
         boolean flagActualizado= papCreativaExpress.actualizarProveedor(idProveedor,nombreEmpresa,direccion,telefono,nombreContacto,comentarios,estado);
         return flagActualizado;
     }
-    public void setUsuarioActual(Usuario usuario) {
-        this.usuarioActual = usuario;
-    }
 
-    public Usuario getUsuarioActual() {
-        return this.usuarioActual;
-    }
     public void actualizarContrasenia(Usuario usuario,String contrasenia){
         papCreativaExpress.actualizarContrasenaUsuario(usuario,contrasenia);
     }
@@ -122,6 +114,15 @@ public class ModelFactoryController {
     public void enviarCorreo(String remitente,String destinatario, String asunto, String cuerpo) {
         EnviarCorreo Correo = new EnviarCorreo();
         Correo.enviarCorreo(remitente,destinatario,asunto,cuerpo);
+    }
+    public Image obtenerImagen(Usuario usuario){
+        return papCreativaExpress.obtenerImagenUsuario(usuario);
+    }
+    public void asignarUsuarioActual(String correo){
+        papCreativaExpress.asignarUsuarioActual(correo);
+    }
+    public Usuario getUsuarioActual(){
+       return papCreativaExpress.getUsuarioActual();
     }
 
 }

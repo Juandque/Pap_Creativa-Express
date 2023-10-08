@@ -58,6 +58,7 @@ public class LoginController  implements Initializable{
     void OnActionIngresar(ActionEvent event) throws IOException, CorreoNoExisteException {
         if(!tfContrasenia.getText().isEmpty()||!tfCorreoElectronico.getText().isEmpty()){
             if(modelFactoryController.verificarInicioSesion(tfCorreoElectronico.getText(), tfContrasenia.getText())){
+                modelFactoryController.asignarUsuarioActual(tfCorreoElectronico.getText());
                 cambiarVentana("Inventario.fxml","Inventario",760,600);
             }else {
                 int intentosFallidos = modelFactoryController.obtenerIntentosFallidos(tfCorreoElectronico.getText());

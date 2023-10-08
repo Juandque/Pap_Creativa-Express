@@ -23,26 +23,29 @@
 
 <AnchorPane prefHeight="676.0" prefWidth="758.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.papcreativaexpress.Controllers.InventarioController">
    <children>
-      <BorderPane prefHeight="676.0" prefWidth="758.0">
+      <BorderPane prefHeight="702.0" prefWidth="758.0">
          <top>
-            <HBox prefHeight="85.0" prefWidth="758.0" style="-fx-background-color: #52438f;" BorderPane.alignment="CENTER">
+            <HBox prefHeight="89.0" prefWidth="435.0" style="-fx-background-color: #52438f;" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fitHeight="55.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="92.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../Imagenes/Papelería.png" />
                      </image>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                   </ImageView>
-                  <Label prefHeight="27.0" prefWidth="163.0" text="Inventario" textFill="#eeebeb">
+                  <Label prefHeight="27.0" prefWidth="132.0" text="Inventario" textFill="#eeebeb">
                      <font>
                         <Font name="Arial" size="24.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="10.0" top="30.0" />
+                        <Insets right="-160.0" top="30.0" />
                      </HBox.margin>
                   </Label>
-                  <ImageView id="imagenViewEmpleado" fitHeight="89.0" fitWidth="117.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="ImageEmpleado" fitHeight="90.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <HBox.margin>
-                        <Insets left="450.0" />
+                        <Insets left="600.0" />
                      </HBox.margin>
                   </ImageView>
                </children>
@@ -100,7 +103,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <ImageView fitHeight="113.0" fitWidth="124.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imageRegla" fitHeight="181.0" fitWidth="124.0" pickOnBounds="true" preserveRatio="true">
                      <image>
 
                      </image>
@@ -112,7 +115,7 @@
             </VBox>
          </left>
          <center>
-            <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <StackPane prefHeight="606.0" prefWidth="634.0" BorderPane.alignment="CENTER">
                <children>
                   <Pane fx:id="paneProductos" prefHeight="200.0" prefWidth="200.0" visible="false">
                      <children>
@@ -141,7 +144,7 @@
                         <Button fx:id="btnVerInfo" layoutX="58.0" layoutY="468.0" mnemonicParsing="false" onAction="#OnActionVerInfo" prefHeight="25.0" prefWidth="171.0" stylesheets="@../../../css/Estilos.css" text="Ver info" />
                      </children>
                   </Pane>
-                  <Pane fx:id="paneAdmin" prefHeight="200.0" prefWidth="200.0" visible="false">
+                  <Pane fx:id="paneAdmin" prefHeight="606.0" prefWidth="634.0">
                      <children>
                         <TextField fx:id="txtNombreUsuario" alignment="CENTER" layoutX="14.0" layoutY="332.0" prefHeight="25.0" prefWidth="280.0" promptText="Nombre de Usuario" />
                         <TextField fx:id="txtContraseniaEmpleado" alignment="CENTER" layoutX="343.0" layoutY="332.0" prefHeight="25.0" prefWidth="279.0" promptText="Contraseña" />
@@ -169,7 +172,10 @@
                         <Button fx:id="btnActualizarEmpleado" layoutX="343.0" layoutY="285.0" mnemonicParsing="false" onAction="#onActionActualizarEmpleado" stylesheets="@../../../css/Estilos.css" text="Actualizar Empleado" />
                         <Button fx:id="btnCancelarEmpleado" layoutX="508.0" layoutY="284.0" mnemonicParsing="false" onAction="#onActionCancelarEmpleado" prefHeight="25.0" prefWidth="114.0" stylesheets="@../../../css/Estilos.css" text="Cancelar" />
                         <ComboBox fx:id="cbEstadoEmpleado" layoutX="344.0" layoutY="440.0" prefHeight="25.0" prefWidth="278.0" promptText="Estado" />
-                        <ComboBox fx:id="cbCargoEmpleado" layoutX="175.0" layoutY="476.0" prefHeight="25.0" prefWidth="294.0" promptText="Cargo" />
+                        <ComboBox fx:id="cbCargoEmpleado" layoutX="336.0" layoutY="471.0" prefHeight="25.0" prefWidth="294.0" promptText="Cargo" />
+                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-21.0" layoutY="453.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="imageEmpleadoRegistro" fitHeight="113.0" fitWidth="167.0" layoutX="25.0" layoutY="483.0" pickOnBounds="true" preserveRatio="true" />
+                        <Button fx:id="btnIsertarImagen" layoutX="284.0" layoutY="548.0" mnemonicParsing="false" onAction="#OnActionInsertarImagen" stylesheets="@../../../css/Estilos.css" text="Ingresar Imagen" />
                      </children></Pane>
                   <Pane fx:id="paneCargos" prefHeight="200.0" prefWidth="200.0" visible="false">
                      <children>
@@ -216,7 +222,7 @@
                         </TableView>
                      </children>
                   </Pane>
-                  <Pane fx:id="paneLotes" prefHeight="529.0" prefWidth="634.0">
+                  <Pane fx:id="paneLotes" prefHeight="529.0" prefWidth="634.0" visible="false">
                      <children>
                         <TableView fx:id="tableLotes" prefHeight="232.0" prefWidth="635.0" stylesheets="@../../../css/Estilos.css">
                           <columns>
@@ -251,6 +257,8 @@
                         <TextField fx:id="txtMarcaProductoLote" alignment="CENTER" layoutX="317.0" layoutY="433.0" prefHeight="25.0" prefWidth="314.0" promptText="Marca del producto" />
                         <TextField fx:id="txtDescripcionProductoLote" alignment="CENTER" layoutX="10.0" layoutY="466.0" prefHeight="25.0" prefWidth="293.0" promptText="Descripcion" />
                         <DatePicker fx:id="dpFechaCaducidadProductoLote" layoutX="317.0" layoutY="466.0" prefHeight="25.0" prefWidth="312.0" promptText="Fecha de Caducidad" />
+                        <Button fx:id="btnCodigoBrras" layoutX="377.0" layoutY="538.0" mnemonicParsing="false" onAction="#OnActionCodigoBarras" prefHeight="23.0" prefWidth="212.0" stylesheets="@../../../css/Estilos.css" text="Ingresar código de barras" />
+                        <ImageView fx:id="imageEmpleado" fitHeight="85.0" fitWidth="281.0" layoutX="20.0" layoutY="496.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </Pane>
                </children>

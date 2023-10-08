@@ -1,10 +1,9 @@
 package com.example.papcreativaexpress.Model;
 
 import com.example.papcreativaexpress.Excepciones.CorreoNoExisteException;
-import com.example.papcreativaexpress.Excepciones.UsuarioExisteException;
+import javafx.scene.image.Image;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +21,9 @@ public class PapCreativaExpress {
     List<Proveedor> listaProveedores;
     List<Usuario> listaEmpleados;
     List<String> listaEmpleadosBloqueados;
-    List<String> intentosFallidos = new ArrayList<>();
+    List<String> intentosFallidos;
+    private Usuario usuarioActual;
+
 
 
     int idProductos;
@@ -37,29 +38,29 @@ public class PapCreativaExpress {
     int idEmpleados;
 
     public PapCreativaExpress() {
-        listaCajeros= new ArrayList<>();
-        listaCargos= new ArrayList<>();
-        listaCategorias= new ArrayList<>();
-        listaComprasAbastecimiento= new ArrayList<>();
-        listaDetalleVentas= new ArrayList<>();
-        listaFacturas= new ArrayList<>();
-        iventario= new Inventario();
-        listaLotes= new ArrayList<>();
-        listaProductos= new ArrayList<>();
-        listaProveedores= new ArrayList<>();
-        listaEmpleados= new ArrayList<>();
+        listaCajeros = new ArrayList<>();
+        listaCargos = new ArrayList<>();
+        listaCategorias = new ArrayList<>();
+        listaComprasAbastecimiento = new ArrayList<>();
+        listaDetalleVentas = new ArrayList<>();
+        listaFacturas = new ArrayList<>();
+        iventario = new Inventario();
+        listaLotes = new ArrayList<>();
+        listaProductos = new ArrayList<>();
+        listaProveedores = new ArrayList<>();
+        listaEmpleados = new ArrayList<>();
         intentosFallidos = new ArrayList<>();
         listaEmpleadosBloqueados = new ArrayList<String>();
-        idEmpleados=1;
-        idProveedores=1;
-        idCajeros=1;
-        idCargos=1;
-        idCategorias=1;
-        idCompras=1;
-        idDetallesVenta=1;
-        idFacturas=1;
-        idLotes=1;
-        idProductos=1;
+        idEmpleados = 1;
+        idProveedores = 1;
+        idCajeros = 1;
+        idCargos = 1;
+        idCategorias = 1;
+        idCompras = 1;
+        idDetallesVenta = 1;
+        idFacturas = 1;
+        idLotes = 1;
+        idProductos = 1;
     }
 
     public List<Caja> getListaCajeros() {
@@ -150,64 +151,64 @@ public class PapCreativaExpress {
         this.listaEmpleados = listaEmpleados;
     }
 
-    public Lote anadirLote(int cantidad, double precioUnitario, double precioTotal, Proveedor proveedor, String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion){
-        String id= crearId(idLotes);
+    public Lote anadirLote(int cantidad, double precioUnitario, double precioTotal, Proveedor proveedor, String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion) {
+        String id = crearId(idLotes);
         idLotes++;
-        String idProducto= null;
-        Lote loteAux= new Lote(new Date(), cantidad,id, precioUnitario, precioTotal, new Date(), proveedor);
-        for(int i=1; i<=cantidad; i++){
-            idProducto= crearId(idProductos);
+        String idProducto = null;
+        Lote loteAux = new Lote(new Date(), cantidad, id, precioUnitario, precioTotal, new Date(), proveedor);
+        for (int i = 1; i <= cantidad; i++) {
+            idProducto = crearId(idProductos);
             idProductos++;
-            loteAux.crearProductosLote(idProducto,nombre,precioVenta,fechaCaducidad,costo,marca,descripcion,proveedor);
+            loteAux.crearProductosLote(idProducto, nombre, precioVenta, fechaCaducidad, costo, marca, descripcion, proveedor);
         }
         listaProductos.addAll(loteAux.getListaProductosLote());
         listaLotes.add(loteAux);
         return loteAux;
     }
 
-    public boolean actualizarLote(String idLote,int cantidad, double precioUnitario, double precioTotal, Proveedor proveedor, String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion){
-        Lote aux= buscarLoteId(idLote);
-        if(aux==null){
+    public boolean actualizarLote(String idLote, int cantidad, double precioUnitario, double precioTotal, Proveedor proveedor, String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion) {
+        Lote aux = buscarLoteId(idLote);
+        if (aux == null) {
             return false;
         }
         aux.setCantidad(cantidad);
         aux.setPrecioUnitario(precioUnitario);
         aux.setCostoTotalLote(costo);
         aux.setProveedor(proveedor);
-        aux.actualizarProductosEnlistados(nombre,precioVenta,fechaCaducidad,costo,marca,descripcion,proveedor);
-        if(cantidad<aux.getListaProductosLote().size()){
-            aux.eliminarCantidadProductos(aux.getListaProductosLote().size()-cantidad);
+        aux.actualizarProductosEnlistados(nombre, precioVenta, fechaCaducidad, costo, marca, descripcion, proveedor);
+        if (cantidad < aux.getListaProductosLote().size()) {
+            aux.eliminarCantidadProductos(aux.getListaProductosLote().size() - cantidad);
         }
-        if(cantidad>aux.getListaProductosLote().size()){
-            String idProducto= null;
-            for(int i=1; i<=cantidad-aux.getListaProductosLote().size(); i++){
-                idProducto= crearId(idProductos);
+        if (cantidad > aux.getListaProductosLote().size()) {
+            String idProducto = null;
+            for (int i = 1; i <= cantidad - aux.getListaProductosLote().size(); i++) {
+                idProducto = crearId(idProductos);
                 idProductos++;
-                aux.crearProductosLote(idProducto,nombre,precioVenta,fechaCaducidad,costo,marca,descripcion,proveedor);
+                aux.crearProductosLote(idProducto, nombre, precioVenta, fechaCaducidad, costo, marca, descripcion, proveedor);
             }
         }
         return true;
     }
 
-    public boolean eliminarLote(Lote lote){
-        if(lote==null || !listaLotes.contains(lote)){
+    public boolean eliminarLote(Lote lote) {
+        if (lote == null || !listaLotes.contains(lote)) {
             return false;
         }
         listaLotes.remove(lote);
         return true;
     }
 
-    public Cargo anadirCargo(String nombre, String descripcion,double salario,String estado, int empleadosRequeridos){
-        String id= crearId(idCargos);
+    public Cargo anadirCargo(String nombre, String descripcion, double salario, String estado, int empleadosRequeridos) {
+        String id = crearId(idCargos);
         idCargos++;
-        Cargo aux= new Cargo(nombre, id,descripcion,salario,new Date(),estado, empleadosRequeridos);
+        Cargo aux = new Cargo(nombre, id, descripcion, salario, new Date(), estado, empleadosRequeridos);
         listaCargos.add(aux);
         return aux;
     }
 
-    public boolean actualizarCargo(String id,String nombre, String descripcion,double salario,String estado, int empleadosRequeridos){
-        Cargo aux= buscarCargoId(id);
-        if(aux==null){
+    public boolean actualizarCargo(String id, String nombre, String descripcion, double salario, String estado, int empleadosRequeridos) {
+        Cargo aux = buscarCargoId(id);
+        if (aux == null) {
             return false;
         }
         aux.setDescripcion(descripcion);
@@ -219,25 +220,25 @@ public class PapCreativaExpress {
         return true;
     }
 
-    public boolean eliminarCargo(Cargo cargo){
-        if(cargo==null || !listaCargos.contains(cargo)){
+    public boolean eliminarCargo(Cargo cargo) {
+        if (cargo == null || !listaCargos.contains(cargo)) {
             return false;
         }
         listaCargos.remove(cargo);
         return true;
     }
 
-    public Proveedor anadirProveedor(String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado){
-        String id= crearId(idProveedores);
+    public Proveedor anadirProveedor(String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado) {
+        String id = crearId(idProveedores);
         idProveedores++;
-        Proveedor aux= new Proveedor(id, nombreEmpresa,direccion,telefono,nombreContacto,comentarios,estado, new Date());
+        Proveedor aux = new Proveedor(id, nombreEmpresa, direccion, telefono, nombreContacto, comentarios, estado, new Date());
         listaProveedores.add(aux);
         return aux;
     }
 
-    public boolean actualizarProveedor(String idProveedor, String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado){
-        Proveedor aux= buscarProveedorId(idProveedor);
-        if(aux==null){
+    public boolean actualizarProveedor(String idProveedor, String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado) {
+        Proveedor aux = buscarProveedorId(idProveedor);
+        if (aux == null) {
             return false;
         }
         aux.setComentarios(comentarios);
@@ -250,72 +251,71 @@ public class PapCreativaExpress {
         return true;
     }
 
-    public boolean eliminarProveedor(Proveedor proveedor){
-        if(proveedor==null || !listaProveedores.contains(proveedor)){
+    public boolean eliminarProveedor(Proveedor proveedor) {
+        if (proveedor == null || !listaProveedores.contains(proveedor)) {
             return false;
         }
         listaProveedores.remove(proveedor);
         return true;
     }
 
-    public Lote buscarLoteId(String id){
-        Lote aux=null;
-        for(Lote l: listaLotes){
-            if(l.getId().equals(id)){
-                aux=l;
+    public Lote buscarLoteId(String id) {
+        Lote aux = null;
+        for (Lote l : listaLotes) {
+            if (l.getId().equals(id)) {
+                aux = l;
             }
         }
         return aux;
     }
 
-    public Usuario buscarEmpleadoNombreUsuario(String nombreUsuario){
-        Usuario aux= null;
-        for(Usuario usr: listaEmpleados){
-            if(usr.getNombreUsuario().equals(nombreUsuario)){
-                aux=usr;
+    public Usuario buscarEmpleadoNombreUsuario(String nombreUsuario) {
+        Usuario aux = null;
+        for (Usuario usr : listaEmpleados) {
+            if (usr.getNombreUsuario().equals(nombreUsuario)) {
+                aux = usr;
             }
         }
         return aux;
     }
 
-    public Cargo buscarCargoId(String id){
-        Cargo aux=null;
-        for(Cargo cargo:listaCargos){
-            if(cargo.getId().equals(id)){
-                aux=cargo;
+    public Cargo buscarCargoId(String id) {
+        Cargo aux = null;
+        for (Cargo cargo : listaCargos) {
+            if (cargo.getId().equals(id)) {
+                aux = cargo;
             }
         }
         return aux;
     }
 
-    public Proveedor buscarProveedorId(String id){
-        Proveedor aux=null;
-        for(Proveedor prov: listaProveedores){
-            if(prov.getId().equals(id)){
-                aux=prov;
+    public Proveedor buscarProveedorId(String id) {
+        Proveedor aux = null;
+        for (Proveedor prov : listaProveedores) {
+            if (prov.getId().equals(id)) {
+                aux = prov;
             }
         }
         return aux;
     }
 
-    public Producto buscarProducto(String id){
-        Producto aux= null;
-        for(Producto prod: listaProductos){
-            if(prod.getId().equals(id)){
-                aux=prod;
+    public Producto buscarProducto(String id) {
+        Producto aux = null;
+        for (Producto prod : listaProductos) {
+            if (prod.getId().equals(id)) {
+                aux = prod;
             }
         }
         return aux;
     }
 
-    public String crearId(int id){
-        String idAux= String.valueOf(id);
-        for(int i=10-idAux.length(); i>=0; i--){
-            idAux="0"+idAux;
+    public String crearId(int id) {
+        String idAux = String.valueOf(id);
+        for (int i = 10 - idAux.length(); i >= 0; i--) {
+            idAux = "0" + idAux;
         }
         return idAux;
     }
-
 
 
     public boolean verificarCredenciales(String correo, String contrasena) throws CorreoNoExisteException {
@@ -332,16 +332,17 @@ public class PapCreativaExpress {
         intentosFallidos.add(correo);
         return false;
     }
-    public void bloquearUsuario(String correo)  throws CorreoNoExisteException {
+
+    public void bloquearUsuario(String correo) throws CorreoNoExisteException {
         Usuario bloquearUsuario = buscarUsuarioPorCorreo(correo);
-        if(bloquearUsuario!=null){
+        if (bloquearUsuario != null) {
             bloquearUsuario.setEstado(Estado.BLOQUEADO);
             listaEmpleadosBloqueados.add(correo);
-        }
-        else {
+        } else {
             throw new CorreoNoExisteException();
         }
     }
+
     public int obtenerIntentosFallidos(String correo) {
         int intentos = 0;
         for (String intentoFallido : intentosFallidos) {
@@ -351,25 +352,28 @@ public class PapCreativaExpress {
         }
         return intentos;
     }
-    public Usuario buscarUsuarioPorCorreo(String correo){
-        List<Usuario>aux = getListaEmpleados();
-        for(Usuario usuario: aux){
-            if(usuario.getEmail().equals(correo)){
+
+    public Usuario buscarUsuarioPorCorreo(String correo) {
+        List<Usuario> aux = getListaEmpleados();
+        for (Usuario usuario : aux) {
+            if (usuario.getEmail().equals(correo)) {
                 return usuario;
             }
         }
         return null;
     }
-    public void actualizarContrasenaUsuario(Usuario usuario,String contrasenia){
-        for(int i=0; i<listaEmpleados.size();i++){
+
+    public void actualizarContrasenaUsuario(Usuario usuario, String contrasenia) {
+        for (int i = 0; i < listaEmpleados.size(); i++) {
             Usuario usuarioExistente = listaEmpleados.get(i);
             usuarioExistente.setContrasenia(contrasenia);
             break;
         }
 
     }
-    public  Usuario crearEmpleado(String nombre, String nombreUsuario, String contrasenia, String correo,
-                                 String id, String telefono, String direccion){
+
+    public Usuario crearEmpleado(String nombre, String nombreUsuario, String contrasenia, String correo,
+                                 String id, String telefono, String direccion) {
         Usuario usuarioExiste = buscarUsuarioPorCorreo(correo);
         if (usuarioExiste != null) {
             return null;
@@ -390,9 +394,9 @@ public class PapCreativaExpress {
         return usuarioNuevo;
     }
 
-    public boolean actualizarEmpleado(String nombreUsuario, String nuevoNombreUsuario, String contrasenia, String nombre, String telefono,String id,String email,String direccion,Estado  estado, Cargo cargo){
-        Usuario aux= buscarEmpleadoNombreUsuario(nombreUsuario);
-        if(aux==null){
+    public boolean actualizarEmpleado(String nombreUsuario, String nuevoNombreUsuario, String contrasenia, String nombre, String telefono, String id, String email, String direccion, Estado estado, Cargo cargo) {
+        Usuario aux = buscarEmpleadoNombreUsuario(nombreUsuario);
+        if (aux == null) {
             return false;
         }
         aux.setNombreUsuario(nuevoNombreUsuario);
@@ -407,11 +411,30 @@ public class PapCreativaExpress {
         return true;
     }
 
-    public boolean eliminarEmpleado(Usuario usuario){
-        if(usuario==null || !listaEmpleados.contains(usuario)){
-            return  false;
+    public boolean eliminarEmpleado(Usuario usuario) {
+        if (usuario == null || !listaEmpleados.contains(usuario)) {
+            return false;
         }
         listaEmpleados.remove(usuario);
         return true;
     }
+
+    public Image obtenerImagenUsuario(Usuario usuario) {
+        return usuario.getFotoUsuario();
+    }
+
+    public void asignarUsuarioActual(String correo) {
+        for (Usuario usuario : listaEmpleados) {
+            if (usuario.getEmail().equals(correo)) {
+                usuarioActual = new Usuario();
+                usuarioActual.copiarAtributos(usuario);
+                usuarioActual.setFotoUsuario(usuario.getFotoUsuario());
+                break;
+            }
+        }
+    }
+    public Usuario getUsuarioActual() {
+        return usuarioActual;
+    }
 }
+

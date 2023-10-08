@@ -1,6 +1,8 @@
 package com.example.papcreativaexpress.Model;
 
-import java.awt.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -17,8 +19,6 @@ public class Usuario {
     private Estado  estado;
     private Cargo cargo;
     private Image fotoUsuario;
-
-
 
     public Usuario(){
 
@@ -117,5 +117,18 @@ public class Usuario {
 
     public void setEstado(Estado estado) {
         this.estado = estado;
+    }
+    public void copiarAtributos(Usuario otroUsuario) {
+        this.setId(otroUsuario.getId());
+        this.setNombre(otroUsuario.getNombre());
+        this.setNombreUsuario(otroUsuario.getNombreUsuario());
+        this.setEmail(otroUsuario.getEmail());
+        this.setContrasenia(otroUsuario.getContrasenia());
+        this.setDireccion(otroUsuario.getDireccion());
+        this.setTelefono(otroUsuario.getTelefono());
+        this.setCargo(otroUsuario.getCargo());
+        this.setEstado(otroUsuario.getEstado());
+        this.setUltimoInicioSesion(otroUsuario.getUltimoInicioSesion());
+        this.setFechaRegistro(otroUsuario.getFechaRegistro());
     }
 }
