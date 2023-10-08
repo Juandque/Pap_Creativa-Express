@@ -3,6 +3,7 @@ module com.example.papcreativaexpress {
     requires javafx.fxml;
     requires java.desktop;
     requires javafx.graphics;
+    requires jakarta.mail;
 
     opens com.example.papcreativaexpress to javafx.fxml;
     exports com.example.papcreativaexpress;

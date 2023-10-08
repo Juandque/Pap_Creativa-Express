@@ -67,6 +67,7 @@ public class RegistroController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         try {
             Image fondoImage = new Image(getClass().getResourceAsStream("/Imagenes/Usuario.png"));
             imageUsuario.setImage(fondoImage);

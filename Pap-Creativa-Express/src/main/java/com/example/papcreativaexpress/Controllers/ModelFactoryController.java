@@ -3,10 +3,12 @@ package com.example.papcreativaexpress.Controllers;
 import com.example.papcreativaexpress.Excepciones.CorreoNoExisteException;
 import com.example.papcreativaexpress.Excepciones.UsuarioExisteException;
 import com.example.papcreativaexpress.Model.*;
+import com.example.papcreativaexpress.Utils.EnviarCorreo;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class ModelFactoryController {
     private PapCreativaExpress papCreativaExpress;
@@ -27,7 +29,7 @@ public class ModelFactoryController {
     public void inicializarDatos(){
         papCreativaExpress = new PapCreativaExpress();
         Usuario usr= new Usuario();
-        usr.setEmail("aaa@gmail.com");
+        usr.setEmail("juans.orozcoa@uqvirtual.edu.co");
         usr.setContrasenia("10973");
         papCreativaExpress.getListaEmpleados().add(usr);
     }
@@ -108,9 +110,18 @@ public class ModelFactoryController {
     public Usuario getUsuarioActual() {
         return this.usuarioActual;
     }
-    public void actualizarContrasenia(Usuario usuario){
-        papCreativaExpress.actualizarContrasenaUsuario(usuario);
+    public void actualizarContrasenia(Usuario usuario,String contrasenia){
+        papCreativaExpress.actualizarContrasenaUsuario(usuario,contrasenia);
     }
-
+    public String generarCodigo(){
+        Random random = new Random();
+        int codigoGenerado = 10000 + random.nextInt(90000);
+        String codigoGeneradoStr = String.valueOf(codigoGenerado);
+        return codigoGeneradoStr;
+    }
+    public void enviarCorreo(String remitente,String destinatario, String asunto, String cuerpo) {
+        EnviarCorreo Correo = new EnviarCorreo();
+        Correo.enviarCorreo(remitente,destinatario,asunto,cuerpo);
+    }
 
 }

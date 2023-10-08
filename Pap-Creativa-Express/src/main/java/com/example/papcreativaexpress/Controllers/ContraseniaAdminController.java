@@ -4,6 +4,7 @@ import com.example.papcreativaexpress.HelloApplication;
 import com.example.papcreativaexpress.Model.Usuario;
 import com.example.papcreativaexpress.Model.ValidarContrasenia;
 import com.example.papcreativaexpress.Utils.MensajeUtil;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -43,9 +45,19 @@ public class ContraseniaAdminController implements Initializable {
     private TextField tfCodigo;
     @FXML
     private TextField tfCorreo;
-    private Usuario usuarioActual;
     @FXML
     private SplitPane splitPlane;
+    private String codigoGenerado;
+    @FXML
+    private Text uppercaseText;
+    @FXML
+    private Text lowercaseText;
+    @FXML
+    private Text digitText;
+    @FXML
+    private Text specialCharText;
+    @FXML
+    private Text tamanio;
 
 
     @FXML
@@ -54,13 +66,17 @@ public class ContraseniaAdminController implements Initializable {
             if (ValidarContrasenia.validate(tfContrasenia.getText())) {
                 if (ValidarContrasenia.validate(tfContrasenia2.getText())) {
                     if (tfContrasenia.getText().equals(tfContrasenia2.getText())) {
-                        String correo = usuarioActual.getEmail();
+                        String correo = tfCorreo.getText();
                         if (correo != null) {
                             Usuario usuario = modelFactoryController.ObtenerUsuario(correo);
-                            modelFactoryController.actualizarContrasenia(usuario);
-                            if(MensajeUtil.mostrarMensajeConfirmacion("¿Deseas cambiar tu contraseña?")){
-                                MensajeUtil.mensajeInformacion("Su contraseña se ha cambiado exitosamente");
-                                cambiarVentana("Login.fxml","Login",630,420);
+                            if (validarContrasenia(tfContrasenia.getText())&&validarContrasenia(tfContrasenia2.getText())) {
+                                modelFactoryController.actualizarContrasenia(usuario, tfContrasenia.getText());
+                                if (MensajeUtil.mostrarMensajeConfirmacion("¿Deseas cambiar tu contraseña?")) {
+                                    MensajeUtil.mensajeInformacion("Su contraseña se ha cambiado exitosamente");
+                                    cambiarVentana("Login.fxml", "Login", 630, 420);
+                                }
+                            } else {
+                                MensajeUtil.mensajeInformacion("Su contraseña no cumple con los parámetros");
                             }
                         } else {
                             MensajeUtil.mensajeInformacion("Debe ingresar un correo válido");
@@ -73,7 +89,6 @@ public class ContraseniaAdminController implements Initializable {
                 }
             } else {
                 MensajeUtil.mensajeInformacion("Su contraseña no cumple con los parámetros");
-
             }
         } else {
             MensajeUtil.mensajeInformacion("Por favor rellene los campos");
@@ -83,21 +98,31 @@ public class ContraseniaAdminController implements Initializable {
 
     @FXML
     void OnActionGenerarCodigo(ActionEvent event) {
+        Usuario correoNoExistente = modelFactoryController.ObtenerUsuario(tfCorreo.getText());
+        if (correoNoExistente != null) {
+            String codigo = modelFactoryController.generarCodigo();
+            String asunto = "Código recuperación de contraseña";
+            String destinatario = tfCorreo.getText();
+            String remitente = "papcreativaexpress@gmail.com";
+            String cuerpo = "Cordial salud, su código de recuperación de cuenta es: " + codigo;
+            modelFactoryController.enviarCorreo(remitente, destinatario, asunto, cuerpo);
+            MensajeUtil.mensajeInformacion("Hemos enviado el código a tu correo");
 
+            this.codigoGenerado = codigo;
+        } else {
+            MensajeUtil.mensajeInformacion("No se ha encontrado una cuenta asociada con ese correo");
+        }
     }
 
+    // En el método OnActionIngresar:
     @FXML
     void OnActionIngresar(ActionEvent event) {
         if (!tfCodigo.getText().isEmpty()) {
-            usuarioActual = modelFactoryController.ObtenerUsuario(tfCorreo.getText());
-            if (usuarioActual != null) {
-                if (usuarioActual.getContrasenia().equals(tfCodigo.getText())) {
-                    splitPlane.getItems().get(1).setDisable(false);
-                } else splitPlane.getItems().get(1).setDisable(true);
+            if (tfCodigo.getText().equals(codigoGenerado)) {
+                splitPlane.getItems().get(1).setDisable(false);
             } else {
-                MensajeUtil.mensajeInformacion("Su dirección de correo no ha sido encontrada");
+                splitPlane.getItems().get(1).setDisable(true);
             }
-
         } else {
             MensajeUtil.mensajeInformacion("Por favor digite el código");
         }
@@ -106,6 +131,7 @@ public class ContraseniaAdminController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        modelFactoryController = ModelFactoryController.getInstance();
         try {
             Image seguridadImagen = new Image(getClass().getResourceAsStream("/Imagenes/Security.png"));
             imagenSeguridad.setImage(seguridadImagen);
@@ -118,6 +144,32 @@ public class ContraseniaAdminController implements Initializable {
         tfCodigo.getStyleClass().add("text-field");
         btnActualizar.getStyleClass().add("button");
         btnGenerarCodigo.getStyleClass().add("button");
+        lowercaseText.getStyleClass().add("texto-rojo");
+        uppercaseText.getStyleClass().add("texto-rojo");
+        digitText.getStyleClass().add("texto-rojo");
+        specialCharText.getStyleClass().add("texto-rojo");
+        tamanio.getStyleClass().add("texto-rojo");
+
+
+        tfContrasenia.textProperty().addListener((observable, oldValue, newValue) -> {
+            boolean valid = validarContrasenia(newValue);
+            aplicarEstilosNodoTexto(uppercaseText, valid);
+            aplicarEstilosNodoTexto(lowercaseText, valid);
+            aplicarEstilosNodoTexto(digitText, valid);
+            aplicarEstilosNodoTexto(specialCharText, valid);
+            aplicarEstilosNodoTexto(tamanio,valid);
+
+        });
+        tfContrasenia2.textProperty().addListener((observable, oldValue, newValue) -> {
+            boolean valid = validarContrasenia(newValue);
+            aplicarEstilosNodoTexto(uppercaseText, valid);
+            aplicarEstilosNodoTexto(lowercaseText, valid);
+            aplicarEstilosNodoTexto(digitText, valid);
+            aplicarEstilosNodoTexto(specialCharText, valid);
+            aplicarEstilosNodoTexto(tamanio,valid);
+
+        });
+
 
     }
 
@@ -138,6 +190,28 @@ public class ContraseniaAdminController implements Initializable {
         stage.show();
     }
 
+    private boolean validarContrasenia(String contrasenia) {
+        boolean uppercase = contrasenia.matches(".*[A-Z].*");
+        boolean lowercase = contrasenia.matches(".*[a-z].*");
+        boolean digit = contrasenia.matches(".*\\d.*");
+        boolean specialChar = contrasenia.matches(".*[^A-Za-z0-9].*");
+        boolean length = contrasenia.length()==8;
+
+        aplicarEstilosNodoTexto(uppercaseText, uppercase);
+        aplicarEstilosNodoTexto(lowercaseText, lowercase);
+        aplicarEstilosNodoTexto(digitText, digit);
+        aplicarEstilosNodoTexto(specialCharText, specialChar);
+        aplicarEstilosNodoTexto(tamanio,length);
+
+        return uppercase && lowercase && digit && specialChar && contrasenia.length() >= 8;
+    }
+
+    private void aplicarEstilosNodoTexto(Text nodoTexto, boolean condicion) {
+        if (condicion) {
+            nodoTexto.getStyleClass().clear(); // Limpiar clases de estilo previas
+            nodoTexto.getStyleClass().add("texto-verde"); // Agregar clase de estilo para texto verde
+        }
+    }
 }
 
 
