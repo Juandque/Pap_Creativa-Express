@@ -125,6 +125,17 @@
 .table-row-cell:selected.text{
     -fx-fill: #52438F;
 }
+/* Estilos para los nodos de texto */
+.texto-verde {
+    -fx-fill: #00FF1C ;
+    -fx-font-weight: bold;
+}
+
+.texto-rojo {
+    -fx-fill: #FF0017;
+    -fx-font-weight: normal;
+}
+
 
 
 

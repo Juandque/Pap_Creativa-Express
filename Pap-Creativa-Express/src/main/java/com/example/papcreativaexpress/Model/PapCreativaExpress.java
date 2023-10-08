@@ -360,10 +360,10 @@ public class PapCreativaExpress {
         }
         return null;
     }
-    public void actualizarContrasenaUsuario(Usuario usuario){
+    public void actualizarContrasenaUsuario(Usuario usuario,String contrasenia){
         for(int i=0; i<listaEmpleados.size();i++){
             Usuario usuarioExistente = listaEmpleados.get(i);
-            usuarioExistente.setContrasenia(usuario.getContrasenia());
+            usuarioExistente.setContrasenia(contrasenia);
             break;
         }
 
