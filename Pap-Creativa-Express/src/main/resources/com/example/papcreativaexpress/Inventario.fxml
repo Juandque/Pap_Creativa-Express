@@ -3,6 +3,8 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.TableColumn?>
@@ -57,7 +59,7 @@
                            </image></ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btnEmpleados" mnemonicParsing="false" onAction="#OnActionEmpleados" prefHeight="51.0" prefWidth="124.0" styleClass="empleados" stylesheets="@../../../css/Estilos.css" text="Empleados">
+                  <Button fx:id="btnEmpleados" mnemonicParsing="false" onAction="#OnActionEmpleados" prefHeight="51.0" prefWidth="124.0" style="-fx-alignment: center;" styleClass="empleados" stylesheets="@../../../css/Estilos.css" text="Empleados">
                      <graphic>
                         <ImageView fitHeight="35.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -89,7 +91,16 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <ImageView fitHeight="199.0" fitWidth="124.0" pickOnBounds="true" preserveRatio="true">
+                  <Button fx:id="btnLotes" mnemonicParsing="false" onAction="#onActionLotes" prefHeight="46.0" prefWidth="126.0" style="-fx-alignment: center;" styleClass="lotes" stylesheets="@../../../css/Estilos.css" text="Registro Lotes">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../Imagenes/Lotes.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <ImageView fitHeight="113.0" fitWidth="124.0" pickOnBounds="true" preserveRatio="true">
                      <image>
 
                      </image>
@@ -132,15 +143,14 @@
                   </Pane>
                   <Pane fx:id="paneAdmin" prefHeight="200.0" prefWidth="200.0" visible="false">
                      <children>
-                        <TextField fx:id="txtNombreUsuario" alignment="CENTER" layoutX="13.0" layoutY="356.0" prefHeight="25.0" prefWidth="280.0" promptText="Nombre de Usuario" />
-                        <TextField fx:id="txtContraseniaEmpleado" alignment="CENTER" layoutX="342.0" layoutY="356.0" prefHeight="25.0" prefWidth="279.0" promptText="Contraseña" />
-                        <TextField fx:id="txtEmailEmpleado" alignment="CENTER" layoutX="343.0" layoutY="393.0" prefHeight="25.0" prefWidth="277.0" promptText="Email" />
-                        <TextField fx:id="txtNombreEmpleado" alignment="CENTER" layoutX="13.0" layoutY="393.0" prefHeight="25.0" prefWidth="280.0" promptText="Nombre" />
-                        <TextField fx:id="txtTelefonoEmpleado" alignment="CENTER" layoutX="342.0" layoutY="429.0" prefHeight="25.0" prefWidth="279.0" promptText="Telefono" />
-                        <TextField fx:id="txtIdEmpleado" alignment="CENTER" layoutX="14.0" layoutY="429.0" prefHeight="25.0" prefWidth="277.0" promptText="N° Documento" />
-                        <TextField fx:id="txtEstadoEmpleado" alignment="CENTER" layoutX="343.0" layoutY="464.0" prefHeight="25.0" prefWidth="277.0" promptText="Estado" />
-                        <TextField fx:id="txtDireccionEmpleado" alignment="CENTER" layoutX="14.0" layoutY="464.0" prefHeight="25.0" prefWidth="277.0" promptText="Direccion" />
-                        <TableView fx:id="tableEmpleados" prefHeight="298.0" prefWidth="635.0" stylesheets="@../../../css/Estilos.css">
+                        <TextField fx:id="txtNombreUsuario" alignment="CENTER" layoutX="14.0" layoutY="332.0" prefHeight="25.0" prefWidth="280.0" promptText="Nombre de Usuario" />
+                        <TextField fx:id="txtContraseniaEmpleado" alignment="CENTER" layoutX="343.0" layoutY="332.0" prefHeight="25.0" prefWidth="279.0" promptText="Contraseña" />
+                        <TextField fx:id="txtEmailEmpleado" alignment="CENTER" layoutX="344.0" layoutY="369.0" prefHeight="25.0" prefWidth="277.0" promptText="Email" />
+                        <TextField fx:id="txtNombreEmpleado" alignment="CENTER" layoutX="14.0" layoutY="369.0" prefHeight="25.0" prefWidth="280.0" promptText="Nombre" />
+                        <TextField fx:id="txtTelefonoEmpleado" alignment="CENTER" layoutX="343.0" layoutY="405.0" prefHeight="25.0" prefWidth="279.0" promptText="Telefono" />
+                        <TextField fx:id="txtIdEmpleado" alignment="CENTER" layoutX="15.0" layoutY="405.0" prefHeight="25.0" prefWidth="277.0" promptText="N° Documento" />
+                        <TextField fx:id="txtDireccionEmpleado" alignment="CENTER" layoutX="15.0" layoutY="440.0" prefHeight="25.0" prefWidth="277.0" promptText="Direccion" />
+                        <TableView fx:id="tableEmpleados" prefHeight="277.0" prefWidth="635.0" stylesheets="@../../../css/Estilos.css">
                           <columns>
                             <TableColumn prefWidth="102.0" text="Nombre" />
                             <TableColumn prefWidth="115.0" text="Telefono" />
@@ -154,12 +164,14 @@
                               <String fx:value="table-row-cell" />
                            </styleClass>
                         </TableView>
-                        <Button fx:id="btnAnadirEmpleado" layoutX="14.0" layoutY="309.0" mnemonicParsing="false" onAction="#onActionAnadirEmpleado" stylesheets="@../../../css/Estilos.css" text="Añadir Empleado" />
-                        <Button fx:id="btnEliminarEmpleado" layoutX="178.0" layoutY="309.0" mnemonicParsing="false" onAction="#onActionEliminarEmpleado" stylesheets="@../../../css/Estilos.css" text="Eliminar Empleado" />
-                        <Button fx:id="btnActualizarEmpleado" layoutX="342.0" layoutY="309.0" mnemonicParsing="false" onAction="#onActionActualizarEmpleado" stylesheets="@../../../css/Estilos.css" text="Actualizar Empleado" />
-                        <Button fx:id="btnCancelarEmpleado" layoutX="505.0" layoutY="309.0" mnemonicParsing="false" onAction="#onActionCancelarEmpleado" prefHeight="25.0" prefWidth="114.0" stylesheets="@../../../css/Estilos.css" text="Cancelar" />
+                        <Button fx:id="btnAnadirEmpleado" layoutX="15.0" layoutY="285.0" mnemonicParsing="false" onAction="#onActionAnadirEmpleado" stylesheets="@../../../css/Estilos.css" text="Añadir Empleado" />
+                        <Button fx:id="btnEliminarEmpleado" layoutX="179.0" layoutY="285.0" mnemonicParsing="false" onAction="#onActionEliminarEmpleado" stylesheets="@../../../css/Estilos.css" text="Eliminar Empleado" />
+                        <Button fx:id="btnActualizarEmpleado" layoutX="343.0" layoutY="285.0" mnemonicParsing="false" onAction="#onActionActualizarEmpleado" stylesheets="@../../../css/Estilos.css" text="Actualizar Empleado" />
+                        <Button fx:id="btnCancelarEmpleado" layoutX="508.0" layoutY="284.0" mnemonicParsing="false" onAction="#onActionCancelarEmpleado" prefHeight="25.0" prefWidth="114.0" stylesheets="@../../../css/Estilos.css" text="Cancelar" />
+                        <ComboBox fx:id="cbEstadoEmpleado" layoutX="344.0" layoutY="440.0" prefHeight="25.0" prefWidth="278.0" promptText="Estado" />
+                        <ComboBox fx:id="cbCargoEmpleado" layoutX="175.0" layoutY="476.0" prefHeight="25.0" prefWidth="294.0" promptText="Cargo" />
                      </children></Pane>
-                  <Pane fx:id="paneCargos" prefHeight="200.0" prefWidth="200.0">
+                  <Pane fx:id="paneCargos" prefHeight="200.0" prefWidth="200.0" visible="false">
                      <children>
                         <TextField fx:id="txtNombreCargo" alignment="CENTER" layoutX="14.0" layoutY="363.0" prefHeight="25.0" prefWidth="279.0" promptText="Nombre del Cargo" />
                         <TextField fx:id="txtSalarioCargo" alignment="CENTER" layoutX="341.0" layoutY="363.0" prefHeight="25.0" prefWidth="279.0" promptText="Salario del Cargo" />
@@ -202,6 +214,43 @@
                               <TableColumn fx:id="colEstadoProveedor" prefWidth="122.0" text="Estado" />
                           </columns>
                         </TableView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="paneLotes" prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="tableLotes" prefHeight="232.0" prefWidth="635.0" stylesheets="@../../../css/Estilos.css">
+                          <columns>
+                            <TableColumn fx:id="colNombreProductoLote" prefWidth="117.0" text="Nombre" />
+                            <TableColumn fx:id="colCantidadLote" prefWidth="58.0" text="Cantidad" />
+                              <TableColumn fx:id="colFechaEntradaLote" prefWidth="157.0" text="Fecha de Entrada" />
+                              <TableColumn fx:id="colPrecioUnitarioLote" prefWidth="154.0" text="Precio Unitario" />
+                              <TableColumn fx:id="colCostoTotalLote" prefWidth="147.0" text="Costo Total" />
+                          </columns>
+                        </TableView>
+                        <Button fx:id="btnAnadirLote" layoutX="23.0" layoutY="245.0" mnemonicParsing="false" onAction="#onActionAnadirLote" stylesheets="@../../../css/Estilos.css" text="Añadir Lote" />
+                        <Button fx:id="btnEliminarLote" layoutX="176.0" layoutY="245.0" mnemonicParsing="false" onAction="#onActionEliminarLote" stylesheets="@../../../css/Estilos.css" text="Eliminar Lote" />
+                        <Button fx:id="btnActualizarLote" layoutX="357.0" layoutY="245.0" mnemonicParsing="false" onAction="#onActionActualizarLote" stylesheets="@../../../css/Estilos.css" text="Actualizar Lote" />
+                        <Button fx:id="btnCancelarLote" layoutX="519.0" layoutY="245.0" mnemonicParsing="false" onAction="#onActionCancelarLote" stylesheets="@../../../css/Estilos.css" text="Cancelar Accion" />
+                        <Label layoutX="1.0" layoutY="270.0" prefHeight="17.0" prefWidth="633.0" text="Informacion del Lote">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtCantidadLote" alignment="CENTER" layoutX="8.0" layoutY="299.0" prefHeight="25.0" prefWidth="295.0" promptText="Cantidad de Productos" />
+                        <TextField fx:id="txtCostoTotalLote" alignment="CENTER" layoutX="318.0" layoutY="335.0" prefHeight="25.0" prefWidth="313.0" promptText="Costo Total del Lote" />
+                        <TextField fx:id="txtPrecioUnitarioLote" alignment="CENTER" layoutX="318.0" layoutY="299.0" prefHeight="25.0" prefWidth="314.0" promptText="Precio Unitario " />
+                        <ComboBox fx:id="cbProveedorLote" layoutX="10.0" layoutY="335.0" prefHeight="25.0" prefWidth="293.0" promptText="Proveedor del Lote" />
+                        <Label layoutY="373.0" prefHeight="17.0" prefWidth="634.0" text="Informacion Producto Asocado al lote">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtNombreProductoLote" alignment="CENTER" layoutX="10.0" layoutY="400.0" prefHeight="25.0" prefWidth="292.0" promptText="Nombre del Producto" />
+                        <TextField fx:id="txtPrecioVentaProductoLote" alignment="CENTER" layoutX="317.0" layoutY="400.0" prefHeight="25.0" prefWidth="314.0" promptText="Precio de Venta del Producto" />
+                        <TextField fx:id="txtCostoProductoLote" alignment="CENTER" layoutX="10.0" layoutY="433.0" prefHeight="25.0" prefWidth="293.0" promptText="Costo del Producto" />
+                        <TextField fx:id="txtMarcaProductoLote" alignment="CENTER" layoutX="317.0" layoutY="433.0" prefHeight="25.0" prefWidth="314.0" promptText="Marca del producto" />
+                        <TextField fx:id="txtDescripcionProductoLote" alignment="CENTER" layoutX="10.0" layoutY="466.0" prefHeight="25.0" prefWidth="293.0" promptText="Descripcion" />
+                        <DatePicker fx:id="dpFechaCaducidadProductoLote" layoutX="317.0" layoutY="466.0" prefHeight="25.0" prefWidth="312.0" promptText="Fecha de Caducidad" />
                      </children>
                   </Pane>
                </children>

@@ -76,6 +76,16 @@
     -fx-background-color: #7d6cc8;
     -fx-border-color: rgba(0, 0, 0);
     -fx-border-width: 0.1px;
+
+}
+.button.lotes{
+    -fx-background-color: #7d6cc8;
+    -fx-border-color: rgba(0, 0, 0);
+    -fx-border-width: 0.1px;
+    -fx-text-fill-color: #FFFFFF;
+    -fx-font-family: "system-ui";
+    -fx-font-size: 11px;
+    -fx-text-alignment: left;
 }
 .button.anadir{
     -fx-background-color: #9b59b6; /* Color sólido (en este caso, morado) */
