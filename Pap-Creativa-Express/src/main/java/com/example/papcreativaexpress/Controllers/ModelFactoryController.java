@@ -29,6 +29,10 @@ public class ModelFactoryController {
     public void inicializarDatos(){
         papCreativaExpress = new PapCreativaExpress();
         Usuario usr= new Usuario();
+        usr.setDireccion("Cra x N| xx-xx");
+        usr.setId("10963490");
+        usr.setTelefono("31948303");
+        usr.setNombre("Juan");
         usr.setEmail("juans.orozcoa@uqvirtual.edu.co");
         usr.setContrasenia("10973");
         papCreativaExpress.getListaEmpleados().add(usr);
@@ -122,6 +126,23 @@ public class ModelFactoryController {
     public void enviarCorreo(String remitente,String destinatario, String asunto, String cuerpo) {
         EnviarCorreo Correo = new EnviarCorreo();
         Correo.enviarCorreo(remitente,destinatario,asunto,cuerpo);
+    }
+
+    public ArrayList<Usuario> getEmpleados(){
+        return  papCreativaExpress.getListaEmpleados();
+    }
+
+    public ArrayList<Lote> getLotes(){
+        ArrayList<Lote> listaLotes= papCreativaExpress.getListaLotes();
+        return listaLotes;
+    }
+
+    public ArrayList<Cargo> getCargos(){
+        return  papCreativaExpress.getListaCargos();
+    }
+
+    public ArrayList<Proveedor> getProveedores(){
+        return  papCreativaExpress.getListaProveedores();
     }
 
 }

@@ -10,19 +10,19 @@ import java.util.Date;
 import java.util.List;
 
 public class PapCreativaExpress {
-    List<Caja> listaCajeros;
-    List<Cargo> listaCargos;
-    List<Categoria> listaCategorias;
-    List<Compra> listaComprasAbastecimiento;
-    List<DetalleVenta> listaDetalleVentas;
-    List<Factura> listaFacturas;
+    ArrayList<Caja> listaCajeros;
+    ArrayList<Cargo> listaCargos;
+    ArrayList<Categoria> listaCategorias;
+    ArrayList<Compra> listaComprasAbastecimiento;
+    ArrayList<DetalleVenta> listaDetalleVentas;
+    ArrayList<Factura> listaFacturas;
     Inventario iventario;
-    List<Lote> listaLotes;
-    List<Producto> listaProductos;
-    List<Proveedor> listaProveedores;
-    List<Usuario> listaEmpleados;
-    List<String> listaEmpleadosBloqueados;
-    List<String> intentosFallidos = new ArrayList<>();
+    ArrayList<Lote> listaLotes;
+    ArrayList<Producto> listaProductos;
+    ArrayList<Proveedor> listaProveedores;
+    ArrayList<Usuario> listaEmpleados;
+    ArrayList<String> listaEmpleadosBloqueados;
+    ArrayList<String> intentosFallidos = new ArrayList<>();
 
 
     int idProductos;
@@ -66,47 +66,47 @@ public class PapCreativaExpress {
         return listaCajeros;
     }
 
-    public void setListaCajeros(List<Caja> listaCajeros) {
+    public void setListaCajeros(ArrayList<Caja> listaCajeros) {
         this.listaCajeros = listaCajeros;
     }
 
-    public List<Cargo> getListaCargos() {
+    public ArrayList<Cargo> getListaCargos() {
         return listaCargos;
     }
 
-    public void setListaCargos(List<Cargo> listaCargos) {
+    public void setListaCargos(ArrayList<Cargo> listaCargos) {
         this.listaCargos = listaCargos;
     }
 
-    public List<Categoria> getListaCategorias() {
+    public ArrayList<Categoria> getListaCategorias() {
         return listaCategorias;
     }
 
-    public void setListaCategorias(List<Categoria> listaCategorias) {
+    public void setListaCategorias(ArrayList<Categoria> listaCategorias) {
         this.listaCategorias = listaCategorias;
     }
 
-    public List<Compra> getListaComprasAbastecimiento() {
+    public ArrayList<Compra> getListaComprasAbastecimiento() {
         return listaComprasAbastecimiento;
     }
 
-    public void setListaComprasAbastecimiento(List<Compra> listaComprasAbastecimiento) {
+    public void setListaComprasAbastecimiento(ArrayList<Compra> listaComprasAbastecimiento) {
         this.listaComprasAbastecimiento = listaComprasAbastecimiento;
     }
 
-    public List<DetalleVenta> getListaDetalleVentas() {
+    public ArrayList<DetalleVenta> getListaDetalleVentas() {
         return listaDetalleVentas;
     }
 
-    public void setListaDetalleVentas(List<DetalleVenta> listaDetalleVentas) {
+    public void setListaDetalleVentas(ArrayList<DetalleVenta> listaDetalleVentas) {
         this.listaDetalleVentas = listaDetalleVentas;
     }
 
-    public List<Factura> getListaFacturas() {
+    public ArrayList<Factura> getListaFacturas() {
         return listaFacturas;
     }
 
-    public void setListaFacturas(List<Factura> listaFacturas) {
+    public void setListaFacturas(ArrayList<Factura> listaFacturas) {
         this.listaFacturas = listaFacturas;
     }
 
@@ -118,35 +118,35 @@ public class PapCreativaExpress {
         this.iventario = iventario;
     }
 
-    public List<Lote> getListaLotes() {
+    public ArrayList<Lote> getListaLotes() {
         return listaLotes;
     }
 
-    public void setListaLotes(List<Lote> listaLotes) {
+    public void setListaLotes(ArrayList<Lote> listaLotes) {
         this.listaLotes = listaLotes;
     }
 
-    public List<Producto> getListaProductos() {
+    public ArrayList<Producto> getListaProductos() {
         return listaProductos;
     }
 
-    public void setListaProductos(List<Producto> listaProductos) {
+    public void setListaProductos(ArrayList<Producto> listaProductos) {
         this.listaProductos = listaProductos;
     }
 
-    public List<Proveedor> getListaProveedores() {
+    public ArrayList<Proveedor> getListaProveedores() {
         return listaProveedores;
     }
 
-    public void setListaProveedores(List<Proveedor> listaProveedores) {
+    public void setListaProveedores(ArrayList<Proveedor> listaProveedores) {
         this.listaProveedores = listaProveedores;
     }
 
-    public List<Usuario> getListaEmpleados() {
+    public ArrayList<Usuario> getListaEmpleados() {
         return listaEmpleados;
     }
 
-    public void setListaEmpleados(List<Usuario> listaEmpleados) {
+    public void setListaEmpleados(ArrayList<Usuario> listaEmpleados) {
         this.listaEmpleados = listaEmpleados;
     }
 

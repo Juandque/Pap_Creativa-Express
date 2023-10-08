@@ -135,6 +135,19 @@
     -fx-fill: #FF0017;
     -fx-font-weight: normal;
 }
+.text-field{
+    -fx-background-color: #EDE6FF;
+    -fx-border-color: #2F00FF;
+    -fx-border-width: 0.3px;
+    -fx-border-radius: 10;
+
+}
+.combo-box{
+    -fx-background-color: #EDE6FF;
+    -fx-border-color: #2F00FF;
+    -fx-border-width: 0.3px;
+    -fx-border-radius: 10;
+}
 
 
 
