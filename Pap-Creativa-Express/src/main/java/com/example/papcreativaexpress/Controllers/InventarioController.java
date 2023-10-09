@@ -1,6 +1,7 @@
 package com.example.papcreativaexpress.Controllers;
 
 import com.example.papcreativaexpress.Model.*;
+import com.example.papcreativaexpress.Utils.MensajeUtil;
 import com.example.papcreativaexpress.Utils.TextFormatterUtil;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -10,9 +11,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 
+import java.io.File;
 import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -22,9 +27,18 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class InventarioController implements Initializable {
 
+
+public class InventarioController implements Initializable {
     ModelFactoryController modelFactoryController;
+    @FXML
+    private ImageView IamgeCodigoBarras;
+
+    @FXML
+    private ImageView imageEmpleado;
+
+    @FXML
+    private ImageView imageEmpleadoRegistro;
 
     @FXML
     private Button btnActualizarCargo;
@@ -67,6 +81,8 @@ public class InventarioController implements Initializable {
 
     @FXML
     private Button btnEliminarCargo;
+    @FXML
+    private Button btnIsertarImagen;
 
     @FXML
     private Button btnEliminarEmpleado;
@@ -91,6 +107,8 @@ public class InventarioController implements Initializable {
 
     @FXML
     private Button btnVerInfo;
+    @FXML
+    private Button btnCodigoBrras;
 
     @FXML
     private ComboBox<Cargo> cbCargoEmpleado;
@@ -283,7 +301,8 @@ public class InventarioController implements Initializable {
 
     @FXML
     private TextField txtTelefonoProveedor;
-
+    private final FileChooser fileChooser = new FileChooser();
+    private Image imagenSeleccionada;
     private Cargo cargoSeleccionado;
     private Lote loteSeleccionado;
     private Proveedor proveedorSeleccionado;
@@ -295,6 +314,10 @@ public class InventarioController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        modelFactoryController = ModelFactoryController.getInstance();
+        Image imagenRegistro = new Image(getClass().getResourceAsStream("/Imagenes/icons8-error-64.png"));
+        imageEmpleadoRegistro.setImage(imagenRegistro);
+        imageEmpleado.setImage(modelFactoryController.getImagenSeleccionada());
         modelFactoryController= ModelFactoryController.getInstance();
         ArrayList<Usuario> empleadosArrayList = modelFactoryController.getEmpleados();
         ArrayList<Proveedor> proveedoresArrayList = modelFactoryController.getProveedores();
@@ -622,6 +645,7 @@ public class InventarioController implements Initializable {
         if(datosValidosEmpleado(nombreUsuario,contrasena,nombre,email,id,telefono,direccion,estado,cargo)){
             Usuario nuevo= null;
             nuevo=modelFactoryController.crearEmpleado(nombre,nombreUsuario,contrasena,email,id,telefono,direccion,estado,cargo);
+            nuevo.setFotoUsuario(imagenSeleccionada);
             if(nuevo!=null){
                 empleados.add(nuevo);
                 mostrarMensaje("Notificacion Empleado", "Empleado creado", "El empleado se ha creado con exito", Alert.AlertType.INFORMATION);
@@ -1053,4 +1077,77 @@ public class InventarioController implements Initializable {
 
 
 
+    @FXML
+    void OnActionCodigoBarras(ActionEvent event) {
+
+    }
+    @FXML
+    void OnActionInsertarImagen(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+            String carpetaImagenes = "Pap-Creativa-Express/src/main/resources/imagenes_usuarios"; // Ruta deseada para la carpeta de imágenes
+
+            File carpeta = new File(carpetaImagenes);
+            if (!carpeta.exists()) {
+                if (carpeta.mkdirs()) {
+                    System.out.println("Carpeta creada con éxito.");
+                } else {
+                    System.err.println("No se pudo crear la carpeta.");
+                }
+            }
+            String nombreArchivo = generarNombreUnico();
+
+            String rutaImagen = selectedFile.toURI().toString();
+
+            Image imagenFX = new Image(rutaImagen);
+            String rutaDestino = carpetaImagenes + File.separator + nombreArchivo + ".png";
+
+            modelFactoryController.guardarImagen(imagenFX, rutaDestino);
+
+            Usuario usuarioActual = modelFactoryController.getUsuarioActual();
+            usuarioActual.setFotoUsuario(imagenFX);
+            imagenSeleccionada = imagenFX;
+            imageEmpleadoRegistro.setImage(imagenFX);
+
+            MensajeUtil.mensajeInformacion("Imagen guardada en la carpeta de recursos con el nombre: " + nombreArchivo + ".png");
+        }
+    }
+
+
+
+    private String generarNombreUnico() {
+        // Obtén la marca de tiempo actual en milisegundos
+        long timeStamp = System.currentTimeMillis();
+
+        // Genera un identificador único utilizando la marca de tiempo
+        String identificadorUnico = Long.toString(timeStamp);
+
+        return identificadorUnico;
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+//    private void limpiarFormulario() {
+//        // Limpia los campos del formulario y restablece la imagen del empleado
+//        imageUsuario.setImage(null);
+//        imagenSeleccionada.setImage(null);
+//        tfNombre.clear();
+//        tfCorreo.clear();
+//        // Limpia otros campos del formulario
+//    }
+

@@ -21,28 +21,31 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="676.0" prefWidth="758.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.papcreativaexpress.Controllers.InventarioController">
+<AnchorPane prefHeight="702.0" prefWidth="690.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.papcreativaexpress.Controllers.InventarioController">
    <children>
-      <BorderPane prefHeight="676.0" prefWidth="758.0">
+      <BorderPane prefHeight="702.0" prefWidth="758.0">
          <top>
-            <HBox prefHeight="85.0" prefWidth="758.0" style="-fx-background-color: #52438f;" BorderPane.alignment="CENTER">
+            <HBox prefHeight="89.0" prefWidth="435.0" style="-fx-background-color: #52438f;" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fitHeight="55.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="92.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../Imagenes/Papelería.png" />
                      </image>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                   </ImageView>
-                  <Label prefHeight="27.0" prefWidth="163.0" text="Inventario" textFill="#eeebeb">
+                  <Label prefHeight="27.0" prefWidth="132.0" text="Inventario" textFill="#eeebeb">
                      <font>
                         <Font name="Arial" size="24.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="10.0" top="30.0" />
+                        <Insets right="-200.0" top="30.0" />
                      </HBox.margin>
                   </Label>
-                  <ImageView id="imagenViewEmpleado" fitHeight="89.0" fitWidth="117.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imageEmpleado" fitHeight="95.0" fitWidth="154.0" pickOnBounds="true" preserveRatio="true">
                      <HBox.margin>
-                        <Insets left="450.0" />
+                        <Insets left="600.0" />
                      </HBox.margin>
                   </ImageView>
                </children>
@@ -100,19 +103,11 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <ImageView fitHeight="113.0" fitWidth="124.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-
-                     </image>
-                     <VBox.margin>
-                        <Insets top="50.0" />
-                     </VBox.margin>
-                  </ImageView>
                </children>
             </VBox>
          </left>
          <center>
-            <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <StackPane prefHeight="606.0" prefWidth="634.0" BorderPane.alignment="CENTER">
                <children>
                   <Pane fx:id="paneProductos" prefHeight="200.0" prefWidth="200.0" visible="false">
                      <children>
@@ -141,7 +136,7 @@
                         <Button fx:id="btnVerInfo" layoutX="58.0" layoutY="468.0" mnemonicParsing="false" onAction="#OnActionVerInfo" prefHeight="25.0" prefWidth="171.0" stylesheets="@../../../css/Estilos.css" text="Ver info" />
                      </children>
                   </Pane>
-                  <Pane fx:id="paneAdmin" prefHeight="200.0" prefWidth="200.0">
+                  <Pane fx:id="paneAdmin" prefHeight="607.0" prefWidth="602.0">
                      <children>
                         <TextField fx:id="txtNombreUsuario" alignment="CENTER" layoutX="14.0" layoutY="316.0" prefHeight="25.0" prefWidth="280.0" promptText="Nombre de Usuario" stylesheets="@../../../css/Estilos.css" />
                         <TextField fx:id="txtContraseniaEmpleado" alignment="CENTER" layoutX="343.0" layoutY="316.0" prefHeight="25.0" prefWidth="279.0" promptText="Contraseña" stylesheets="@../../../css/Estilos.css" />
@@ -168,8 +163,10 @@
                         <Button fx:id="btnEliminarEmpleado" layoutX="179.0" layoutY="285.0" mnemonicParsing="false" onAction="#onActionEliminarEmpleado" stylesheets="@../../../css/Estilos.css" text="Eliminar Empleado" />
                         <Button fx:id="btnActualizarEmpleado" layoutX="343.0" layoutY="285.0" mnemonicParsing="false" onAction="#onActionActualizarEmpleado" stylesheets="@../../../css/Estilos.css" text="Actualizar Empleado" />
                         <Button fx:id="btnCancelarEmpleado" layoutX="508.0" layoutY="284.0" mnemonicParsing="false" onAction="#onActionCancelarEmpleado" prefHeight="25.0" prefWidth="114.0" stylesheets="@../../../css/Estilos.css" text="Cancelar" />
-                        <ComboBox fx:id="cbEstadoEmpleado" layoutX="344.0" layoutY="440.0" prefHeight="25.0" prefWidth="278.0" promptText="Estado" stylesheets="@../../../css/Estilos.css" />
-                        <ComboBox fx:id="cbCargoEmpleado" layoutX="171.0" layoutY="483.0" prefHeight="25.0" prefWidth="294.0" promptText="Cargo" stylesheets="@../../../css/Estilos.css" />
+                        <ComboBox fx:id="cbEstadoEmpleado" layoutX="344.0" layoutY="440.0" prefHeight="25.0" prefWidth="278.0" promptText="Estado" />
+                        <ComboBox fx:id="cbCargoEmpleado" layoutX="344.0" layoutY="483.0" prefHeight="25.0" prefWidth="275.0" promptText="Cargo" stylesheets="@../../../css/Estilos.css" />
+                        <ImageView fx:id="imageEmpleadoRegistro" fitHeight="113.0" fitWidth="167.0" layoutX="25.0" layoutY="483.0" pickOnBounds="true" preserveRatio="true" />
+                        <Button fx:id="btnIsertarImagen" layoutX="290.0" layoutY="551.0" mnemonicParsing="false" onAction="#OnActionInsertarImagen" stylesheets="@../../../css/Estilos.css" text="Ingresar Imagen" />
                      </children></Pane>
                   <Pane fx:id="paneCargos" prefHeight="200.0" prefWidth="200.0" visible="false">
                      <children>
@@ -251,6 +248,7 @@
                         <TextField fx:id="txtMarcaProductoLote" alignment="CENTER" layoutX="317.0" layoutY="433.0" prefHeight="25.0" prefWidth="314.0" promptText="Marca del producto" />
                         <TextField fx:id="txtDescripcionProductoLote" alignment="CENTER" layoutX="10.0" layoutY="466.0" prefHeight="25.0" prefWidth="293.0" promptText="Descripcion" />
                         <DatePicker fx:id="dpFechaCaducidadProductoLote" layoutX="317.0" layoutY="466.0" prefHeight="25.0" prefWidth="312.0" promptText="Fecha de Caducidad" />
+                        <Button fx:id="btnCodigoBrras" layoutX="377.0" layoutY="538.0" mnemonicParsing="false" onAction="#OnActionCodigoBarras" prefHeight="23.0" prefWidth="212.0" stylesheets="@../../../css/Estilos.css" text="Ingresar código de barras" />
                      </children>
                   </Pane>
                </children>

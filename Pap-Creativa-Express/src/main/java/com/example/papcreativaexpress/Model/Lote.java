@@ -1,6 +1,8 @@
 package com.example.papcreativaexpress.Model;
 
-import java.awt.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;

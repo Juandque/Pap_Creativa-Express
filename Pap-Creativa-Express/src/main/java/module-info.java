@@ -4,6 +4,8 @@ module com.example.papcreativaexpress {
     requires java.desktop;
     requires javafx.graphics;
     requires jakarta.mail;
+    requires javafx.swing;
+
 
     opens com.example.papcreativaexpress to javafx.fxml;
     opens com.example.papcreativaexpress.Model to javafx.base;
