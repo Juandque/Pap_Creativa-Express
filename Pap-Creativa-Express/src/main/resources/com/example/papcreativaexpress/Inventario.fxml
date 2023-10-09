@@ -132,11 +132,12 @@
                            </stylesheets>
                         </TableView>
                         <ScrollBar layoutX="613.0" layoutY="113.0" orientation="VERTICAL" prefHeight="326.0" prefWidth="14.0" />
-                        <TextField fx:id="tfBuscarProducto" layoutX="58.0" layoutY="61.0" prefHeight="36.0" prefWidth="486.0" promptText="Buscar Producto" styleClass="tfBuscarProducto" stylesheets="@../../../css/Estilos.css" />
+                        <TextField fx:id="tfBuscarProducto" layoutX="3.0" layoutY="61.0" prefHeight="36.0" prefWidth="442.0" promptText="Buscar Producto" styleClass="tfBuscarProducto" stylesheets="@../../../css/Estilos.css" />
                         <Button fx:id="btnVerInfo" layoutX="58.0" layoutY="468.0" mnemonicParsing="false" onAction="#OnActionVerInfo" prefHeight="25.0" prefWidth="171.0" stylesheets="@../../../css/Estilos.css" text="Ver info" />
+                        <ComboBox fx:id="cbBoxFiltro" layoutX="460.0" layoutY="67.0" prefHeight="25.0" prefWidth="166.0" stylesheets="@../../../css/Estilos.css" />
                      </children>
                   </Pane>
-                  <Pane fx:id="paneAdmin" prefHeight="607.0" prefWidth="602.0">
+                  <Pane fx:id="paneAdmin" prefHeight="607.0" prefWidth="602.0" visible="false">
                      <children>
                         <TextField fx:id="txtNombreUsuario" alignment="CENTER" layoutX="14.0" layoutY="316.0" prefHeight="25.0" prefWidth="280.0" promptText="Nombre de Usuario" stylesheets="@../../../css/Estilos.css" />
                         <TextField fx:id="txtContraseniaEmpleado" alignment="CENTER" layoutX="343.0" layoutY="316.0" prefHeight="25.0" prefWidth="279.0" promptText="Contraseña" stylesheets="@../../../css/Estilos.css" />
@@ -145,7 +146,7 @@
                         <TextField fx:id="txtTelefonoEmpleado" alignment="CENTER" layoutX="342.0" layoutY="398.0" prefHeight="25.0" prefWidth="279.0" promptText="Telefono" stylesheets="@../../../css/Estilos.css" />
                         <TextField fx:id="txtIdEmpleado" alignment="CENTER" layoutX="14.0" layoutY="398.0" prefHeight="25.0" prefWidth="277.0" promptText="N° Documento" stylesheets="@../../../css/Estilos.css" />
                         <TextField fx:id="txtDireccionEmpleado" alignment="CENTER" layoutX="15.0" layoutY="440.0" prefHeight="25.0" prefWidth="277.0" promptText="Direccion" stylesheets="@../../../css/Estilos.css" />
-                        <TableView fx:id="tableEmpleados" prefHeight="277.0" prefWidth="635.0" stylesheets="@../../../css/Estilos.css">
+                        <TableView fx:id="tableEmpleados" layoutY="8.0" prefHeight="277.0" prefWidth="635.0" stylesheets="@../../../css/Estilos.css">
                           <columns>
                             <TableColumn fx:id="colNombreEmpleado" prefWidth="102.0" text="Nombre" />
                             <TableColumn fx:id="colTelefonoEmpleado" prefWidth="115.0" text="Telefono" />
@@ -213,7 +214,7 @@
                         </TableView>
                      </children>
                   </Pane>
-                  <Pane fx:id="paneLotes" prefHeight="529.0" prefWidth="634.0" visible="false">
+                  <Pane fx:id="paneLotes" prefHeight="529.0" prefWidth="634.0">
                      <children>
                         <TableView fx:id="tableLotes" prefHeight="232.0" prefWidth="635.0" stylesheets="@../../../css/Estilos.css">
                           <columns>
@@ -249,6 +250,7 @@
                         <TextField fx:id="txtDescripcionProductoLote" alignment="CENTER" layoutX="10.0" layoutY="466.0" prefHeight="25.0" prefWidth="293.0" promptText="Descripcion" />
                         <DatePicker fx:id="dpFechaCaducidadProductoLote" layoutX="317.0" layoutY="466.0" prefHeight="25.0" prefWidth="312.0" promptText="Fecha de Caducidad" />
                         <Button fx:id="btnCodigoBrras" layoutX="377.0" layoutY="538.0" mnemonicParsing="false" onAction="#OnActionCodigoBarras" prefHeight="23.0" prefWidth="212.0" stylesheets="@../../../css/Estilos.css" text="Ingresar código de barras" />
+                        <ImageView fx:id="imageCodigoBarras" fitHeight="67.0" fitWidth="283.0" layoutX="31.0" layoutY="516.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </Pane>
                </children>

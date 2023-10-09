@@ -48,7 +48,7 @@ public class LoginController implements Initializable {
 
     @FXML
     void OnActionRegistrar(ActionEvent event) throws IOException {
-        cambiarVentana("Registro.fxml", "Registro", 2, 2);
+        cambiarVentana("VentanaDetalles.fxml", "Registro", 2, 2);
 
     }
 
@@ -67,7 +67,7 @@ public class LoginController implements Initializable {
                     modelFactoryController.asignarUsuarioActual(usuarioActual.getEmail());
                     modelFactoryController.setUsuarioActual(usuarioActual);
                     modelFactoryController.setImagenSeleccionada(usuarioActual.getFotoUsuario());
-                    cambiarVentana("Inventario.fxml", "Inventario", 760, 600);
+                    cambiarVentana("Inventario.fxml", "Inventario", 750, 700);
                 } else {
                     MensajeUtil.mostrarMensaje("Error", "Error de usuario", "El usuario no se encuentra previamente registrado", Alert.AlertType.ERROR);
                 }

@@ -3,13 +3,16 @@ package com.example.papcreativaexpress.Model;
 import com.example.papcreativaexpress.Excepciones.CorreoNoExisteException;
 import javafx.scene.image.Image;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class PapCreativaExpress {
+public class PapCreativaExpress implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     ArrayList<Caja> listaCajeros;
     ArrayList<Cargo> listaCargos;
     ArrayList<Categoria> listaCategorias;
@@ -25,6 +28,7 @@ public class PapCreativaExpress {
     ArrayList<String> intentosFallidos = new ArrayList<>();
     private Usuario usuarioActual;
     private Image imagenActual;
+    private Lote loteActual;
 
 
 
@@ -450,4 +454,26 @@ public class PapCreativaExpress {
         }
         return imagenActual;
     }
+    public Lote getLoteActual() {
+        // Asegurarse de que usuarioActual no sea null antes de devolverlo
+        if (loteActual == null) {
+            loteActual = new Lote(); // o inicializarlo de alguna otra manera
+        }
+        return loteActual;
+    }
+
+    public void setLoteActual(Lote loteActual) {
+        this.loteActual=loteActual;
+    }
+    public double calcularPrecioTotal(List<Producto> listaProductos) {
+        double precioTotal = 0.0;
+
+        // Iterar a través de la lista de productos y sumar sus precios
+        for (Producto producto : listaProductos) {
+            precioTotal += producto.getPrecioVenta();
+        }
+
+        return precioTotal;
+    }
+
 }

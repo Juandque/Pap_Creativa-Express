@@ -1,28 +1,23 @@
 package com.example.papcreativaexpress.Controllers;
 
 import com.example.papcreativaexpress.Excepciones.CorreoNoExisteException;
-import com.example.papcreativaexpress.Excepciones.UsuarioExisteException;
 import com.example.papcreativaexpress.Model.*;
+import com.example.papcreativaexpress.Persistencia.Persistencia;
 import com.example.papcreativaexpress.Utils.EnviarCorreo;
 import com.example.papcreativaexpress.Utils.MensajeUtil;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class ModelFactoryController {
     private PapCreativaExpress papCreativaExpress;
-    private Image imagenSeleccionada;
 
     private static class SingletonHolder {
         private final static ModelFactoryController eINSTANCE = new ModelFactoryController();
@@ -34,10 +29,17 @@ public class ModelFactoryController {
 
     public ModelFactoryController() {
         inicializarDatos();
+        guardarResourceXML();
+        guardarResourceBinario();
+        cargarRecursoBinario();
+        cargarRecursoXML();
+
+
     }
 
     public void inicializarDatos(){
         papCreativaExpress = new PapCreativaExpress();
+
         Usuario usr= new Usuario();
         usr.setNombreUsuario("Juanse");
         usr.setDireccion("Cra x N° xx-xx");
@@ -194,6 +196,14 @@ public class ModelFactoryController {
     public void setImagenSeleccionada(Image imagenSeleccionada) {
         papCreativaExpress.setImagenActual(imagenSeleccionada);
     }
+    public Lote getLoteActual() {
+        return papCreativaExpress.getLoteActual();
+    }
+
+    public void setLoteActual(Lote loteActual) {
+        papCreativaExpress.setLoteActual(loteActual);
+    }
+
 
 
     public ArrayList<Usuario> getEmpleados(){
@@ -211,6 +221,23 @@ public class ModelFactoryController {
 
     public ArrayList<Proveedor> getProveedores(){
         return  papCreativaExpress.getListaProveedores();
+    }
+    public double SumaTotalPrecios(List<Producto>productoList){
+        return papCreativaExpress.calcularPrecioTotal(productoList);
+    }
+    public void guardarResourceXML() {
+        Persistencia.guardarRecursoXML(papCreativaExpress);
+    }
+    public void guardarResourceBinario() {
+        Persistencia.guardarRecursoBancoBinario(papCreativaExpress);
+    }
+    public static PapCreativaExpress cargarRecursoBinario(){
+        return Persistencia.cargarRecursoBancoBinario();
+
+    }
+    public static PapCreativaExpress cargarRecursoXML(){
+        return Persistencia.cargarRecursoXML();
+
     }
 
 }
