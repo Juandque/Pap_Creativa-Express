@@ -369,7 +369,7 @@ public class PapCreativaExpress {
 
     }
     public  Usuario crearEmpleado(String nombre, String nombreUsuario, String contrasenia, String correo,
-                                 String id, String telefono, String direccion){
+                                 String id, String telefono, String direccion, Estado estado, Cargo cargo){
         Usuario usuarioExiste = buscarUsuarioPorCorreo(correo);
         if (usuarioExiste != null) {
             return null;
@@ -378,10 +378,11 @@ public class PapCreativaExpress {
         usuarioNuevo.setNombreUsuario(nombreUsuario);
         usuarioNuevo.setContrasenia(contrasenia);
         usuarioNuevo.setEmail(correo);
-        usuarioNuevo.setEstado(Estado.DISPONIBLE);
+        usuarioNuevo.setEstado(estado);
         usuarioNuevo.setNombre(nombre);
         usuarioNuevo.setDireccion(direccion);
         usuarioNuevo.setTelefono(telefono);
+        usuarioNuevo.setCargo(cargo);
         usuarioNuevo.setId(id);
         LocalDate fechaActual = LocalDate.now();
         usuarioNuevo.setFechaRegistro(fechaActual);

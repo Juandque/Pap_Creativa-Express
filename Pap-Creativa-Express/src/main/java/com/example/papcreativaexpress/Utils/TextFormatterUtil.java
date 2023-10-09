@@ -16,10 +16,9 @@ public class TextFormatterUtil {
         return null;
     }
 
-    public static Change doubleFormat(Change change){
+    public static Change doubleFormat(Change change) {
         String newText = change.getControlNewText();
-        double newValue = Double.parseDouble(newText);
-        if (!Double.isNaN(newValue) && !Double.isInfinite(newValue)) {
+        if (newText.matches("-?\\d*(\\.\\d*)?")) {
             return change;
         }
         return null;

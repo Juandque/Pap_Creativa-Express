@@ -2,6 +2,7 @@ package com.example.papcreativaexpress.Controllers;
 
 import com.example.papcreativaexpress.Model.*;
 import com.example.papcreativaexpress.Utils.TextFormatterUtil;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,8 +11,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import javafx.util.StringConverter;
 
 import java.net.URL;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
@@ -315,6 +320,26 @@ public class InventarioController implements Initializable {
         this.colIdEmpleado.setCellValueFactory(new PropertyValueFactory<>("id"));
         this.colDireccionEmpleado.setCellValueFactory(new PropertyValueFactory<>("direccion"));
         tableEmpleados.setItems(empleados);
+        tableEmpleados.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            empleadoSeleccionado = newSelection;
+            if(empleadoSeleccionado!= null) {
+                mostrarInformacionEmpleado(empleadoSeleccionado);
+            }
+        });
+        this.cbCargoEmpleado.setConverter(new StringConverter<Cargo>() {
+            @Override
+            public String toString(Cargo cargo) {
+                return (cargo != null) ? cargo.getNombre() : "";
+            }
+            @Override
+            public Cargo fromString(String s) {
+                return null;
+            }
+        });
+        this.cbCargoEmpleado.setItems(cargos);
+        this.cbEstadoEmpleado.getItems().addAll(Estado.values());
+        this.txtTelefonoEmpleado.setTextFormatter(new TextFormatter<>(TextFormatterUtil::integerFormat));
+        this.txtIdEmpleado.setTextFormatter(new TextFormatter<Object>(TextFormatterUtil::integerFormat));
     }
 
     public void initializePaneProveedores(){
@@ -324,37 +349,99 @@ public class InventarioController implements Initializable {
         this.colNombreContactoProveedor.setCellValueFactory(new PropertyValueFactory<>("nombreContacto"));
         this.colNombreEmpresaProveedor.setCellValueFactory(new PropertyValueFactory<>("nombreEmpresa"));
         tableProveedores.setItems(proveedores);
+        tableProveedores.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            proveedorSeleccionado = newSelection;
+            if(proveedorSeleccionado!= null) {
+                mostrarInformacionProveedor(proveedorSeleccionado);
+            }
+        });
+        this.txtTelefonoProveedor.setTextFormatter(new TextFormatter<Object>(TextFormatterUtil::integerFormat));
     }
 
     public void initializePaneCargos(){
-        this.colNombreCargo.setCellValueFactory(new PropertyValueFactory<>(""));
-        this.colSalarioCargo.setCellValueFactory(new PropertyValueFactory<>(""));
-        this.colEstadoCargo.setCellValueFactory(new PropertyValueFactory<>(""));
-        this.colCantidadEmpleadosCargo.setCellValueFactory(new PropertyValueFactory<>(""));
+        this.colNombreCargo.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        this.colSalarioCargo.setCellValueFactory(new PropertyValueFactory<>("salario"));
+        this.colEstadoCargo.setCellValueFactory(new PropertyValueFactory<>("estado"));
+        this.colCantidadEmpleadosCargo.setCellValueFactory(new PropertyValueFactory<>("empleadosRequeridos"));
         tableCargos.setItems(cargos);
+        tableCargos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            cargoSeleccionado = newSelection;
+            if(cargoSeleccionado!= null) {
+                mostrarInformacionCargo(cargoSeleccionado);
+            }
+        });
         txtEmpleadosRequeridosCargo.setTextFormatter(new TextFormatter<>(TextFormatterUtil::integerFormat));
         txtSalarioCargo.setTextFormatter(new TextFormatter<>(TextFormatterUtil::doubleFormat));
     }
 
     public void initializePaneLotes(){
-        this.colNombreProductoLote.setCellValueFactory(new PropertyValueFactory<>(""));
-        this.colCantidadLote.setCellValueFactory(new PropertyValueFactory<>(""));
-        this.colFechaEntradaLote.setCellValueFactory(new PropertyValueFactory<>(""));
-        this.colPrecioUnitarioLote.setCellValueFactory(new PropertyValueFactory<>(""));
-        this.colCostoTotalLote.setCellValueFactory(new PropertyValueFactory<>(""));
+        this.colNombreProductoLote.setCellValueFactory(((cellData -> {
+            Producto p = cellData.getValue().getListaProductosLote().get(0);
+            if (p != null) {
+                String nombre = p.getNombre();
+                return new SimpleStringProperty(nombre);
+            } else {
+                return new SimpleStringProperty("");
+            }
+        })));
+        this.colCantidadLote.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+        this.colFechaEntradaLote.setCellValueFactory(new PropertyValueFactory<>("fechaEntrada"));
+        this.colPrecioUnitarioLote.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
+        this.colCostoTotalLote.setCellValueFactory(new PropertyValueFactory<>("costoTotalLote"));
         tableLotes.setItems(lotes);
+        tableLotes.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            loteSeleccionado = newSelection;
+            if(loteSeleccionado!= null) {
+                mostrarInformacionLote(loteSeleccionado);
+            }
+        });
         txtCantidadLote.setTextFormatter(new TextFormatter<>(TextFormatterUtil::integerFormat));
         txtPrecioUnitarioLote.setTextFormatter(new TextFormatter<>(TextFormatterUtil::doubleFormat));
         txtCostoTotalLote.setTextFormatter(new TextFormatter<>(TextFormatterUtil::doubleFormat));
         txtCostoProductoLote.setTextFormatter(new TextFormatter<>(TextFormatterUtil::doubleFormat));
         txtPrecioVentaProductoLote.setTextFormatter(new TextFormatter<>(TextFormatterUtil::doubleFormat));
+        this.cbProveedorLote.setConverter(new StringConverter<Proveedor>() {
+            @Override
+            public String toString(Proveedor proveedor) {
+                return (proveedor != null) ? proveedor.getNombreEmpresa() : "";
+            }
+            @Override
+            public Proveedor fromString(String s) {
+                return null;
+            }
+        });
+        this.cbProveedorLote.setItems(proveedores);
     }
 
     public void initializePaneProductos(){
-        this.colProductos.setCellValueFactory(new PropertyValueFactory<>(""));
-        this.colCantidadProductos.setCellValueFactory(new PropertyValueFactory<>(""));
-        this.colProveedor.setCellValueFactory(new PropertyValueFactory<>(""));
-        this.colMarca.setCellValueFactory(new PropertyValueFactory<>(""));
+        this.colProductos.setCellValueFactory(((cellData -> {
+            Producto p = cellData.getValue().getListaProductosLote().get(0);
+            if (p != null) {
+                String nombre = p.getNombre();
+                return new SimpleStringProperty(nombre);
+            } else {
+                return new SimpleStringProperty("");
+            }
+        })));
+        this.colCantidadProductos.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+        this.colProveedor.setCellValueFactory(((cellData -> {
+            Proveedor p = cellData.getValue().getProveedor();
+            if (p != null) {
+                String nombre = p.getNombreEmpresa();
+                return new SimpleStringProperty(nombre);
+            } else {
+                return new SimpleStringProperty("");
+            }
+        })));
+        this.colMarca.setCellValueFactory(((cellData -> {
+            Producto p = cellData.getValue().getListaProductosLote().get(0);
+            if (p != null) {
+                String marca = p.getMarca();
+                return new SimpleStringProperty(marca);
+            } else {
+                return new SimpleStringProperty("");
+            }
+        })));
         tblPoductos.setItems(lotes);
     }
     @FXML
@@ -391,62 +478,241 @@ public class InventarioController implements Initializable {
 
     @FXML
     void onActionActualizarCargo(ActionEvent event) {
-
+        String nombre=txtNombreCargo.getText();
+        double salario= Double.parseDouble(txtSalarioCargo.getText());
+        String estado= txtEstadoCargo.getText();
+        int cantidadEmpleados= Integer.parseInt(txtEmpleadosRequeridosCargo.getText());
+        String descripcion= txtDescripcionCargo.getText();
+        if(datosValidosCargo(nombre,String.valueOf(salario),String.valueOf(cantidadEmpleados),descripcion,estado)){
+            boolean actualizado=false;
+            actualizado=modelFactoryController.actualizarCargo(cargoSeleccionado.getId(),nombre,descripcion,salario,estado,cantidadEmpleados);
+            if(actualizado){
+                mostrarMensaje("Notificacion Cargo", "Cargo actualizado", "El cargo se ha actualizado con exito", Alert.AlertType.INFORMATION);
+                limpiarCamposCargo();
+                tableCargos.refresh();
+            }else{
+                mostrarMensaje("Notificacion Cargo", "Cargo no actualizado", "El cargo no se ha actualizado con exito", Alert.AlertType.ERROR);
+                limpiarCamposCargo();
+            }
+        }else{
+            mostrarMensaje("Notificacion Cargo", "Datos invalidos", "Los datos ingresados son invalidos", Alert.AlertType.WARNING);
+            limpiarCamposCargo();
+        }
     }
 
     @FXML
     void onActionActualizarEmpleado(ActionEvent event) {
-
+        String nombreUsuario=txtNombreUsuario.getText();
+        String contrasena=txtContraseniaEmpleado.getText();
+        String nombre= txtNombreEmpleado.getText();
+        String email= txtEmailEmpleado.getText();
+        String id= txtIdEmpleado.getText();
+        String telefono= txtTelefonoEmpleado.getText();
+        String direccion= txtDireccionEmpleado.getText();
+        Estado estado = cbEstadoEmpleado.getValue();
+        Cargo cargo= cbCargoEmpleado.getValue();
+        if(datosValidosEmpleado(nombreUsuario,contrasena,nombre,email,id,telefono,direccion,estado,cargo)){
+            boolean actualizado=false;
+            actualizado=modelFactoryController.actualizarEmpleado(empleadoSeleccionado.getNombreUsuario(),nombreUsuario,contrasena,nombre,telefono,id,email,direccion,estado,cargo);
+            if(actualizado){
+                mostrarMensaje("Notificacion Empleado", "Empleado actualizado", "El empleado se ha actualizado con exito", Alert.AlertType.INFORMATION);
+                limpiarCamposEmpleado();
+                tableEmpleados.refresh();
+            }else {
+                mostrarMensaje("Notificacion Empleado", "Empleado no actualizado", "El empleado no se ha actualizado con exito", Alert.AlertType.ERROR);
+                limpiarCamposEmpleado();
+            }
+        }else {
+            mostrarMensaje("Notificacion Empleado", "Datos invalidos", "Los datos ingresados son invalidos", Alert.AlertType.WARNING);
+            limpiarCamposEmpleado();
+        }
     }
 
     @FXML
     void onActionActualizarLote(ActionEvent event) {
-
+        int cantidadProductos=Integer.parseInt(txtCantidadLote.getText());
+        double precioUnitario= Double.parseDouble(txtPrecioUnitarioLote.getText());
+        Proveedor proveedor= cbProveedorLote.getValue();
+        double costoTotalLote= Double.parseDouble(txtCostoTotalLote.getText());
+        String nombreProducto= txtNombreProductoLote.getText();
+        double precioVenta= Double.parseDouble(txtPrecioVentaProductoLote.getText());
+        double costoProducto= Double.parseDouble(txtCostoProductoLote.getText());
+        String marca=txtMarcaProductoLote.getText();
+        String descripcion= txtDescripcionProductoLote.getText();
+        LocalDate selectedLocalDate = dpFechaCaducidadProductoLote.getValue();
+        Date fechaCaducidad= java.util.Date.from(selectedLocalDate.atStartOfDay().atZone(java.time.ZoneId.systemDefault()).toInstant());
+        if(datosValidosLote(String.valueOf(cantidadProductos),String.valueOf(precioUnitario),String.valueOf(costoTotalLote),nombreProducto,String.valueOf(precioVenta),String.valueOf(costoProducto),marca,descripcion)){
+            boolean actualizado=false;
+            actualizado=modelFactoryController.actualizarLote(loteSeleccionado.getId(),cantidadProductos,precioUnitario,costoTotalLote,proveedor,nombreProducto,precioVenta,fechaCaducidad,costoProducto,marca,descripcion);
+            if(actualizado){
+                mostrarMensaje("Notificacion Lote", "Lote actualizado", "El Lote se ha actualizado con exito", Alert.AlertType.INFORMATION);
+                limpiarCamposLote();
+                tableLotes.refresh();
+            }else{
+                mostrarMensaje("Notificacion Lote", "Lote no actualizado", "El Lote no se ha actualizado con exito", Alert.AlertType.ERROR);
+                limpiarCamposLote();
+            }
+        }else {
+            mostrarMensaje("Notificacion Lote", "Datos invalidos", "Los datos ingresados son invalidos", Alert.AlertType.WARNING);
+            limpiarCamposLote();
+        }
     }
 
     @FXML
     void onActionActualizarProveedor(ActionEvent event) {
-
+        String nombreEmpresa=txtNombreEmpresaProveedor.getText();
+        String direccion= txtDireccionProveedor.getText();
+        String telefono= txtTelefonoProveedor.getText();
+        String nombreContacto=txtNombreContactoProveedor.getText();
+        String comentarios= txtComentariosProveedor.getText();
+        String estado= txtEstadoProveedor.getText();
+        if(datosValidosProveedor(nombreEmpresa,direccion,telefono,nombreContacto,comentarios,estado)){
+            boolean actualizado= false;
+            actualizado=modelFactoryController.actualizarProveedor(proveedorSeleccionado.getId(),nombreEmpresa,direccion,telefono,nombreContacto,comentarios,estado);
+            if(actualizado){
+                mostrarMensaje("Notificacion Proveedor", "Proveedor actualizado", "El Proveedor se ha actualizado con exito", Alert.AlertType.INFORMATION);
+                limpiarCamposProveedores();
+                tableProveedores.refresh();
+            }else{
+                mostrarMensaje("Notificacion Proveedor", "Proveedor no actualizado", "El Proveedor no se ha actualizado con exito", Alert.AlertType.ERROR);
+                limpiarCamposProveedores();
+            }
+        }else{
+            mostrarMensaje("Notificacion Proveedor", "Datos invalidos", "Los datos ingresados son invalidos", Alert.AlertType.WARNING);
+            limpiarCamposProveedores();
+        }
     }
 
     @FXML
     void onActionAnadirCargo(ActionEvent event) {
+        String nombre=txtNombreCargo.getText();
+        double salario= Double.parseDouble(txtSalarioCargo.getText());
+        String estado= txtEstadoCargo.getText();
+        int cantidadEmpleados= Integer.parseInt(txtEmpleadosRequeridosCargo.getText());
+        String descripcion= txtDescripcionCargo.getText();
+        if(datosValidosCargo(nombre,String.valueOf(salario),String.valueOf(cantidadEmpleados),descripcion,estado)){
+            Cargo nuevo=null;
+            nuevo=modelFactoryController.crearCargo(nombre,descripcion,salario,estado,cantidadEmpleados);
+            if(nuevo!=null){
+                cargos.add(nuevo);
+                mostrarMensaje("Notificacion Cargo", "Cargo creado", "El cargo se ha creado con exito", Alert.AlertType.INFORMATION);
+                limpiarCamposCargo();
+            }else{
+                mostrarMensaje("Notificacion Cargo", "Cargo no creado", "El cargo no se ha creado con exito", Alert.AlertType.ERROR);
+                limpiarCamposCargo();
+            }
+        }else{
+            mostrarMensaje("Notificacion Cargo", "Datos invalidos", "Los datos ingresados son invalidos", Alert.AlertType.WARNING);
+            limpiarCamposCargo();
+        }
 
     }
 
     @FXML
     void onActionAnadirEmpleado(ActionEvent event) {
-
+        String nombreUsuario=txtNombreUsuario.getText();
+        String contrasena=txtContraseniaEmpleado.getText();
+        String nombre= txtNombreEmpleado.getText();
+        String email= txtEmailEmpleado.getText();
+        String id= txtIdEmpleado.getText();
+        String telefono= txtTelefonoEmpleado.getText();
+        String direccion= txtDireccionEmpleado.getText();
+        Estado estado = cbEstadoEmpleado.getValue();
+        Cargo cargo= cbCargoEmpleado.getValue();
+        if(datosValidosEmpleado(nombreUsuario,contrasena,nombre,email,id,telefono,direccion,estado,cargo)){
+            Usuario nuevo= null;
+            nuevo=modelFactoryController.crearEmpleado(nombre,nombreUsuario,contrasena,email,id,telefono,direccion,estado,cargo);
+            if(nuevo!=null){
+                empleados.add(nuevo);
+                mostrarMensaje("Notificacion Empleado", "Empleado creado", "El empleado se ha creado con exito", Alert.AlertType.INFORMATION);
+                limpiarCamposEmpleado();
+            }else {
+                mostrarMensaje("Notificacion Empleado", "Empleado no creado", "El empleado no se ha creado con exito", Alert.AlertType.ERROR);
+                limpiarCamposEmpleado();
+            }
+        }else {
+            mostrarMensaje("Notificacion Empleado", "Datos invalidos", "Los datos ingresados son invalidos", Alert.AlertType.WARNING);
+            limpiarCamposEmpleado();
+        }
     }
 
     @FXML
     void onActionAnadirLote(ActionEvent event) {
-
+        int cantidadProductos=Integer.parseInt(txtCantidadLote.getText());
+        double precioUnitario= Double.parseDouble(txtPrecioUnitarioLote.getText());
+        Proveedor proveedor= cbProveedorLote.getValue();
+        double costoTotalLote= Double.parseDouble(txtCostoTotalLote.getText());
+        String nombreProducto= txtNombreProductoLote.getText();
+        double precioVenta= Double.parseDouble(txtPrecioVentaProductoLote.getText());
+        double costoProducto= Double.parseDouble(txtCostoProductoLote.getText());
+        String marca=txtMarcaProductoLote.getText();
+        String descripcion= txtDescripcionProductoLote.getText();
+        LocalDate selectedLocalDate = dpFechaCaducidadProductoLote.getValue();
+        Date fechaCaducidad= java.util.Date.from(selectedLocalDate.atStartOfDay().atZone(java.time.ZoneId.systemDefault()).toInstant());
+        if(datosValidosLote(String.valueOf(cantidadProductos),String.valueOf(precioUnitario),String.valueOf(costoTotalLote),nombreProducto,String.valueOf(precioVenta),String.valueOf(costoProducto),marca,descripcion)){
+            Lote nuevo= null;
+            nuevo=modelFactoryController.crearLote(cantidadProductos,precioUnitario,costoTotalLote,proveedor,nombreProducto,precioVenta,fechaCaducidad,costoProducto,marca,descripcion);
+            if(nuevo!=null){
+                lotes.add(nuevo);
+                mostrarMensaje("Notificacion Lote", "Lote creado", "El Lote se ha creado con exito", Alert.AlertType.INFORMATION);
+                limpiarCamposLote();
+            }else{
+                mostrarMensaje("Notificacion Lote", "Lote no creado", "El Lote no se ha creado con exito", Alert.AlertType.ERROR);
+                limpiarCamposLote();
+            }
+        }else {
+            mostrarMensaje("Notificacion Lote", "Datos invalidos", "Los datos ingresados son invalidos", Alert.AlertType.WARNING);
+            limpiarCamposLote();
+        }
     }
 
     @FXML
     void onActionAnadirProveedor(ActionEvent event) {
-
+        String nombreEmpresa=txtNombreEmpresaProveedor.getText();
+        String direccion= txtDireccionProveedor.getText();
+        String telefono= txtTelefonoProveedor.getText();
+        String nombreContacto=txtNombreContactoProveedor.getText();
+        String comentarios= txtComentariosProveedor.getText();
+        String estado= txtEstadoProveedor.getText();
+        if(datosValidosProveedor(nombreEmpresa,direccion,telefono,nombreContacto,comentarios,estado)){
+            Proveedor nuevo=null;
+            nuevo=modelFactoryController.anadirProveedor(nombreEmpresa,direccion,telefono,nombreContacto,comentarios,estado);
+            if(nuevo!=null){
+                proveedores.add(nuevo);
+                mostrarMensaje("Notificacion Proveedor", "Proveedor creado", "El Proveedor se ha creado con exito", Alert.AlertType.INFORMATION);
+                limpiarCamposProveedores();
+            }else {
+                mostrarMensaje("Notificacion Proveedor", "Proveedor no creado", "El Proveedor no se ha creado con exito", Alert.AlertType.ERROR);
+                limpiarCamposProveedores();
+            }
+        }else {
+            mostrarMensaje("Notificacion Proveedor", "Datos invalidos", "Los datos ingresados son invalidos", Alert.AlertType.WARNING);
+            limpiarCamposProveedores();
+        }
     }
 
     @FXML
     void onActionCancelarCargo(ActionEvent event) {
-
+        limpiarCamposCargo();
+        tableCargos.getSelectionModel().clearSelection();
     }
 
     @FXML
     void onActionCancelarEmpleado(ActionEvent event) {
-
+        limpiarCamposEmpleado();
+        tableEmpleados.getSelectionModel().clearSelection();
     }
 
     @FXML
     void onActionCancelarLote(ActionEvent event) {
-
+        limpiarCamposLote();
+        tableLotes.getSelectionModel().clearSelection();
     }
 
     @FXML
     void onActionCancelarProveedor(ActionEvent event) {
-
+        limpiarCamposProveedores();
+        tableProveedores.getSelectionModel().clearSelection();
     }
 
     @FXML
@@ -460,22 +726,86 @@ public class InventarioController implements Initializable {
 
     @FXML
     void onActionEliminarCargo(ActionEvent event) {
-
+        boolean eliminado=false;
+        if(cargoSeleccionado!=null){
+            if(mostrarMensajeConfirmacion("Desea eliminar este Cargo?")==true){
+                eliminado=modelFactoryController.eliminarCargo(cargoSeleccionado);
+                if(eliminado){
+                    cargos.remove(cargoSeleccionado);
+                    mostrarMensaje("Notificacion Cargo", "Cargo eliminado", "El cargo se ha eliminado con exito", Alert.AlertType.INFORMATION);
+                    limpiarCamposCargo();
+                }else{
+                    mostrarMensaje("Notificacion Cargo", "Cargo no eliminado", "El cargo no se ha eliminado con exito", Alert.AlertType.ERROR);
+                    limpiarCamposCargo();
+                }
+            }
+        }else {
+            mostrarMensaje("Notificacion Cargo", "Cargo no seleccionado", "No ha seleccionado ningun elemento", Alert.AlertType.WARNING);
+            limpiarCamposCargo();
+        }
     }
 
     @FXML
     void onActionEliminarEmpleado(ActionEvent event) {
-
+        boolean eliminado=false;
+        if(empleadoSeleccionado!=null){
+            if(mostrarMensajeConfirmacion("Desea eliminar este Empleado?")==true){
+                eliminado=modelFactoryController.eliminarEmpleado(empleadoSeleccionado);
+                if(eliminado){
+                    empleados.remove(empleadoSeleccionado);
+                    mostrarMensaje("Notificacion Empleado", "Empleado eliminado", "El Empleado se ha eliminado con exito", Alert.AlertType.INFORMATION);
+                    limpiarCamposEmpleado();
+                }else {
+                    mostrarMensaje("Notificacion Empleado", "Empleado no eliminado", "El Empleado no se ha eliminado con exito", Alert.AlertType.ERROR);
+                    limpiarCamposEmpleado();
+                }
+            }
+        }else {
+            mostrarMensaje("Notificacion Empleado", "Empleado no seleccionado", "No ha seleccionado ningun elemento", Alert.AlertType.WARNING);
+            limpiarCamposEmpleado();
+        }
     }
 
     @FXML
     void onActionEliminarLote(ActionEvent event) {
-
+        boolean eliminado= false;
+        if(loteSeleccionado!=null){
+            if(mostrarMensajeConfirmacion("Desea eliminar este lote?")==true){
+                eliminado=modelFactoryController.eliminarLote(loteSeleccionado);
+                if(eliminado){
+                    lotes.remove(loteSeleccionado);
+                    mostrarMensaje("Notificacion Lote", "Lote eliminado", "El Lote se ha eliminado con exito", Alert.AlertType.INFORMATION);
+                    limpiarCamposLote();
+                }else {
+                    mostrarMensaje("Notificacion Lote", "Lote no eliminado", "El Lote no se ha eliminado con exito", Alert.AlertType.ERROR);
+                    limpiarCamposLote();
+                }
+            }
+        }else {
+            mostrarMensaje("Notificacion Lote", "Lote no seleccionado", "No ha seleccionado ningun elemento", Alert.AlertType.WARNING);
+            limpiarCamposLote();
+        }
     }
 
     @FXML
     void onActionEliminarProveedor(ActionEvent event) {
-
+        boolean eliminado= false;
+        if(proveedorSeleccionado!=null){
+            if(mostrarMensajeConfirmacion("Desea eliminar este proveedor?")==true){
+                eliminado=modelFactoryController.eliminarProveedor(proveedorSeleccionado);
+                if(eliminado){
+                    proveedores.remove(proveedorSeleccionado);
+                    mostrarMensaje("Notificacion Proveedor", "Proveedor eliminado", "El Proveedor se ha eliminado con exito", Alert.AlertType.INFORMATION);
+                    limpiarCamposProveedores();
+                }else {
+                    mostrarMensaje("Notificacion Proveedor", "Proveedor no eliminado", "El Proveedor no se ha eliminado con exito", Alert.AlertType.ERROR);
+                    limpiarCamposProveedores();
+                }
+            }
+        }else {
+            mostrarMensaje("Notificacion Proveedor", "Proveedor no seleccionado", "No ha seleccionado ningun elemento", Alert.AlertType.WARNING);
+            limpiarCamposProveedores();
+        }
     }
 
     @FXML
@@ -510,8 +840,11 @@ public class InventarioController implements Initializable {
         txtDescripcionProductoLote.setText(l.getListaProductosLote().get(0).getDescripcionDetallada());
         txtNombreProductoLote.setText(l.getListaProductosLote().get(0).getNombre());
         txtPrecioVentaProductoLote.setText(String.valueOf(l.getListaProductosLote().get(0).getPrecioVenta()));
-        //cbProveedorLote.setValue(l.getProveedor().getNombreEmpresa());
-        //dpFechaCaducidadProductoLote.setValue(l.getListaProductosLote().get(0).getFechaCaducidad());
+        cbProveedorLote.setValue(l.getProveedor());
+        Date fechaC= l.getListaProductosLote().get(0).getFechaCaducidad();
+        Instant instant=fechaC.toInstant();
+        LocalDate fechaCaducidad=instant.atZone(ZoneId.systemDefault()).toLocalDate();
+        dpFechaCaducidadProductoLote.setValue(fechaCaducidad);
     }
 
     private void  mostrarInformacionEmpleado(Usuario u){
@@ -522,8 +855,8 @@ public class InventarioController implements Initializable {
         txtNombreEmpleado.setText(u.getNombre());
         txtTelefonoEmpleado.setText(u.getTelefono());
         txtNombreUsuario.setText(u.getNombreUsuario());
-        //cbEstadoEmpleado.setValue(u.getEstado());
-        //cbCargoEmpleado.setValue(u.getCargo());
+        cbEstadoEmpleado.setValue(u.getEstado());
+        cbCargoEmpleado.setValue(u.getCargo());
     }
 
     private void mostrarInformacionProveedor(Proveedor p){
@@ -553,6 +886,7 @@ public class InventarioController implements Initializable {
         txtNombreProductoLote.setText("");
         txtPrecioVentaProductoLote.setText("");
         cbProveedorLote.setValue(null);
+        dpFechaCaducidadProductoLote.setValue(null);
     }
 
     private  void limpiarCamposEmpleado(){
@@ -633,7 +967,7 @@ public class InventarioController implements Initializable {
             mensaje += "El nombre de laEmpresa es invalido \n" ;
         }
         if(direccion == null || direccion.equals("")) {
-            mensaje += "La direccion unitario es invalida \n" ;
+            mensaje += "La direccion es invalida \n" ;
         }
         if(telefono == null || telefono.equals("")){
             mensaje += "El telefono es invalido \n" ;
@@ -680,7 +1014,7 @@ public class InventarioController implements Initializable {
         }
     }
 
-    private boolean datosValidosEmpleado(String nombreUsuario, String contrasena, String nombre, String email, String nDocumento, String telefono, String direccion) {
+    private boolean datosValidosEmpleado(String nombreUsuario, String contrasena, String nombre, String email, String nDocumento, String telefono, String direccion, Estado estado, Cargo cargo) {
         String mensaje= "";
         if(nombreUsuario == null || nombreUsuario.equals("")) {
             mensaje += "El nombre de Usuario es invalido \n" ;
@@ -702,6 +1036,12 @@ public class InventarioController implements Initializable {
         }
         if(nDocumento==null || nDocumento.equals("")){
             mensaje+="El numero de Documento es invalido\n";
+        }
+        if(cargo==null){
+            mensaje+="El cargo no fue seleccionado correctamente";
+        }
+        if(estado==null){
+            mensaje+="El estado no fue seleccionado correctamente";
         }
         if(mensaje.equals("")){
             return true;

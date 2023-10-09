@@ -5,6 +5,7 @@ import com.example.papcreativaexpress.Excepciones.UsuarioExisteException;
 import com.example.papcreativaexpress.Model.*;
 import com.example.papcreativaexpress.Utils.EnviarCorreo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,12 +30,16 @@ public class ModelFactoryController {
     public void inicializarDatos(){
         papCreativaExpress = new PapCreativaExpress();
         Usuario usr= new Usuario();
-        usr.setDireccion("Cra x N| xx-xx");
+        usr.setNombreUsuario("Juanse");
+        usr.setDireccion("Cra x N° xx-xx");
         usr.setId("10963490");
         usr.setTelefono("31948303");
         usr.setNombre("Juan");
         usr.setEmail("juans.orozcoa@uqvirtual.edu.co");
         usr.setContrasenia("10973");
+        LocalDate fecha= LocalDate.now();
+        usr.setFechaRegistro(fecha);
+        usr.setEstado(Estado.DISPONIBLE);
         papCreativaExpress.getListaEmpleados().add(usr);
     }
     public boolean verificarInicioSesion(String correo, String contrasena) throws CorreoNoExisteException {
@@ -49,8 +54,8 @@ public class ModelFactoryController {
     public void bloquearUsuario(String correo) throws CorreoNoExisteException {
         papCreativaExpress.bloquearUsuario(correo);
     }
-    public Usuario crearEmpleado(String nombre, String NombreUsuario, String contrasenia, String correo, String id, String telefono, String direccion){
-        Usuario usuario =papCreativaExpress.crearEmpleado(nombre,NombreUsuario,contrasenia,correo,id,telefono,direccion) ;
+    public Usuario crearEmpleado(String nombre, String NombreUsuario, String contrasenia, String correo, String id, String telefono, String direccion, Estado estado, Cargo cargo){
+        Usuario usuario =papCreativaExpress.crearEmpleado(nombre,NombreUsuario,contrasenia,correo,id,telefono,direccion, estado, cargo) ;
         return usuario;
     }
     public boolean eliminarEmpleado(Usuario usr){
