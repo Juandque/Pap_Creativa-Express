@@ -1,36 +1,38 @@
 package com.example.papcreativaexpress.Controllers;
 
 import com.example.papcreativaexpress.Model.Usuario;
+import com.example.papcreativaexpress.Utils.MensajeUtil;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 
+
+
+
 public class InventarioController implements Initializable {
     ModelFactoryController modelFactoryController;
     @FXML
     private ImageView IamgeCodigoBarras;
+    
     @FXML
     private ImageView imageEmpleado;
 
-    @FXML
-    private ImageView imageRegla;
     @FXML
     private ImageView imageEmpleadoRegistro;
 
@@ -277,25 +279,24 @@ public class InventarioController implements Initializable {
 
     @FXML
     private TextField txtTelefonoProveedor;
-    private final FileChooser fileChooser= new FileChooser();
+    private final FileChooser fileChooser = new FileChooser();
     private Image imagenSeleccionada;
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         modelFactoryController = ModelFactoryController.getInstance();
-        try {
-            System.out.println(modelFactoryController.getUsuarioActual().getEmail());
-            Image imagenRegla = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Imagenes/Regla.png")));
-            imageRegla.setImage(imagenRegla);
-            Image imagenUsuario = modelFactoryController.obtenerImagen(modelFactoryController.getUsuarioActual());
-            imageEmpleado.setImage(imagenUsuario);
-            Logger logger = Logger.getLogger(getClass().getName());
-            Image fotoUsuario = modelFactoryController.getUsuarioActual().getFotoUsuario();
-            logger.info("La imagen obtenida es: " + fotoUsuario);
-        } catch (NullPointerException e) {
-            System.err.println("No se pudo cargar la imagen" + e.getMessage());
+        Usuario usuarioActual = modelFactoryController.getUsuarioActual();
+        if (usuarioActual != null) {
+            if (modelFactoryController.getImagenSeleccionada() != null) {
+                imageEmpleado.setImage(modelFactoryController.getImagenSeleccionada());
+            }
+            else {
+                System.out.println("Imagen null");
+            }
         }
-
+        else {
+            System.out.println("Usuario null");
+        }
     }
 
     @FXML
@@ -409,6 +410,7 @@ public class InventarioController implements Initializable {
     void onActionLotes(ActionEvent event) {
 
     }
+
     @FXML
     void OnActionCodigoBarras(ActionEvent event) {
 
@@ -423,14 +425,55 @@ public class InventarioController implements Initializable {
         File selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile != null) {
+            String carpetaImagenes = "Pap-Creativa-Express/src/main/resources/imagenes_usuarios"; // Ruta deseada para la carpeta de imágenes
+
+            File carpeta = new File(carpetaImagenes);
+            if (!carpeta.exists()) {
+                if (carpeta.mkdirs()) {
+                    System.out.println("Carpeta creada con éxito.");
+                } else {
+                    System.err.println("No se pudo crear la carpeta.");
+                }
+            }
+            String nombreArchivo = generarNombreUnico();
+
             String rutaImagen = selectedFile.toURI().toString();
 
-            Image imagen = new Image(rutaImagen);
+            Image imagenFX = new Image(rutaImagen);
+            String rutaDestino = carpetaImagenes + File.separator + nombreArchivo + ".png";
 
-            imageEmpleadoRegistro.setImage(imagen);
-            imagenSeleccionada = imageEmpleadoRegistro.getImage();
+            modelFactoryController.guardarImagen(imagenFX, rutaDestino);
+
+            Usuario usuarioActual = modelFactoryController.getUsuarioActual();
+            usuarioActual.setFotoUsuario(imagenFX);
+            imagenSeleccionada = imagenFX;
+            imageEmpleadoRegistro.setImage(imagenFX);
+
+            MensajeUtil.mensajeInformacion("Imagen guardada en la carpeta de recursos con el nombre: " + nombreArchivo + ".png");
         }
     }
+
+
+
+    private String generarNombreUnico() {
+        // Obtén la marca de tiempo actual en milisegundos
+        long timeStamp = System.currentTimeMillis();
+
+        // Genera un identificador único utilizando la marca de tiempo
+        String identificadorUnico = Long.toString(timeStamp);
+
+        return identificadorUnico;
+    }
+
+}
+
+
+
+
+
+
+
+
 
 
 //    private void limpiarFormulario() {
@@ -442,7 +485,3 @@ public class InventarioController implements Initializable {
 //        // Limpia otros campos del formulario
 //    }
 
-
-
-
-}

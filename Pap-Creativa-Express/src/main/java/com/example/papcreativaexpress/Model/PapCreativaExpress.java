@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class PapCreativaExpress {
     List<Caja> listaCajeros;
@@ -23,6 +24,7 @@ public class PapCreativaExpress {
     List<String> listaEmpleadosBloqueados;
     List<String> intentosFallidos;
     private Usuario usuarioActual;
+    private Image imagenActual;
 
 
 
@@ -419,22 +421,34 @@ public class PapCreativaExpress {
         return true;
     }
 
-    public Image obtenerImagenUsuario(Usuario usuario) {
-        return usuario.getFotoUsuario();
-    }
-
     public void asignarUsuarioActual(String correo) {
         for (Usuario usuario : listaEmpleados) {
             if (usuario.getEmail().equals(correo)) {
                 usuarioActual = new Usuario();
                 usuarioActual.copiarAtributos(usuario);
-                usuarioActual.setFotoUsuario(usuario.getFotoUsuario());
                 break;
             }
         }
     }
     public Usuario getUsuarioActual() {
+        // Asegurarse de que usuarioActual no sea null antes de devolverlo
+        if (usuarioActual == null) {
+            usuarioActual = new Usuario(); // o inicializarlo de alguna otra manera
+        }
         return usuarioActual;
+    }
+
+    public void setUsuarioActual(Usuario usuario) {
+        this.usuarioActual=usuario;
+    }
+    public void setImagenActual(Image imagenActual){
+        this.imagenActual = imagenActual;
+    }
+    public Image getImagenActual() {
+        if (imagenActual == null) {
+            imagenActual = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/imagenes/icons8-error-64.png"))); // o inicializarlo de alguna otra manera
+        }
+        return imagenActual;
     }
 }
 

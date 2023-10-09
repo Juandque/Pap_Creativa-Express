@@ -43,7 +43,7 @@
                         <Insets right="-160.0" top="30.0" />
                      </HBox.margin>
                   </Label>
-                  <ImageView fx:id="ImageEmpleado" fitHeight="90.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imageEmpleado" fitHeight="95.0" fitWidth="121.0" pickOnBounds="true" preserveRatio="true">
                      <HBox.margin>
                         <Insets left="600.0" />
                      </HBox.margin>
@@ -103,14 +103,6 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <ImageView fx:id="imageRegla" fitHeight="181.0" fitWidth="124.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-
-                     </image>
-                     <VBox.margin>
-                        <Insets top="50.0" />
-                     </VBox.margin>
-                  </ImageView>
                </children>
             </VBox>
          </left>
@@ -258,7 +250,6 @@
                         <TextField fx:id="txtDescripcionProductoLote" alignment="CENTER" layoutX="10.0" layoutY="466.0" prefHeight="25.0" prefWidth="293.0" promptText="Descripcion" />
                         <DatePicker fx:id="dpFechaCaducidadProductoLote" layoutX="317.0" layoutY="466.0" prefHeight="25.0" prefWidth="312.0" promptText="Fecha de Caducidad" />
                         <Button fx:id="btnCodigoBrras" layoutX="377.0" layoutY="538.0" mnemonicParsing="false" onAction="#OnActionCodigoBarras" prefHeight="23.0" prefWidth="212.0" stylesheets="@../../../css/Estilos.css" text="Ingresar código de barras" />
-                        <ImageView fx:id="imageEmpleado" fitHeight="85.0" fitWidth="281.0" layoutX="20.0" layoutY="496.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </Pane>
                </children>
