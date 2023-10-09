@@ -1,6 +1,7 @@
 package com.example.papcreativaexpress.Controllers;
 
 import com.example.papcreativaexpress.Excepciones.CorreoNoExisteException;
+import com.example.papcreativaexpress.Excepciones.UsuarioExisteException;
 import com.example.papcreativaexpress.Model.*;
 import com.example.papcreativaexpress.Utils.EnviarCorreo;
 import com.example.papcreativaexpress.Utils.MensajeUtil;
@@ -13,6 +14,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
@@ -33,14 +36,21 @@ public class ModelFactoryController {
         inicializarDatos();
     }
 
-    public void inicializarDatos() {
+    public void inicializarDatos(){
         papCreativaExpress = new PapCreativaExpress();
-        Usuario usr = new Usuario();
+        Usuario usr= new Usuario();
+        usr.setNombreUsuario("Juanse");
+        usr.setDireccion("Cra x N° xx-xx");
+        usr.setId("10963490");
+        usr.setTelefono("31948303");
+        usr.setNombre("Juan");
         Image imagen = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/imagenes_usuarios/Falcao.png")));
         usr.setFotoUsuario(imagen);
         usr.setEmail("juans.orozcoa@uqvirtual.edu.co");
-        usr.setContrasenia("1");
-        usr.setNombreUsuario("JUANMA");
+        usr.setContrasenia("10973");
+        LocalDate fecha= LocalDate.now();
+        usr.setFechaRegistro(fecha);
+        usr.setEstado(Estado.DISPONIBLE);
         papCreativaExpress.getListaEmpleados().add(usr);
     }
 
@@ -60,8 +70,9 @@ public class ModelFactoryController {
         papCreativaExpress.bloquearUsuario(correo);
     }
 
-    public Usuario crearEmpleado(String nombre, String NombreUsuario, String contrasenia, String correo, String id, String telefono, String direccion) {
-        Usuario usuario = papCreativaExpress.crearEmpleado(nombre, NombreUsuario, contrasenia, correo, id, telefono, direccion);
+    public Usuario crearEmpleado(String nombre, String nombreUsuario, String contrasenia, String correo,
+                                 String id, String telefono, String direccion, Estado estado, Cargo cargo) {
+        Usuario usuario = papCreativaExpress.crearEmpleado(nombre, nombreUsuario, contrasenia, correo, id, telefono, direccion,estado,cargo);
         return usuario;
     }
 
@@ -184,5 +195,22 @@ public class ModelFactoryController {
         papCreativaExpress.setImagenActual(imagenSeleccionada);
     }
 
+
+    public ArrayList<Usuario> getEmpleados(){
+        return  papCreativaExpress.getListaEmpleados();
+    }
+
+    public ArrayList<Lote> getLotes(){
+        ArrayList<Lote> listaLotes= papCreativaExpress.getListaLotes();
+        return listaLotes;
+    }
+
+    public ArrayList<Cargo> getCargos(){
+        return  papCreativaExpress.getListaCargos();
+    }
+
+    public ArrayList<Proveedor> getProveedores(){
+        return  papCreativaExpress.getListaProveedores();
+    }
 
 }

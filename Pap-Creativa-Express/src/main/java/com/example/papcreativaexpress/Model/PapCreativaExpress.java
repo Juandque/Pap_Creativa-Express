@@ -10,19 +10,19 @@ import java.util.List;
 import java.util.Objects;
 
 public class PapCreativaExpress {
-    List<Caja> listaCajeros;
-    List<Cargo> listaCargos;
-    List<Categoria> listaCategorias;
-    List<Compra> listaComprasAbastecimiento;
-    List<DetalleVenta> listaDetalleVentas;
-    List<Factura> listaFacturas;
+    ArrayList<Caja> listaCajeros;
+    ArrayList<Cargo> listaCargos;
+    ArrayList<Categoria> listaCategorias;
+    ArrayList<Compra> listaComprasAbastecimiento;
+    ArrayList<DetalleVenta> listaDetalleVentas;
+    ArrayList<Factura> listaFacturas;
     Inventario iventario;
-    List<Lote> listaLotes;
-    List<Producto> listaProductos;
-    List<Proveedor> listaProveedores;
-    List<Usuario> listaEmpleados;
-    List<String> listaEmpleadosBloqueados;
-    List<String> intentosFallidos;
+    ArrayList<Lote> listaLotes;
+    ArrayList<Producto> listaProductos;
+    ArrayList<Proveedor> listaProveedores;
+    ArrayList<Usuario> listaEmpleados;
+    ArrayList<String> listaEmpleadosBloqueados;
+    ArrayList<String> intentosFallidos = new ArrayList<>();
     private Usuario usuarioActual;
     private Image imagenActual;
 
@@ -69,47 +69,47 @@ public class PapCreativaExpress {
         return listaCajeros;
     }
 
-    public void setListaCajeros(List<Caja> listaCajeros) {
+    public void setListaCajeros(ArrayList<Caja> listaCajeros) {
         this.listaCajeros = listaCajeros;
     }
 
-    public List<Cargo> getListaCargos() {
+    public ArrayList<Cargo> getListaCargos() {
         return listaCargos;
     }
 
-    public void setListaCargos(List<Cargo> listaCargos) {
+    public void setListaCargos(ArrayList<Cargo> listaCargos) {
         this.listaCargos = listaCargos;
     }
 
-    public List<Categoria> getListaCategorias() {
+    public ArrayList<Categoria> getListaCategorias() {
         return listaCategorias;
     }
 
-    public void setListaCategorias(List<Categoria> listaCategorias) {
+    public void setListaCategorias(ArrayList<Categoria> listaCategorias) {
         this.listaCategorias = listaCategorias;
     }
 
-    public List<Compra> getListaComprasAbastecimiento() {
+    public ArrayList<Compra> getListaComprasAbastecimiento() {
         return listaComprasAbastecimiento;
     }
 
-    public void setListaComprasAbastecimiento(List<Compra> listaComprasAbastecimiento) {
+    public void setListaComprasAbastecimiento(ArrayList<Compra> listaComprasAbastecimiento) {
         this.listaComprasAbastecimiento = listaComprasAbastecimiento;
     }
 
-    public List<DetalleVenta> getListaDetalleVentas() {
+    public ArrayList<DetalleVenta> getListaDetalleVentas() {
         return listaDetalleVentas;
     }
 
-    public void setListaDetalleVentas(List<DetalleVenta> listaDetalleVentas) {
+    public void setListaDetalleVentas(ArrayList<DetalleVenta> listaDetalleVentas) {
         this.listaDetalleVentas = listaDetalleVentas;
     }
 
-    public List<Factura> getListaFacturas() {
+    public ArrayList<Factura> getListaFacturas() {
         return listaFacturas;
     }
 
-    public void setListaFacturas(List<Factura> listaFacturas) {
+    public void setListaFacturas(ArrayList<Factura> listaFacturas) {
         this.listaFacturas = listaFacturas;
     }
 
@@ -121,35 +121,35 @@ public class PapCreativaExpress {
         this.iventario = iventario;
     }
 
-    public List<Lote> getListaLotes() {
+    public ArrayList<Lote> getListaLotes() {
         return listaLotes;
     }
 
-    public void setListaLotes(List<Lote> listaLotes) {
+    public void setListaLotes(ArrayList<Lote> listaLotes) {
         this.listaLotes = listaLotes;
     }
 
-    public List<Producto> getListaProductos() {
+    public ArrayList<Producto> getListaProductos() {
         return listaProductos;
     }
 
-    public void setListaProductos(List<Producto> listaProductos) {
+    public void setListaProductos(ArrayList<Producto> listaProductos) {
         this.listaProductos = listaProductos;
     }
 
-    public List<Proveedor> getListaProveedores() {
+    public ArrayList<Proveedor> getListaProveedores() {
         return listaProveedores;
     }
 
-    public void setListaProveedores(List<Proveedor> listaProveedores) {
+    public void setListaProveedores(ArrayList<Proveedor> listaProveedores) {
         this.listaProveedores = listaProveedores;
     }
 
-    public List<Usuario> getListaEmpleados() {
+    public ArrayList<Usuario> getListaEmpleados() {
         return listaEmpleados;
     }
 
-    public void setListaEmpleados(List<Usuario> listaEmpleados) {
+    public void setListaEmpleados(ArrayList<Usuario> listaEmpleados) {
         this.listaEmpleados = listaEmpleados;
     }
 
@@ -200,8 +200,8 @@ public class PapCreativaExpress {
         return true;
     }
 
-    public Cargo anadirCargo(String nombre, String descripcion, double salario, String estado, int empleadosRequeridos) {
-        String id = crearId(idCargos);
+    public Cargo anadirCargo(String nombre, String descripcion,double salario,String estado, int empleadosRequeridos){
+        String id= crearId(idCargos);
         idCargos++;
         Cargo aux = new Cargo(nombre, id, descripcion, salario, new Date(), estado, empleadosRequeridos);
         listaCargos.add(aux);
@@ -373,9 +373,8 @@ public class PapCreativaExpress {
         }
 
     }
-
-    public Usuario crearEmpleado(String nombre, String nombreUsuario, String contrasenia, String correo,
-                                 String id, String telefono, String direccion) {
+    public  Usuario crearEmpleado(String nombre, String nombreUsuario, String contrasenia, String correo,
+                                 String id, String telefono, String direccion, Estado estado, Cargo cargo){
         Usuario usuarioExiste = buscarUsuarioPorCorreo(correo);
         if (usuarioExiste != null) {
             return null;
@@ -384,10 +383,11 @@ public class PapCreativaExpress {
         usuarioNuevo.setNombreUsuario(nombreUsuario);
         usuarioNuevo.setContrasenia(contrasenia);
         usuarioNuevo.setEmail(correo);
-        usuarioNuevo.setEstado(Estado.DISPONIBLE);
+        usuarioNuevo.setEstado(estado);
         usuarioNuevo.setNombre(nombre);
         usuarioNuevo.setDireccion(direccion);
         usuarioNuevo.setTelefono(telefono);
+        usuarioNuevo.setCargo(cargo);
         usuarioNuevo.setId(id);
         LocalDate fechaActual = LocalDate.now();
         usuarioNuevo.setFechaRegistro(fechaActual);
@@ -451,4 +451,3 @@ public class PapCreativaExpress {
         return imagenActual;
     }
 }
-
