@@ -1,9 +1,10 @@
 package com.example.papcreativaexpress.Model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Inventario {
+public class Inventario implements Serializable {
     private Date fechaActualizacion;
     private double valorTotalInventario;
     private String nivelAlertaStock;

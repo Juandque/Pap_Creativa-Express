@@ -105,4 +105,8 @@ public class Proveedor {
     public List<Producto> getListaProductosProveedor() {
         return listaProductosProveedor;
     }
+
+    public void setListaProductosProveedor(List<Producto> listaProductosProveedor) {
+        this.listaProductosProveedor = listaProductosProveedor;
+    }
 }

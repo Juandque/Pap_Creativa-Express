@@ -1,12 +1,12 @@
 package com.example.papcreativaexpress.Model;
 
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class Usuario {
+public class Usuario implements Serializable {
     private String nombreUsuario;
     private String contrasenia;
     private String nombre;
@@ -14,11 +14,11 @@ public class Usuario {
     private String id;
     private String email;
     private String direccion;
-    private LocalDate fechaRegistro;
-    private LocalDate ultimoInicioSesion;
+    private Date fechaRegistro;
+    private Date ultimoInicioSesion;
     private Estado  estado;
     private Cargo cargo;
-    private Image fotoUsuario;
+    private transient Image fotoUsuario;
 
     public Usuario(){
 
@@ -87,19 +87,19 @@ public class Usuario {
         this.direccion = direccion;
     }
 
-    public LocalDate getFechaRegistro() {
+    public Date getFechaRegistro() {
         return fechaRegistro;
     }
 
-    public void setFechaRegistro(LocalDate fechaRegistro) {
+    public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public LocalDate getUltimoInicioSesion() {
+    public Date getUltimoInicioSesion() {
         return ultimoInicioSesion;
     }
 
-    public void setUltimoInicioSesion(LocalDate ultimoInicioSesion) {
+    public void setUltimoInicioSesion(Date ultimoInicioSesion) {
         this.ultimoInicioSesion = ultimoInicioSesion;
     }
 

@@ -1,28 +1,22 @@
 package com.example.papcreativaexpress.Controllers;
 
 import com.example.papcreativaexpress.Excepciones.CorreoNoExisteException;
-import com.example.papcreativaexpress.Excepciones.UsuarioExisteException;
 import com.example.papcreativaexpress.Model.*;
+import com.example.papcreativaexpress.Persistencia.Persistencia;
 import com.example.papcreativaexpress.Utils.EnviarCorreo;
-import com.example.papcreativaexpress.Utils.MensajeUtil;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class ModelFactoryController {
-    private PapCreativaExpress papCreativaExpress;
-    private Image imagenSeleccionada;
+    PapCreativaExpress papCreativaExpress;
+
 
     private static class SingletonHolder {
         private final static ModelFactoryController eINSTANCE = new ModelFactoryController();
@@ -34,24 +28,44 @@ public class ModelFactoryController {
 
     public ModelFactoryController() {
         inicializarDatos();
+       //guardarResourceXML();
+       //cargarResourceXML();
+        //guardarResourceBinario();
+        cargarResourceBinario();
+
+
     }
 
     public void inicializarDatos(){
+
         papCreativaExpress = new PapCreativaExpress();
+        try {
+            Persistencia.guardarCargos(getPapCreativaExpress().getListaCargos());
+            Persistencia.guardarProductos(getPapCreativaExpress().getListaProductos());
+            Persistencia.guardarUsuarios(getPapCreativaExpress().getListaEmpleados());
+            Persistencia.guardarLotes(getPapCreativaExpress().getListaLotes());
+            Persistencia.guardarProveedores(getPapCreativaExpress().getListaProveedores());
+            Persistencia.cargarDatosArchivos(getPapCreativaExpress());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Usuario usr= new Usuario();
         usr.setNombreUsuario("Juanse");
         usr.setDireccion("Cra x N° xx-xx");
         usr.setId("10963490");
         usr.setTelefono("31948303");
         usr.setNombre("Juan");
-        Image imagen = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/imagenes_usuarios/Falcao.png")));
+        Image imagen = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/imagenes_usuarios/Juan.png")));
         usr.setFotoUsuario(imagen);
         usr.setEmail("juans.orozcoa@uqvirtual.edu.co");
         usr.setContrasenia("10973");
-        LocalDate fecha= LocalDate.now();
-        usr.setFechaRegistro(fecha);
         usr.setEstado(Estado.DISPONIBLE);
         papCreativaExpress.getListaEmpleados().add(usr);
+    }
+
+    public PapCreativaExpress getPapCreativaExpress(){
+        return papCreativaExpress;
     }
 
     public boolean verificarInicioSesion(String correo, String contrasena) throws CorreoNoExisteException {
@@ -71,68 +85,84 @@ public class ModelFactoryController {
     }
 
     public Usuario crearEmpleado(String nombre, String nombreUsuario, String contrasenia, String correo,
-                                 String id, String telefono, String direccion, Estado estado, Cargo cargo) {
+                                 String id, String telefono, String direccion, Estado estado, Cargo cargo) throws IOException {
         Usuario usuario = papCreativaExpress.crearEmpleado(nombre, nombreUsuario, contrasenia, correo, id, telefono, direccion,estado,cargo);
+        Persistencia.guardarUsuarios(papCreativaExpress.getListaEmpleados());
         return usuario;
     }
 
-    public boolean eliminarEmpleado(Usuario usr) {
+    public boolean eliminarEmpleado(Usuario usr) throws IOException {
         boolean flagEliminado = papCreativaExpress.eliminarEmpleado(usr);
+        Persistencia.guardarUsuarios(papCreativaExpress.getListaEmpleados());
         return flagEliminado;
     }
 
-    public boolean actualizarEmpleado(String nombreUsuario, String nuevoNombreUsuario, String contrasenia, String nombre, String telefono, String id, String email, String direccion, Estado estado, Cargo cargo) {
+    public boolean actualizarEmpleado(String nombreUsuario, String nuevoNombreUsuario, String contrasenia, String nombre, String telefono, String id, String email, String direccion, Estado estado, Cargo cargo) throws IOException {
         boolean flagActualizado = papCreativaExpress.actualizarEmpleado(nombreUsuario, nuevoNombreUsuario, contrasenia, nombre, telefono, id, email, direccion, estado, cargo);
+        Persistencia.guardarUsuarios(papCreativaExpress.getListaEmpleados());
         return flagActualizado;
     }
 
-    public Cargo crearCargo(String nombre, String descripcion, double salario, String estado, int empleadosRequeridos) {
+    public Cargo crearCargo(String nombre, String descripcion, double salario, String estado, int empleadosRequeridos) throws IOException {
         Cargo cargo = papCreativaExpress.anadirCargo(nombre, descripcion, salario, estado, empleadosRequeridos);
+        Persistencia.guardarCargos(papCreativaExpress.getListaCargos());
         return cargo;
     }
 
-    public boolean eliminarCargo(Cargo cargo) {
+    public boolean eliminarCargo(Cargo cargo) throws IOException {
         boolean flagEliminado = papCreativaExpress.eliminarCargo(cargo);
+        Persistencia.guardarCargos(papCreativaExpress.getListaCargos());
         return flagEliminado;
     }
 
-    public boolean actualizarCargo(String idCargo, String nombre, String descripcion, double salario, String estado, int empleadosRequeridos) {
+    public boolean actualizarCargo(String idCargo, String nombre, String descripcion, double salario, String estado, int empleadosRequeridos) throws IOException {
         boolean flagActualizado = papCreativaExpress.actualizarCargo(idCargo, nombre, descripcion, salario, estado, empleadosRequeridos);
+        Persistencia.guardarCargos(papCreativaExpress.getListaCargos());
+
         return flagActualizado;
     }
 
-    public Lote crearLote(int cantidad, double precioUnitario, double precioTotal, Proveedor proveedor, String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion) {
+    public Lote crearLote(int cantidad, double precioUnitario, double precioTotal, Proveedor proveedor, String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion) throws IOException {
         Lote lote = papCreativaExpress.anadirLote(cantidad, precioUnitario, precioTotal, proveedor, nombre, precioVenta, fechaCaducidad, costo, marca, descripcion);
+        Persistencia.guardarLotes(papCreativaExpress.getListaLotes());
+
         return lote;
     }
 
-    public boolean eliminarLote(Lote lote) {
+    public boolean eliminarLote(Lote lote) throws IOException {
         boolean flagEliminado = papCreativaExpress.eliminarLote(lote);
+        Persistencia.guardarLotes(papCreativaExpress.getListaLotes());
+
         return flagEliminado;
     }
 
-    public boolean actualizarLote(String idLote, int cantidad, double precioUnitario, double precioTotal, Proveedor proveedor, String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion) {
+    public boolean actualizarLote(String idLote, int cantidad, double precioUnitario, double precioTotal, Proveedor proveedor, String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion) throws IOException {
         boolean flagActualizado = papCreativaExpress.actualizarLote(idLote, cantidad, precioUnitario, precioTotal, proveedor, nombre, precioVenta, fechaCaducidad, costo, marca, descripcion);
+        Persistencia.guardarLotes(papCreativaExpress.getListaLotes());
         return flagActualizado;
     }
 
-    public Proveedor anadirProveedor(String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado) {
+    public Proveedor anadirProveedor(String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado) throws IOException {
         Proveedor proveedor = papCreativaExpress.anadirProveedor(nombreEmpresa, direccion, telefono, nombreContacto, comentarios, estado);
+        Persistencia.guardarProveedores(papCreativaExpress.getListaProveedores());
         return proveedor;
     }
 
-    public boolean eliminarProveedor(Proveedor proveedor) {
+    public boolean eliminarProveedor(Proveedor proveedor) throws IOException {
         boolean flagEliminado = papCreativaExpress.eliminarProveedor(proveedor);
+        Persistencia.guardarProveedores(papCreativaExpress.getListaProveedores());
         return flagEliminado;
     }
 
-    public boolean actualizarProveedor(String idProveedor, String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado) {
+    public boolean actualizarProveedor(String idProveedor, String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado) throws IOException {
         boolean flagActualizado = papCreativaExpress.actualizarProveedor(idProveedor, nombreEmpresa, direccion, telefono, nombreContacto, comentarios, estado);
+        Persistencia.guardarProveedores(papCreativaExpress.getListaProveedores());
         return flagActualizado;
     }
 
-    public void actualizarContrasenia(Usuario usuario, String contrasenia) {
+    public void actualizarContrasenia(Usuario usuario, String contrasenia) throws IOException {
         papCreativaExpress.actualizarContrasenaUsuario(usuario, contrasenia);
+        Persistencia.guardarUsuarios(papCreativaExpress.getListaEmpleados());
     }
 
     public String generarCodigo() {
@@ -159,25 +189,6 @@ public class ModelFactoryController {
         papCreativaExpress.setUsuarioActual(usuario);
     }
 
-    public void mostrarRuta() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg", "*.gif")
-        );
-
-        File selectedFile = fileChooser.showSaveDialog(null);
-
-        if (selectedFile != null) {
-            String rutaDestino = selectedFile.getAbsolutePath();
-            Image imagenFX = new Image(rutaDestino);
-            guardarImagen(imagenFX, rutaDestino);
-            Usuario usuarioActual = getUsuarioActual();
-            usuarioActual.setFotoUsuario(imagenFX);
-        } else {
-            MensajeUtil.mensajeInformacion("Error");
-        }
-    }
-
     void guardarImagen(Image imagen, String rutaDestino) {
         BufferedImage bufferedImage = SwingFXUtils.fromFXImage(imagen, null);
         try {
@@ -194,6 +205,14 @@ public class ModelFactoryController {
     public void setImagenSeleccionada(Image imagenSeleccionada) {
         papCreativaExpress.setImagenActual(imagenSeleccionada);
     }
+    public Lote getLoteActual() {
+        return papCreativaExpress.getLoteActual();
+    }
+
+    public void setLoteActual(Lote loteActual) {
+        papCreativaExpress.setLoteActual(loteActual);
+    }
+
 
 
     public ArrayList<Usuario> getEmpleados(){
@@ -212,5 +231,59 @@ public class ModelFactoryController {
     public ArrayList<Proveedor> getProveedores(){
         return  papCreativaExpress.getListaProveedores();
     }
+    public double SumaTotalPrecios(List<Producto>productoList){
+        return papCreativaExpress.calcularPrecioTotal(productoList);
+    }
+    public void cargarResourceBinario() {
+        papCreativaExpress = (PapCreativaExpress) Persistencia.cargar().orElse(new PapCreativaExpress());
+    }
+
+    public void guardarResourceBinario() {
+        Persistencia.guardar(papCreativaExpress);
+    }
+
+    public void cargarResourceXML() {
+        papCreativaExpress = Persistencia.cargarRecursoXML();
+    }
+
+    public void guardarResourceXML() {
+        Persistencia.guardarRecursoXML(papCreativaExpress);
+    }
+
+    public Image cargarImagenEmpleado(String nombreEmpleado) {
+        String rutaImagen = "Pap-Creativa-Express/src/main/resources/imagenes_usuarios" + File.separator+ nombreEmpleado + ".png";
+        File archivoImagen = new File(rutaImagen);
+
+        if (archivoImagen.exists()) {
+            System.out.println("NO APARECE");
+
+            return new Image(archivoImagen.toURI().toString());
+        } else {
+            System.out.println("ES NULLA");
+            return null;
+        }
+    }
+    public Image cargarImagenLote(String id) {
+        String rutaImagen = "Pap-Creativa-Express/src/main/resources/imagenes_usuarios" + File.separator+ id + ".png";
+        File archivoImagen = new File(rutaImagen);
+
+        if (archivoImagen.exists()) {
+            System.out.println("NO APARECE");
+
+            return new Image(archivoImagen.toURI().toString());
+        } else {
+            System.out.println("ES NULLA");
+            return null;
+        }
+    }
+    public void asignarLoteActual(String id) {
+        papCreativaExpress.asignarUsuarioActual(id);
+    }
+    public Lote buscarLotePorId(String id){
+        return papCreativaExpress.buscarLotePorId(id);
+    }
+
+
 
 }
+
