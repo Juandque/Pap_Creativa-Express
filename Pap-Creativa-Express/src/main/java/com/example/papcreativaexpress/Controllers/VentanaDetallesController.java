@@ -40,6 +40,7 @@ public class VentanaDetallesController implements Initializable {
 
     @FXML
     private Text textProveedores;
+
     @FXML
     private Button btnVolver;
 
@@ -47,7 +48,7 @@ public class VentanaDetallesController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         modelFactoryController = ModelFactoryController.getInstance();
-        imageEmpleado.setImage(modelFactoryController.getLoteActual().getCodigoBarrasImage());
+        imageEmpleado.setImage(modelFactoryController.cargarImagenLote(String.valueOf(modelFactoryController.getLoteActual().getCostoTotalLote())));
     }
     public void mostrarInformacionProducto(Lote lote) {
         if (lote != null) {
@@ -56,7 +57,6 @@ public class VentanaDetallesController implements Initializable {
             textCantidad.setText("Cantidad del lote:" + lote.getCantidad());
             textPrecioUnitario.setText("El precio unitario del producto es de:"+ lote.getPrecioUnitario());
             textPrecioTotal.setText("El precio total del lote es de:" + lote.getCostoTotalLote());
-            textFechaRegistro.setText("La fecha de registro del producto es de: " + lote.getFechaRegistro().toString());
             textProveedores.setText("El proveedor del producto es: " + lote.getProveedor().getNombreEmpresa());
         }
     }

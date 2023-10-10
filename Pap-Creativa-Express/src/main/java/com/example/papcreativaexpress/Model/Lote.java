@@ -3,12 +3,14 @@ package com.example.papcreativaexpress.Model;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-public class Lote {
+public class Lote implements Serializable {
     private Date fechaEntrada;
     private int cantidad;
     private String id;
@@ -18,7 +20,7 @@ public class Lote {
     private List<Producto> listaProductosLote;
     private Proveedor proveedor;
     private Factura factura;
-    private Image codigoBarrasImage;
+    private transient Image codigoBarrasImage;
 
     public Lote(){
 
@@ -146,6 +148,16 @@ public class Lote {
             p.setPrecioCosto(costo);
             p.setPrecioVenta(precioVenta);
         }
+    }
+    public void copiarAtributos(Lote otroLote){
+        this.setId(otroLote.getId());
+        this.setCantidad(otroLote.getCantidad());
+        this.setFechaRegistro(otroLote.getFechaRegistro());
+        this.setFechaEntrada(otroLote.getFechaEntrada());
+        this.setFactura(otroLote.getFactura());
+        this.setProveedor(otroLote.getProveedor());
+        this.setPrecioUnitario(otroLote.getPrecioUnitario());
+        this.setCostoTotalLote(otroLote.getCostoTotalLote());
     }
 
 }

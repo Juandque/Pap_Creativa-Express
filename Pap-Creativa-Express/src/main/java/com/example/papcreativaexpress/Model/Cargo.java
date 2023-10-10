@@ -1,9 +1,10 @@
 package com.example.papcreativaexpress.Model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Cargo {
+public class Cargo implements Serializable {
     private String nombre;
     private String id;
     private String descripcion;

@@ -27,9 +27,8 @@ public class PapCreativaExpress implements Serializable {
     ArrayList<String> listaEmpleadosBloqueados;
     ArrayList<String> intentosFallidos = new ArrayList<>();
     private Usuario usuarioActual;
-    private Image imagenActual;
+    private transient Image imagenActual;
     private Lote loteActual;
-
 
 
     int idProductos;
@@ -204,8 +203,8 @@ public class PapCreativaExpress implements Serializable {
         return true;
     }
 
-    public Cargo anadirCargo(String nombre, String descripcion,double salario,String estado, int empleadosRequeridos){
-        String id= crearId(idCargos);
+    public Cargo anadirCargo(String nombre, String descripcion, double salario, String estado, int empleadosRequeridos) {
+        String id = crearId(idCargos);
         idCargos++;
         Cargo aux = new Cargo(nombre, id, descripcion, salario, new Date(), estado, empleadosRequeridos);
         listaCargos.add(aux);
@@ -377,8 +376,9 @@ public class PapCreativaExpress implements Serializable {
         }
 
     }
-    public  Usuario crearEmpleado(String nombre, String nombreUsuario, String contrasenia, String correo,
-                                 String id, String telefono, String direccion, Estado estado, Cargo cargo){
+
+    public Usuario crearEmpleado(String nombre, String nombreUsuario, String contrasenia, String correo,
+                                 String id, String telefono, String direccion, Estado estado, Cargo cargo) {
         Usuario usuarioExiste = buscarUsuarioPorCorreo(correo);
         if (usuarioExiste != null) {
             return null;
@@ -393,9 +393,10 @@ public class PapCreativaExpress implements Serializable {
         usuarioNuevo.setTelefono(telefono);
         usuarioNuevo.setCargo(cargo);
         usuarioNuevo.setId(id);
-        LocalDate fechaActual = LocalDate.now();
-        usuarioNuevo.setFechaRegistro(fechaActual);
-        usuarioNuevo.setUltimoInicioSesion(fechaActual);
+        LocalDate fechaLocal = LocalDate.now();
+        Date fechaDate = java.sql.Date.valueOf(fechaLocal.atStartOfDay().toLocalDate());
+        usuarioNuevo.setFechaRegistro(fechaDate);
+        usuarioNuevo.setUltimoInicioSesion(fechaDate);
         listaEmpleados.add(usuarioNuevo);
         return usuarioNuevo;
     }
@@ -434,6 +435,7 @@ public class PapCreativaExpress implements Serializable {
             }
         }
     }
+
     public Usuario getUsuarioActual() {
         // Asegurarse de que usuarioActual no sea null antes de devolverlo
         if (usuarioActual == null) {
@@ -443,17 +445,20 @@ public class PapCreativaExpress implements Serializable {
     }
 
     public void setUsuarioActual(Usuario usuario) {
-        this.usuarioActual=usuario;
+        this.usuarioActual = usuario;
     }
-    public void setImagenActual(Image imagenActual){
+
+    public void setImagenActual(Image imagenActual) {
         this.imagenActual = imagenActual;
     }
+
     public Image getImagenActual() {
         if (imagenActual == null) {
             imagenActual = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/imagenes/icons8-error-64.png"))); // o inicializarlo de alguna otra manera
         }
         return imagenActual;
     }
+
     public Lote getLoteActual() {
         // Asegurarse de que usuarioActual no sea null antes de devolverlo
         if (loteActual == null) {
@@ -463,8 +468,9 @@ public class PapCreativaExpress implements Serializable {
     }
 
     public void setLoteActual(Lote loteActual) {
-        this.loteActual=loteActual;
+        this.loteActual = loteActual;
     }
+
     public double calcularPrecioTotal(List<Producto> listaProductos) {
         double precioTotal = 0.0;
 
@@ -476,4 +482,23 @@ public class PapCreativaExpress implements Serializable {
         return precioTotal;
     }
 
+    public void asignarLoteActual(String id) {
+        for (Lote lote : listaLotes) {
+            if (lote.getId().equals(id)) {
+                loteActual = new Lote();
+                loteActual.copiarAtributos(lote);
+                break;
+            }
+        }
+
+    }
+    public Lote buscarLotePorId(String id) {
+        List<Lote> aux = getListaLotes();
+        for (Lote lote : aux) {
+            if (lote.getId().equals(id)) {
+                return lote;
+            }
+        }
+        return null;
+    }
 }

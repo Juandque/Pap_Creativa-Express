@@ -307,7 +307,6 @@ public class InventarioController implements Initializable {
 
     @FXML
     private TextField txtTelefonoProveedor;
-    private final FileChooser fileChooser = new FileChooser();
     private Image imagenSeleccionada;
     private Image imagenLote;
     private Cargo cargoSeleccionado;
@@ -324,7 +323,9 @@ public class InventarioController implements Initializable {
         modelFactoryController = ModelFactoryController.getInstance();
         Image imagenRegistro = new Image(getClass().getResourceAsStream("/Imagenes/icons8-error-64.png"));
         imageEmpleadoRegistro.setImage(imagenRegistro);
-        imageEmpleado.setImage(modelFactoryController.getImagenSeleccionada());
+        imageCodigoBarras.setImage(imagenRegistro);
+        imageEmpleado.setImage(modelFactoryController.cargarImagenEmpleado(modelFactoryController.getUsuarioActual().getNombre()));
+        System.out.println(modelFactoryController.getUsuarioActual().getNombre());
         modelFactoryController= ModelFactoryController.getInstance();
         ArrayList<Usuario> empleadosArrayList = modelFactoryController.getEmpleados();
         ArrayList<Proveedor> proveedoresArrayList = modelFactoryController.getProveedores();
@@ -522,6 +523,7 @@ public class InventarioController implements Initializable {
 
     @FXML
     void OnActionVerInfo(ActionEvent event) {
+        Lote loteActual;
         if (loteSeleccionado != null) {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("VentanaDetalles.fxml"));
             Parent root;
@@ -531,8 +533,10 @@ public class InventarioController implements Initializable {
                 e.printStackTrace();
                 return;
             }
+            loteActual =modelFactoryController.buscarLotePorId(loteSeleccionado.getId());
+            modelFactoryController.asignarLoteActual(loteActual.getId());
             VentanaDetallesController detallesController = loader.getController();
-            detallesController.mostrarInformacionProducto(loteSeleccionado);
+            detallesController.mostrarInformacionProducto(loteActual);
             Stage detallesStage = new Stage();
             detallesStage.setScene(new Scene(root));
             detallesStage.setTitle("Detalles del Producto");
@@ -543,7 +547,7 @@ public class InventarioController implements Initializable {
     }
 
     @FXML
-    void onActionActualizarCargo(ActionEvent event) {
+    void onActionActualizarCargo(ActionEvent event) throws IOException {
         String nombre = txtNombreCargo.getText();
         double salario = Double.parseDouble(txtSalarioCargo.getText());
         String estado = txtEstadoCargo.getText();
@@ -555,9 +559,6 @@ public class InventarioController implements Initializable {
 
             if (actualizado) {
                 mostrarMensaje("Notificacion Cargo", "Cargo actualizado", "El cargo se ha actualizado con éxito", Alert.AlertType.INFORMATION);
-
-                modelFactoryController.guardarResourceBinario();
-                modelFactoryController.guardarResourceXML();
 
                 limpiarCamposCargo();
                 tableCargos.refresh();
@@ -573,7 +574,7 @@ public class InventarioController implements Initializable {
 
 
     @FXML
-    void onActionActualizarEmpleado(ActionEvent event) {
+    void onActionActualizarEmpleado(ActionEvent event) throws IOException {
         String nombreUsuario=txtNombreUsuario.getText();
         String contrasena=txtContraseniaEmpleado.getText();
         String nombre= txtNombreEmpleado.getText();
@@ -587,8 +588,6 @@ public class InventarioController implements Initializable {
             boolean actualizado=false;
             actualizado=modelFactoryController.actualizarEmpleado(empleadoSeleccionado.getNombreUsuario(),nombreUsuario,contrasena,nombre,telefono,id,email,direccion,estado,cargo);
             if(actualizado){
-                modelFactoryController.guardarResourceBinario();
-                modelFactoryController.guardarResourceXML();
                 mostrarMensaje("Notificacion Empleado", "Empleado actualizado", "El empleado se ha actualizado con exito", Alert.AlertType.INFORMATION);
                 limpiarCamposEmpleado();
                 tableEmpleados.refresh();
@@ -603,7 +602,7 @@ public class InventarioController implements Initializable {
     }
 
     @FXML
-    void onActionActualizarLote(ActionEvent event) {
+    void onActionActualizarLote(ActionEvent event) throws IOException {
         int cantidadProductos=Integer.parseInt(txtCantidadLote.getText());
         double precioUnitario= Double.parseDouble(txtPrecioUnitarioLote.getText());
         Proveedor proveedor= cbProveedorLote.getValue();
@@ -619,8 +618,6 @@ public class InventarioController implements Initializable {
             boolean actualizado=false;
             actualizado=modelFactoryController.actualizarLote(loteSeleccionado.getId(),cantidadProductos,precioUnitario,costoTotalLote,proveedor,nombreProducto,precioVenta,fechaCaducidad,costoProducto,marca,descripcion);
             if(actualizado){
-                modelFactoryController.guardarResourceBinario();
-                modelFactoryController.guardarResourceXML();
                 mostrarMensaje("Notificacion Lote", "Lote actualizado", "El Lote se ha actualizado con exito", Alert.AlertType.INFORMATION);
                 limpiarCamposLote();
                 tableLotes.refresh();
@@ -635,7 +632,7 @@ public class InventarioController implements Initializable {
     }
 
     @FXML
-    void onActionActualizarProveedor(ActionEvent event) {
+    void onActionActualizarProveedor(ActionEvent event) throws IOException {
         String nombreEmpresa=txtNombreEmpresaProveedor.getText();
         String direccion= txtDireccionProveedor.getText();
         String telefono= txtTelefonoProveedor.getText();
@@ -646,8 +643,6 @@ public class InventarioController implements Initializable {
             boolean actualizado= false;
             actualizado=modelFactoryController.actualizarProveedor(proveedorSeleccionado.getId(),nombreEmpresa,direccion,telefono,nombreContacto,comentarios,estado);
             if(actualizado){
-                modelFactoryController.guardarResourceBinario();
-                modelFactoryController.guardarResourceXML();
                 mostrarMensaje("Notificacion Proveedor", "Proveedor actualizado", "El Proveedor se ha actualizado con exito", Alert.AlertType.INFORMATION);
                 limpiarCamposProveedores();
                 tableProveedores.refresh();
@@ -662,7 +657,7 @@ public class InventarioController implements Initializable {
     }
 
     @FXML
-    void onActionAnadirCargo(ActionEvent event) {
+    void onActionAnadirCargo(ActionEvent event) throws IOException {
         String nombre=txtNombreCargo.getText();
         double salario= Double.parseDouble(txtSalarioCargo.getText());
         String estado= txtEstadoCargo.getText();
@@ -689,7 +684,8 @@ public class InventarioController implements Initializable {
     }
 
     @FXML
-    void onActionAnadirEmpleado(ActionEvent event) {
+    void onActionAnadirEmpleado(ActionEvent event) throws IOException {
+        Image imagenRegistroSett = new Image(getClass().getResourceAsStream("/Imagenes/icons8-error-64.png"));
         String nombreUsuario=txtNombreUsuario.getText();
         String contrasena=txtContraseniaEmpleado.getText();
         String nombre= txtNombreEmpleado.getText();
@@ -703,9 +699,8 @@ public class InventarioController implements Initializable {
             Usuario nuevo= null;
             nuevo=modelFactoryController.crearEmpleado(nombre,nombreUsuario,contrasena,email,id,telefono,direccion,estado,cargo);
             nuevo.setFotoUsuario(imagenSeleccionada);
+            imageEmpleadoRegistro.setImage(imagenRegistroSett);
             if(nuevo!=null){
-                modelFactoryController.guardarResourceBinario();
-                modelFactoryController.guardarResourceXML();
                 empleados.add(nuevo);
                 mostrarMensaje("Notificacion Empleado", "Empleado creado", "El empleado se ha creado con exito", Alert.AlertType.INFORMATION);
                 limpiarCamposEmpleado();
@@ -720,7 +715,8 @@ public class InventarioController implements Initializable {
     }
 
     @FXML
-    void onActionAnadirLote(ActionEvent event) {
+    void onActionAnadirLote(ActionEvent event) throws IOException {
+        Image imagenSett = new Image(getClass().getResourceAsStream("/Imagenes/icons8-error-64.png"));
         int cantidadProductos=Integer.parseInt(txtCantidadLote.getText());
         double precioUnitario= Double.parseDouble(txtPrecioUnitarioLote.getText());
         Proveedor proveedor= cbProveedorLote.getValue();
@@ -736,9 +732,8 @@ public class InventarioController implements Initializable {
             Lote nuevo= null;
             nuevo=modelFactoryController.crearLote(cantidadProductos,precioUnitario,costoTotalLote,proveedor,nombreProducto,precioVenta,fechaCaducidad,costoProducto,marca,descripcion);
             nuevo.setCodigoBarrasImage(imagenLote);
+            imageCodigoBarras.setImage(imagenSett);
             if(nuevo!=null){
-                modelFactoryController.guardarResourceBinario();
-                modelFactoryController.guardarResourceXML();
                 lotes.add(nuevo);
                 mostrarMensaje("Notificacion Lote", "Lote creado", "El Lote se ha creado con exito", Alert.AlertType.INFORMATION);
                 limpiarCamposLote();
@@ -753,7 +748,7 @@ public class InventarioController implements Initializable {
     }
 
     @FXML
-    void onActionAnadirProveedor(ActionEvent event) {
+    void onActionAnadirProveedor(ActionEvent event) throws IOException {
         String nombreEmpresa=txtNombreEmpresaProveedor.getText();
         String direccion= txtDireccionProveedor.getText();
         String telefono= txtTelefonoProveedor.getText();
@@ -764,8 +759,6 @@ public class InventarioController implements Initializable {
             Proveedor nuevo=null;
             nuevo=modelFactoryController.anadirProveedor(nombreEmpresa,direccion,telefono,nombreContacto,comentarios,estado);
             if(nuevo!=null){
-                modelFactoryController.guardarResourceBinario();
-                modelFactoryController.guardarResourceXML();
                 proveedores.add(nuevo);
                 mostrarMensaje("Notificacion Proveedor", "Proveedor creado", "El Proveedor se ha creado con exito", Alert.AlertType.INFORMATION);
                 limpiarCamposProveedores();
@@ -813,14 +806,12 @@ public class InventarioController implements Initializable {
     }
 
     @FXML
-    void onActionEliminarCargo(ActionEvent event) {
+    void onActionEliminarCargo(ActionEvent event) throws IOException {
         boolean eliminado=false;
         if(cargoSeleccionado!=null){
             if(mostrarMensajeConfirmacion("Desea eliminar este Cargo?")==true){
                 eliminado=modelFactoryController.eliminarCargo(cargoSeleccionado);
                 if(eliminado){
-                    modelFactoryController.guardarResourceBinario();
-                    modelFactoryController.guardarResourceXML();
                     cargos.remove(cargoSeleccionado);
                     mostrarMensaje("Notificacion Cargo", "Cargo eliminado", "El cargo se ha eliminado con exito", Alert.AlertType.INFORMATION);
                     limpiarCamposCargo();
@@ -836,14 +827,12 @@ public class InventarioController implements Initializable {
     }
 
     @FXML
-    void onActionEliminarEmpleado(ActionEvent event) {
+    void onActionEliminarEmpleado(ActionEvent event) throws IOException {
         boolean eliminado=false;
         if(empleadoSeleccionado!=null){
             if(mostrarMensajeConfirmacion("Desea eliminar este Empleado?")==true){
                 eliminado=modelFactoryController.eliminarEmpleado(empleadoSeleccionado);
                 if(eliminado){
-                    modelFactoryController.guardarResourceBinario();
-                    modelFactoryController.guardarResourceXML();
                     empleados.remove(empleadoSeleccionado);
                     mostrarMensaje("Notificacion Empleado", "Empleado eliminado", "El Empleado se ha eliminado con exito", Alert.AlertType.INFORMATION);
                     limpiarCamposEmpleado();
@@ -859,14 +848,12 @@ public class InventarioController implements Initializable {
     }
 
     @FXML
-    void onActionEliminarLote(ActionEvent event) {
+    void onActionEliminarLote(ActionEvent event) throws IOException {
         boolean eliminado= false;
         if(loteSeleccionado!=null){
             if(mostrarMensajeConfirmacion("Desea eliminar este lote?")==true){
                 eliminado=modelFactoryController.eliminarLote(loteSeleccionado);
                 if(eliminado){
-                    modelFactoryController.guardarResourceBinario();
-                    modelFactoryController.guardarResourceXML();
                     lotes.remove(loteSeleccionado);
                     mostrarMensaje("Notificacion Lote", "Lote eliminado", "El Lote se ha eliminado con exito", Alert.AlertType.INFORMATION);
                     limpiarCamposLote();
@@ -882,14 +869,12 @@ public class InventarioController implements Initializable {
     }
 
     @FXML
-    void onActionEliminarProveedor(ActionEvent event) {
+    void onActionEliminarProveedor(ActionEvent event) throws IOException {
         boolean eliminado= false;
         if(proveedorSeleccionado!=null){
             if(mostrarMensajeConfirmacion("Desea eliminar este proveedor?")==true){
                 eliminado=modelFactoryController.eliminarProveedor(proveedorSeleccionado);
                 if(eliminado){
-                    modelFactoryController.guardarResourceBinario();
-                    modelFactoryController.guardarResourceXML();
                     proveedores.remove(proveedorSeleccionado);
                     mostrarMensaje("Notificacion Proveedor", "Proveedor eliminado", "El Proveedor se ha eliminado con exito", Alert.AlertType.INFORMATION);
                     limpiarCamposProveedores();
@@ -1169,7 +1154,7 @@ public class InventarioController implements Initializable {
                     System.err.println("No se pudo crear la carpeta.");
                 }
             }
-            String nombreArchivo = generarNombreUnico();
+            String nombreArchivo = String.valueOf(modelFactoryController.getLoteActual().getCostoTotalLote());
 
             String rutaImagen = selectedFile.toURI().toString();
 
@@ -1206,7 +1191,7 @@ public class InventarioController implements Initializable {
                     System.err.println("No se pudo crear la carpeta.");
                 }
             }
-            String nombreArchivo = generarNombreUnico();
+            String nombreArchivo = txtNombreUsuario.getText() ;
 
             String rutaImagen = selectedFile.toURI().toString();
 

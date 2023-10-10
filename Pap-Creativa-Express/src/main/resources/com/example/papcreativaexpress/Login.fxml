@@ -43,6 +43,5 @@
             <Font size="1.0" />
          </font>
       </Button>
-      <Button fx:id="btnRegistrar" layoutX="43.0" layoutY="367.0" mnemonicParsing="false" onAction="#OnActionRegistrar" prefHeight="25.0" prefWidth="104.0" text="Registrate" />
    </children>
 </AnchorPane>

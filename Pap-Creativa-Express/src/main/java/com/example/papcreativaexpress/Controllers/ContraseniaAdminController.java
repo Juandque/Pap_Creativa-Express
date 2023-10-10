@@ -114,7 +114,6 @@ public class ContraseniaAdminController implements Initializable {
         }
     }
 
-    // En el método OnActionIngresar:
     @FXML
     void OnActionIngresar(ActionEvent event) {
         if (!tfCodigo.getText().isEmpty()) {
