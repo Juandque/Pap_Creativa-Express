@@ -129,7 +129,7 @@ public class LoginController implements Initializable {
         tfCorreoElectronico.getStyleClass().add("text-field");
         tfContrasenia.getStyleClass().add("text-field");
         btnIngresar.getStyleClass().add("button");
-        btnRegistrar.getStyleClass().add("button");
+        //btnRegistrar.getStyleClass().add("button");
 
     }
 }

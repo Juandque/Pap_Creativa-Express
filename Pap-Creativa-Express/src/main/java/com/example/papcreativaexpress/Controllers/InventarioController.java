@@ -667,8 +667,6 @@ public class InventarioController implements Initializable {
             Cargo nuevo=null;
             nuevo=modelFactoryController.crearCargo(nombre,descripcion,salario,estado,cantidadEmpleados);
             if(nuevo!=null){
-                modelFactoryController.guardarResourceBinario();
-                modelFactoryController.guardarResourceXML();
                 cargos.add(nuevo);
                 mostrarMensaje("Notificacion Cargo", "Cargo creado", "El cargo se ha creado con exito", Alert.AlertType.INFORMATION);
                 limpiarCamposCargo();

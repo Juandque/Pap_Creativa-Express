@@ -25,7 +25,9 @@ public class Persistencia {
 	public static final String RUTA_ARCHIVO_CARGOS = "Pap-Creativa-Express/src/main/resources/persistencia/archivos/archivoCargos.txt";
 	public static final String RUTA_ARCHIVO_PROVEEDORES = "Pap-Creativa-Express/src/main/resources/persistencia/archivos/archivoProveedores.txt";
 
-	public static final String RUTA_ARCHIVO_MODELO_MARKETPLACE_BINARIO = "Pap-Creativa-Express/src/main/resources/persistencia/model.dat";
+	public static final String RUTA_ARCHIVO_MODELO_MARKETPLACE_BINARIO = "src/main/resources/persistencia/model.dat";
+	//C:/Users/Usuario/Workspace eclipse/Ing soft/Pap_Creativa-Express/Pap-Creativa-Express/src/main/resources/persistencia/model.dat
+	//C:\Users\Usuario\Workspace eclipse\Ing soft\Pap_Creativa-Express\Pap-Creativa-Express\src\main\java\com\example\papcreativaexpress\Persistencia
 	public static final String RUTA_ARCHIVO_MODELO_MARQUETPLACE_XML = "Pap-Creativa-Express/src/main/resources/persistencia/model.xml";
 	public static final String RUTA_ARCHIVO_COPIA_XML = "src/main/resources/persistencia/respaldo/";
 

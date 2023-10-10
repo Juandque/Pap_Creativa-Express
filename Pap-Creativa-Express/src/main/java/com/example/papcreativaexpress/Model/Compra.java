@@ -1,9 +1,11 @@
 package com.example.papcreativaexpress.Model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Compra {
+public class Compra implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String id;
     private Date fechaRegistro;
     private double totalCompra;

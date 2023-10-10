@@ -27,9 +27,7 @@ public class ModelFactoryController {
     }
 
     public ModelFactoryController() {
-        inicializarDatos();
-       //guardarResourceXML();
-       //cargarResourceXML();
+        //inicializarDatos();
         //guardarResourceBinario();
         cargarResourceBinario();
 
@@ -39,16 +37,6 @@ public class ModelFactoryController {
     public void inicializarDatos(){
 
         papCreativaExpress = new PapCreativaExpress();
-        try {
-            Persistencia.guardarCargos(getPapCreativaExpress().getListaCargos());
-            Persistencia.guardarProductos(getPapCreativaExpress().getListaProductos());
-            Persistencia.guardarUsuarios(getPapCreativaExpress().getListaEmpleados());
-            Persistencia.guardarLotes(getPapCreativaExpress().getListaLotes());
-            Persistencia.guardarProveedores(getPapCreativaExpress().getListaProveedores());
-            Persistencia.cargarDatosArchivos(getPapCreativaExpress());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         Usuario usr= new Usuario();
         usr.setNombreUsuario("Juanse");
@@ -87,82 +75,82 @@ public class ModelFactoryController {
     public Usuario crearEmpleado(String nombre, String nombreUsuario, String contrasenia, String correo,
                                  String id, String telefono, String direccion, Estado estado, Cargo cargo) throws IOException {
         Usuario usuario = papCreativaExpress.crearEmpleado(nombre, nombreUsuario, contrasenia, correo, id, telefono, direccion,estado,cargo);
-        Persistencia.guardarUsuarios(papCreativaExpress.getListaEmpleados());
+        guardarResourceBinario();
         return usuario;
     }
 
     public boolean eliminarEmpleado(Usuario usr) throws IOException {
         boolean flagEliminado = papCreativaExpress.eliminarEmpleado(usr);
-        Persistencia.guardarUsuarios(papCreativaExpress.getListaEmpleados());
+        guardarResourceBinario();
         return flagEliminado;
     }
 
     public boolean actualizarEmpleado(String nombreUsuario, String nuevoNombreUsuario, String contrasenia, String nombre, String telefono, String id, String email, String direccion, Estado estado, Cargo cargo) throws IOException {
         boolean flagActualizado = papCreativaExpress.actualizarEmpleado(nombreUsuario, nuevoNombreUsuario, contrasenia, nombre, telefono, id, email, direccion, estado, cargo);
-        Persistencia.guardarUsuarios(papCreativaExpress.getListaEmpleados());
+        guardarResourceBinario();
         return flagActualizado;
     }
 
     public Cargo crearCargo(String nombre, String descripcion, double salario, String estado, int empleadosRequeridos) throws IOException {
         Cargo cargo = papCreativaExpress.anadirCargo(nombre, descripcion, salario, estado, empleadosRequeridos);
-        Persistencia.guardarCargos(papCreativaExpress.getListaCargos());
+        guardarResourceBinario();
         return cargo;
     }
 
     public boolean eliminarCargo(Cargo cargo) throws IOException {
         boolean flagEliminado = papCreativaExpress.eliminarCargo(cargo);
-        Persistencia.guardarCargos(papCreativaExpress.getListaCargos());
+        guardarResourceBinario();
         return flagEliminado;
     }
 
     public boolean actualizarCargo(String idCargo, String nombre, String descripcion, double salario, String estado, int empleadosRequeridos) throws IOException {
         boolean flagActualizado = papCreativaExpress.actualizarCargo(idCargo, nombre, descripcion, salario, estado, empleadosRequeridos);
-        Persistencia.guardarCargos(papCreativaExpress.getListaCargos());
+        guardarResourceBinario();
 
         return flagActualizado;
     }
 
     public Lote crearLote(int cantidad, double precioUnitario, double precioTotal, Proveedor proveedor, String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion) throws IOException {
         Lote lote = papCreativaExpress.anadirLote(cantidad, precioUnitario, precioTotal, proveedor, nombre, precioVenta, fechaCaducidad, costo, marca, descripcion);
-        Persistencia.guardarLotes(papCreativaExpress.getListaLotes());
+        guardarResourceBinario();
 
         return lote;
     }
 
     public boolean eliminarLote(Lote lote) throws IOException {
         boolean flagEliminado = papCreativaExpress.eliminarLote(lote);
-        Persistencia.guardarLotes(papCreativaExpress.getListaLotes());
+        guardarResourceBinario();
 
         return flagEliminado;
     }
 
     public boolean actualizarLote(String idLote, int cantidad, double precioUnitario, double precioTotal, Proveedor proveedor, String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion) throws IOException {
         boolean flagActualizado = papCreativaExpress.actualizarLote(idLote, cantidad, precioUnitario, precioTotal, proveedor, nombre, precioVenta, fechaCaducidad, costo, marca, descripcion);
-        Persistencia.guardarLotes(papCreativaExpress.getListaLotes());
+        guardarResourceBinario();
         return flagActualizado;
     }
 
     public Proveedor anadirProveedor(String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado) throws IOException {
         Proveedor proveedor = papCreativaExpress.anadirProveedor(nombreEmpresa, direccion, telefono, nombreContacto, comentarios, estado);
-        Persistencia.guardarProveedores(papCreativaExpress.getListaProveedores());
+        guardarResourceBinario();
         return proveedor;
     }
 
     public boolean eliminarProveedor(Proveedor proveedor) throws IOException {
         boolean flagEliminado = papCreativaExpress.eliminarProveedor(proveedor);
-        Persistencia.guardarProveedores(papCreativaExpress.getListaProveedores());
+        guardarResourceBinario();
         return flagEliminado;
     }
 
     public boolean actualizarProveedor(String idProveedor, String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado) throws IOException {
         boolean flagActualizado = papCreativaExpress.actualizarProveedor(idProveedor, nombreEmpresa, direccion, telefono, nombreContacto, comentarios, estado);
-        Persistencia.guardarProveedores(papCreativaExpress.getListaProveedores());
+        guardarResourceBinario();
         return flagActualizado;
     }
 
     public void actualizarContrasenia(Usuario usuario, String contrasenia) throws IOException {
         papCreativaExpress.actualizarContrasenaUsuario(usuario, contrasenia);
-        Persistencia.guardarUsuarios(papCreativaExpress.getListaEmpleados());
+        guardarResourceBinario();
     }
 
     public String generarCodigo() {
