@@ -1,39 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="17.0.1" class="java.beans.XMLDecoder">
  <object class="com.example.papcreativaexpress.Model.PapCreativaExpress" id="PapCreativaExpress0">
-  <void property="listaCargos">
-   <void method="add">
-    <object class="com.example.papcreativaexpress.Model.Cargo">
-     <void property="descripcion">
-      <string>dasdas</string>
-     </void>
-     <void property="empleadosRequeridos">
-      <int>23</int>
-     </void>
-     <void property="estado">
-      <string>ss</string>
-     </void>
-     <void property="fechaCreacion">
-      <object class="java.util.Date">
-       <long>1696907509934</long>
-      </object>
-     </void>
-     <void property="id">
-      <string>00000000001</string>
-     </void>
-     <void property="nombre">
-      <string>a</string>
-     </void>
-     <void property="salario">
-      <double>1.0</double>
-     </void>
-    </object>
-   </void>
-  </void>
-  <void id="Image0" property="imagenActual"/>
   <void property="listaEmpleados">
    <void method="add">
-    <object class="com.example.papcreativaexpress.Model.Usuario" id="Usuario0">
+    <object class="com.example.papcreativaexpress.Model.Usuario">
      <void property="contrasenia">
       <string>10973</string>
      </void>
@@ -49,9 +19,6 @@
        <string>DISPONIBLE</string>
       </object>
      </void>
-     <void property="fotoUsuario">
-      <object idref="Image0"/>
-     </void>
      <void property="id">
       <string>10963490</string>
      </void>
@@ -66,9 +33,6 @@
      </void>
     </object>
    </void>
-  </void>
-  <void property="usuarioActual">
-   <object idref="Usuario0"/>
   </void>
  </object>
 </java>

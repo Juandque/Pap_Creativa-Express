@@ -6,6 +6,8 @@ module com.example.papcreativaexpress {
     requires jakarta.mail;
     requires javafx.swing;
     requires java.sql;
+    requires com.google.zxing;
+    requires com.google.zxing.javase;
 
 
     opens com.example.papcreativaexpress to javafx.fxml;

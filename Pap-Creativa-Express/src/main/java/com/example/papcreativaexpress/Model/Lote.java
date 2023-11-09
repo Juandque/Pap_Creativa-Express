@@ -15,6 +15,7 @@ public class Lote implements Serializable {
     private Date fechaEntrada;
     private int cantidad;
     private String id;
+    private String nombre;
     private double precioUnitario;
     private double costoTotalLote;
     private Date fechaRegistro;
@@ -115,6 +116,14 @@ public class Lote implements Serializable {
         return codigoBarrasImage;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     public void setCodigoBarrasImage(Image codigoBarrasImage) {
         this.codigoBarrasImage = codigoBarrasImage;
     }
@@ -159,6 +168,7 @@ public class Lote implements Serializable {
         this.setProveedor(otroLote.getProveedor());
         this.setPrecioUnitario(otroLote.getPrecioUnitario());
         this.setCostoTotalLote(otroLote.getCostoTotalLote());
+        this.setNombre(otroLote.getNombre());
     }
 
 }

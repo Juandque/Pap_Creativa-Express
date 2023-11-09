@@ -98,7 +98,7 @@
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../Imagenes/Lotes.png" />
+                              <Image url="@../../../Imagenes/lote.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -250,7 +250,7 @@
                         <TextField fx:id="txtDescripcionProductoLote" alignment="CENTER" layoutX="10.0" layoutY="466.0" prefHeight="25.0" prefWidth="293.0" promptText="Descripcion" />
                         <DatePicker fx:id="dpFechaCaducidadProductoLote" layoutX="317.0" layoutY="466.0" prefHeight="25.0" prefWidth="312.0" promptText="Fecha de Caducidad" />
                         <Button fx:id="btnCodigoBrras" layoutX="377.0" layoutY="538.0" mnemonicParsing="false" onAction="#OnActionCodigoBarras" prefHeight="23.0" prefWidth="212.0" stylesheets="@../../../css/Estilos.css" text="Ingresar código de barras" />
-                        <ImageView fx:id="imageCodigoBarras" fitHeight="67.0" fitWidth="283.0" layoutX="31.0" layoutY="516.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="imageCodigoBarras" fitHeight="100.0" fitWidth="283.0" layoutX="15.0" layoutY="500.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </Pane>
                </children>
