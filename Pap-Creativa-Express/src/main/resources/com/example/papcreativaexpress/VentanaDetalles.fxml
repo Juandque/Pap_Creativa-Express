@@ -26,7 +26,7 @@
       <VBox layoutX="69.0" layoutY="61.0" prefHeight="506.0" prefWidth="427.0">
          <children>
             <Button fx:id="btnVolver" mnemonicParsing="false" onAction="#OnActionVolver" stylesheets="@../../../css/Estilos.css" text="Volver" />
-            <ImageView fx:id="imageEmpleado" fitHeight="90.0" fitWidth="269.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imageEmpleado" fitHeight="100.0" fitWidth="283.0" pickOnBounds="true" preserveRatio="true">
                <VBox.margin>
                   <Insets left="80.0" />
                </VBox.margin>

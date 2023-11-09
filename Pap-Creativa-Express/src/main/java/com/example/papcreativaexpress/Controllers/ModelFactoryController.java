@@ -28,6 +28,7 @@ public class ModelFactoryController {
 
     public ModelFactoryController() {
         //inicializarDatos();
+        //guardarResourceXML();
         //guardarResourceBinario();
         cargarResourceBinario();
 
@@ -252,15 +253,14 @@ public class ModelFactoryController {
         }
     }
     public Image cargarImagenLote(String id) {
-        String rutaImagen = "Pap-Creativa-Express/src/main/resources/imagenes_usuarios" + File.separator+ id + ".png";
+        String rutaImagen = "Pap-Creativa-Express/src/main/resources/Imagenes_Productos" + File.separator+ id + ".png";
         File archivoImagen = new File(rutaImagen);
 
         if (archivoImagen.exists()) {
-            System.out.println("NO APARECE");
 
             return new Image(archivoImagen.toURI().toString());
         } else {
-            System.out.println("ES NULLA");
+            System.out.println("ES NULA");
             return null;
         }
     }
@@ -270,8 +270,6 @@ public class ModelFactoryController {
     public Lote buscarLotePorId(String id){
         return papCreativaExpress.buscarLotePorId(id);
     }
-
-
 
 }
 

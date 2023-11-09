@@ -161,6 +161,7 @@ public class PapCreativaExpress implements Serializable {
         idLotes++;
         String idProducto = null;
         Lote loteAux = new Lote(new Date(), cantidad, id, precioUnitario, precioTotal, new Date(), proveedor);
+        loteAux.setNombre(nombre);
         for (int i = 1; i <= cantidad; i++) {
             idProducto = crearId(idProductos);
             idProductos++;

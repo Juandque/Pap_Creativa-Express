@@ -209,6 +209,8 @@ public class ContraseniaAdminController implements Initializable {
         if (condicion) {
             nodoTexto.getStyleClass().clear(); // Limpiar clases de estilo previas
             nodoTexto.getStyleClass().add("texto-verde"); // Agregar clase de estilo para texto verde
+        }else {
+            nodoTexto.getStyleClass().add("texto-rojo");
         }
     }
 }
