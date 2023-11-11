@@ -9,7 +9,6 @@ public class Factura implements Serializable {
     private String id;
     private Date fechaFactura;
     private double subtotalFactura;
-    private  double descuentoTotalFactura;
     private  double totalFactura;
     private List<DetalleVenta> listaDetallesVenta;
     private Usuario empleadoEncargadoFactura;
@@ -40,14 +39,6 @@ public class Factura implements Serializable {
 
     public void setSubtotalFactura(double subtotalFactura) {
         this.subtotalFactura = subtotalFactura;
-    }
-
-    public double getDescuentoTotalFactura() {
-        return descuentoTotalFactura;
-    }
-
-    public void setDescuentoTotalFactura(double descuentoTotalFactura) {
-        this.descuentoTotalFactura = descuentoTotalFactura;
     }
 
     public double getTotalFactura() {

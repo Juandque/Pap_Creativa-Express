@@ -5,6 +5,7 @@ import com.example.papcreativaexpress.Model.*;
 import com.example.papcreativaexpress.Persistencia.Persistencia;
 import com.example.papcreativaexpress.Utils.MensajeUtil;
 import com.example.papcreativaexpress.Utils.TextFormatterUtil;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,6 +31,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.example.papcreativaexpress.Utils.GenerarCodigoBarras.generarCodigoDeBarras;
 
@@ -195,12 +197,24 @@ public class InventarioController implements Initializable {
 
     @FXML
     private TableColumn<Proveedor, String> colTelefonoProveedor;
-
+    @FXML
+    private TableColumn<DetalleVenta, String> colProductoVentas;
+    @FXML
+    private TableColumn<DetalleVenta, Integer> colCantidadVentas;
+    @FXML
+    private TableColumn<DetalleVenta, Double> colPrecioUnidadVentas;
+    @FXML
+    private TableColumn<DetalleVenta, Double> colSubTotalVentas;
+    @FXML
+    private TableColumn<DetalleVenta, Double> colDescuentoVentas;
     @FXML
     private DatePicker dpFechaCaducidadProductoLote;
 
     @FXML
     private Pane paneAdmin;
+    @FXML
+    private Pane paneVentas;
+
 
     @FXML
     private Pane paneCargos;
@@ -216,6 +230,8 @@ public class InventarioController implements Initializable {
 
     @FXML
     private TableView<Cargo> tableCargos;
+    @FXML
+    private TableView<DetalleVenta>tableRegistroVentas;
 
     @FXML
     private TableView<Usuario> tableEmpleados;
@@ -315,10 +331,13 @@ public class InventarioController implements Initializable {
     private Lote loteSeleccionado;
     private Proveedor proveedorSeleccionado;
     private Usuario empleadoSeleccionado;
+    private DetalleVenta ventaSeleccionada;
     private ObservableList<Usuario> empleados = FXCollections.observableArrayList();
     private ObservableList<Proveedor> proveedores = FXCollections.observableArrayList();
     private ObservableList<Cargo> cargos = FXCollections.observableArrayList();
     private ObservableList<Lote> lotes = FXCollections.observableArrayList();
+    private ObservableList<DetalleVenta> ventas = FXCollections.observableArrayList();
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -333,17 +352,21 @@ public class InventarioController implements Initializable {
         ArrayList<Proveedor> proveedoresArrayList = modelFactoryController.getProveedores();
         ArrayList<Cargo> cargosArrayList = modelFactoryController.getCargos();
         ArrayList<Lote> lotesArrayList = modelFactoryController.getLotes();
+        ArrayList<DetalleVenta> detalleVentaArrayList = modelFactoryController.getPapCreativaExpress().getListaDetalleVentas();
+
 
         empleados.addAll(empleadosArrayList);
         proveedores.addAll(proveedoresArrayList);
         cargos.addAll(cargosArrayList);
         lotes.addAll(lotesArrayList);
+        ventas.addAll(detalleVentaArrayList);
 
         initializePaneAdmin();
         initializePaneProductos();
         initializePaneCargos();
         initializePaneLotes();
         initializePaneProveedores();
+        initializePaneVentas();
         txtCantidadLote.textProperty().addListener((observable, oldValue, newValue) -> {
             actualizarCostoTotal();
         });
@@ -351,8 +374,8 @@ public class InventarioController implements Initializable {
             actualizarCostoTotal();
         });
         mostrarProductosCantidadBaja(modelFactoryController.getLotes());
-
     }
+
 
     public void initializePaneAdmin() {
         this.colNombreEmpleado.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -505,6 +528,25 @@ public class InventarioController implements Initializable {
             }
         });
     }
+    public void initializePaneVentas(){
+        this.colCantidadVentas.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+        this.colDescuentoVentas.setCellValueFactory(new PropertyValueFactory<>("descuentoDetalleVenta"));
+        this.colSubTotalVentas.setCellValueFactory(new PropertyValueFactory<>("subTotalDetalleVenta"));
+        this.colProductoVentas.setCellValueFactory(((cellData -> {
+            Producto p = cellData.getValue().getProducto();
+            if (p != null) {
+                String nombre = p.getNombre();
+                return new SimpleStringProperty(nombre);
+            } else {
+                return new SimpleStringProperty("");
+            }
+        })));
+        this.colPrecioUnidadVentas.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
+
+        tableRegistroVentas.setItems(ventas);
+        tableRegistroVentas.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            ventaSeleccionada = newSelection;});
+    }
 
     @FXML
     void OnActionEmpleados(ActionEvent event) {
@@ -513,6 +555,8 @@ public class InventarioController implements Initializable {
         paneLotes.setVisible(false);
         paneProductos.setVisible(false);
         paneProveedores.setVisible(false);
+        paneVentas.setVisible(false);
+
     }
 
     @FXML
@@ -522,6 +566,8 @@ public class InventarioController implements Initializable {
         paneLotes.setVisible(false);
         paneProductos.setVisible(true);
         paneProveedores.setVisible(false);
+        paneVentas.setVisible(false);
+
     }
 
     @FXML
@@ -531,6 +577,18 @@ public class InventarioController implements Initializable {
         paneLotes.setVisible(false);
         paneProductos.setVisible(false);
         paneProveedores.setVisible(true);
+        paneVentas.setVisible(false);
+
+    }
+    @FXML
+    void onActionVentas(ActionEvent event) {
+        paneAdmin.setVisible(false);
+        paneCargos.setVisible(false);
+        paneLotes.setVisible(false);
+        paneProductos.setVisible(false);
+        paneProveedores.setVisible(false);
+        paneVentas.setVisible(true);
+
     }
 
     @FXML
@@ -553,10 +611,12 @@ public class InventarioController implements Initializable {
             detallesStage.setScene(new Scene(root));
             detallesStage.setTitle("Detalles del Producto");
             detallesStage.show();
+            tableLotes.refresh();
         } else {
             MensajeUtil.mostrarMensaje("Error", "Selección", "Debe seleccionar un producto", Alert.AlertType.ERROR);
         }
     }
+
     private void mostrarProductosCantidadBaja(List<Lote> lotes) {
         StringBuilder mensajeProductosBajos = new StringBuilder("Productos con cantidad baja:\n");
 
@@ -777,6 +837,7 @@ public class InventarioController implements Initializable {
             limpiarCamposLote();
         }
     }
+
     private void actualizarCostoTotal() {
         try {
             int cantidadProductos = Integer.parseInt(txtCantidadLote.getText());
@@ -791,24 +852,24 @@ public class InventarioController implements Initializable {
 
     @FXML
     void onActionAnadirProveedor(ActionEvent event) throws IOException {
-        String nombreEmpresa=txtNombreEmpresaProveedor.getText();
-        String direccion= txtDireccionProveedor.getText();
-        String telefono= txtTelefonoProveedor.getText();
-        String nombreContacto=txtNombreContactoProveedor.getText();
-        String comentarios= txtComentariosProveedor.getText();
-        String estado= txtEstadoProveedor.getText();
-        if(datosValidosProveedor(nombreEmpresa,direccion,telefono,nombreContacto,comentarios,estado)){
-            Proveedor nuevo=null;
-            nuevo=modelFactoryController.anadirProveedor(nombreEmpresa,direccion,telefono,nombreContacto,comentarios,estado);
-            if(nuevo!=null){
+        String nombreEmpresa = txtNombreEmpresaProveedor.getText();
+        String direccion = txtDireccionProveedor.getText();
+        String telefono = txtTelefonoProveedor.getText();
+        String nombreContacto = txtNombreContactoProveedor.getText();
+        String comentarios = txtComentariosProveedor.getText();
+        String estado = txtEstadoProveedor.getText();
+        if (datosValidosProveedor(nombreEmpresa, direccion, telefono, nombreContacto, comentarios, estado)) {
+            Proveedor nuevo = null;
+            nuevo = modelFactoryController.anadirProveedor(nombreEmpresa, direccion, telefono, nombreContacto, comentarios, estado);
+            if (nuevo != null) {
                 proveedores.add(nuevo);
                 mostrarMensaje("Notificacion Proveedor", "Proveedor creado", "El Proveedor se ha creado con exito", Alert.AlertType.INFORMATION);
                 limpiarCamposProveedores();
-            }else {
+            } else {
                 mostrarMensaje("Notificacion Proveedor", "Proveedor no creado", "El Proveedor no se ha creado con exito", Alert.AlertType.ERROR);
                 limpiarCamposProveedores();
             }
-        }else {
+        } else {
             mostrarMensaje("Notificacion Proveedor", "Datos invalidos", "Los datos ingresados son invalidos", Alert.AlertType.WARNING);
             limpiarCamposProveedores();
         }
@@ -849,20 +910,20 @@ public class InventarioController implements Initializable {
 
     @FXML
     void onActionEliminarCargo(ActionEvent event) throws IOException {
-        boolean eliminado=false;
-        if(cargoSeleccionado!=null){
-            if(mostrarMensajeConfirmacion("Desea eliminar este Cargo?")==true){
-                eliminado=modelFactoryController.eliminarCargo(cargoSeleccionado);
-                if(eliminado){
+        boolean eliminado = false;
+        if (cargoSeleccionado != null) {
+            if (mostrarMensajeConfirmacion("Desea eliminar este Cargo?") == true) {
+                eliminado = modelFactoryController.eliminarCargo(cargoSeleccionado);
+                if (eliminado) {
                     cargos.remove(cargoSeleccionado);
                     mostrarMensaje("Notificacion Cargo", "Cargo eliminado", "El cargo se ha eliminado con exito", Alert.AlertType.INFORMATION);
                     limpiarCamposCargo();
-                }else{
+                } else {
                     mostrarMensaje("Notificacion Cargo", "Cargo no eliminado", "El cargo no se ha eliminado con exito", Alert.AlertType.ERROR);
                     limpiarCamposCargo();
                 }
             }
-        }else {
+        } else {
             mostrarMensaje("Notificacion Cargo", "Cargo no seleccionado", "No ha seleccionado ningun elemento", Alert.AlertType.WARNING);
             limpiarCamposCargo();
         }
@@ -870,20 +931,20 @@ public class InventarioController implements Initializable {
 
     @FXML
     void onActionEliminarEmpleado(ActionEvent event) throws IOException {
-        boolean eliminado=false;
-        if(empleadoSeleccionado!=null){
-            if(mostrarMensajeConfirmacion("Desea eliminar este Empleado?")==true){
-                eliminado=modelFactoryController.eliminarEmpleado(empleadoSeleccionado);
-                if(eliminado){
+        boolean eliminado = false;
+        if (empleadoSeleccionado != null) {
+            if (mostrarMensajeConfirmacion("Desea eliminar este Empleado?") == true) {
+                eliminado = modelFactoryController.eliminarEmpleado(empleadoSeleccionado);
+                if (eliminado) {
                     empleados.remove(empleadoSeleccionado);
                     mostrarMensaje("Notificacion Empleado", "Empleado eliminado", "El Empleado se ha eliminado con exito", Alert.AlertType.INFORMATION);
                     limpiarCamposEmpleado();
-                }else {
+                } else {
                     mostrarMensaje("Notificacion Empleado", "Empleado no eliminado", "El Empleado no se ha eliminado con exito", Alert.AlertType.ERROR);
                     limpiarCamposEmpleado();
                 }
             }
-        }else {
+        } else {
             mostrarMensaje("Notificacion Empleado", "Empleado no seleccionado", "No ha seleccionado ningun elemento", Alert.AlertType.WARNING);
             limpiarCamposEmpleado();
         }
@@ -891,20 +952,20 @@ public class InventarioController implements Initializable {
 
     @FXML
     void onActionEliminarLote(ActionEvent event) throws IOException {
-        boolean eliminado= false;
-        if(loteSeleccionado!=null){
-            if(mostrarMensajeConfirmacion("Desea eliminar este lote?")==true){
-                eliminado=modelFactoryController.eliminarLote(loteSeleccionado);
-                if(eliminado){
+        boolean eliminado = false;
+        if (loteSeleccionado != null) {
+            if (mostrarMensajeConfirmacion("Desea eliminar este lote?") == true) {
+                eliminado = modelFactoryController.eliminarLote(loteSeleccionado);
+                if (eliminado) {
                     lotes.remove(loteSeleccionado);
                     mostrarMensaje("Notificacion Lote", "Lote eliminado", "El Lote se ha eliminado con exito", Alert.AlertType.INFORMATION);
                     limpiarCamposLote();
-                }else {
+                } else {
                     mostrarMensaje("Notificacion Lote", "Lote no eliminado", "El Lote no se ha eliminado con exito", Alert.AlertType.ERROR);
                     limpiarCamposLote();
                 }
             }
-        }else {
+        } else {
             mostrarMensaje("Notificacion Lote", "Lote no seleccionado", "No ha seleccionado ningun elemento", Alert.AlertType.WARNING);
             limpiarCamposLote();
         }
@@ -912,24 +973,124 @@ public class InventarioController implements Initializable {
 
     @FXML
     void onActionEliminarProveedor(ActionEvent event) throws IOException {
-        boolean eliminado= false;
-        if(proveedorSeleccionado!=null){
-            if(mostrarMensajeConfirmacion("Desea eliminar este proveedor?")==true){
-                eliminado=modelFactoryController.eliminarProveedor(proveedorSeleccionado);
-                if(eliminado){
+        boolean eliminado = false;
+        if (proveedorSeleccionado != null) {
+            if (mostrarMensajeConfirmacion("Desea eliminar este proveedor?") == true) {
+                eliminado = modelFactoryController.eliminarProveedor(proveedorSeleccionado);
+                if (eliminado) {
                     proveedores.remove(proveedorSeleccionado);
                     mostrarMensaje("Notificacion Proveedor", "Proveedor eliminado", "El Proveedor se ha eliminado con exito", Alert.AlertType.INFORMATION);
                     limpiarCamposProveedores();
-                }else {
+                } else {
                     mostrarMensaje("Notificacion Proveedor", "Proveedor no eliminado", "El Proveedor no se ha eliminado con exito", Alert.AlertType.ERROR);
                     limpiarCamposProveedores();
                 }
             }
-        }else {
+        } else {
             mostrarMensaje("Notificacion Proveedor", "Proveedor no seleccionado", "No ha seleccionado ningun elemento", Alert.AlertType.WARNING);
             limpiarCamposProveedores();
         }
     }
+
+    @FXML
+    void OnActionBuscar(ActionEvent event) {
+        String buscar = tfBuscarProducto.getText().trim();
+        List<Lote>lotesEncontrados = lotes.stream().filter(lote -> lote.getListaProductosLote().get(0).getNombre().toLowerCase().contains(buscar.toLowerCase())).toList();
+        tableLotes.setItems(FXCollections.observableArrayList(lotesEncontrados));
+
+    }
+
+    @FXML
+    void OnActionVerVenta(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("detallesVentas.fxml"));
+            Parent root = loader.load();
+            DetallesVentasController detallesVentasController = loader.getController();
+            detallesVentasController.setControladorPrincipal(this);
+            detallesVentasController.agregarDetallesVenta(ventas);
+
+
+
+            Scene scene = new Scene(root);
+
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void OnActionAgregar(ActionEvent event) {
+        if (loteSeleccionado != null) {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Venta de Productos");
+            dialog.setHeaderText("Ingrese la cantidad a vender:");
+            dialog.setContentText("Cantidad:");
+
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(cantidadStr -> {
+                try {
+                    int cantidad = Integer.parseInt(cantidadStr);
+                    venderProductos(loteSeleccionado, cantidad);
+                    Platform.runLater(()->{
+                        tableLotes.refresh();
+                    });
+                } catch (NumberFormatException | IOException e) {
+                    MensajeUtil.mostrarMensaje("Error", "Número no válido.","Ingrese por favor una cantidad válida", Alert.AlertType.ERROR);
+                }
+            });
+            tableLotes.refresh();
+        }
+    }
+    private void venderProductos(Lote lote, int cantidad) throws IOException {
+        if (cantidad <= 0) {
+            MensajeUtil.mostrarMensaje("Error", "Número no válido.", "Ingrese por favor una cantidad válida", Alert.AlertType.ERROR);
+            return;
+        }
+
+        if (cantidad > lote.getCantidad()) {
+            MensajeUtil.mostrarMensaje("Error", "Cantidad no válida.", "La cantidad es mayor a los productos que hay en stock", Alert.AlertType.ERROR);
+            return;
+        }
+        lote.setCantidad(lote.getCantidad() - cantidad);
+
+        DetalleVenta detalleVenta = new DetalleVenta();
+        detalleVenta.setProducto(lote.getListaProductosLote().get(0));
+        String id = UUID.randomUUID().toString();
+        detalleVenta.setId(id);
+        detalleVenta.setPrecioUnitario(lote.getPrecioUnitario());
+        detalleVenta.setSubTotalDetalleVenta(cantidad * lote.getPrecioUnitario());
+        detalleVenta.setCantidad(cantidad);
+
+        if (cantidad > 20) {
+            detalleVenta.setDescuentoDetalleVenta(detalleVenta.getSubTotalDetalleVenta() * 0.10);
+            detalleVenta.setTotalDetalleVenta(detalleVenta.getSubTotalDetalleVenta() - detalleVenta.getDescuentoDetalleVenta());
+        } else {
+            detalleVenta.setDescuentoDetalleVenta(0);
+            detalleVenta.setTotalDetalleVenta(detalleVenta.getSubTotalDetalleVenta());
+        }
+
+        if (lote.getCantidad() == 0) {
+            modelFactoryController.eliminarLote(lote);
+            Platform.runLater(()->{
+                tableLotes.refresh();
+            });
+        }
+        ventas.add(detalleVenta);
+
+    }
+
+    private double impuesto(double precio){
+        final double impuesto = 1.19;
+        double impuestoFinal = 0;
+        double division = 0;
+        division = precio/impuesto;
+        impuestoFinal = precio-division;
+        return impuestoFinal;
+    }
+
 
     @FXML
     void onActionLotes(ActionEvent event) {
@@ -1220,18 +1381,6 @@ public class InventarioController implements Initializable {
 
             MensajeUtil.mensajeInformacion("Imagen guardada en la carpeta de recursos con el nombre: " + nombreArchivo + ".png");
         }
-    }
-
-
-
-    private String generarNombreUnico() {
-        // Obtén la marca de tiempo actual en milisegundos
-        long timeStamp = System.currentTimeMillis();
-
-        // Genera un identificador único utilizando la marca de tiempo
-        String identificadorUnico = Long.toString(timeStamp);
-
-        return identificadorUnico;
     }
 
 }
