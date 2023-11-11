@@ -28,5 +28,6 @@
       </TableView>
       <Separator layoutY="122.0" prefHeight="4.0" prefWidth="572.0" style="-fx-background-color: #000000;" />
       <Button layoutX="224.0" layoutY="482.0" mnemonicParsing="false" onAction="#OnActionGenerarFactura" stylesheets="@../../../css/Estilos.css" text="Generar Factura" />
+      <Button layoutY="59.0" mnemonicParsing="false" onAction="#OnActionVolver" stylesheets="@../../../css/Estilos.css" text="Volver" />
    </children>
 </AnchorPane>

@@ -1079,18 +1079,6 @@ public class InventarioController implements Initializable {
         lote.setCantidad(lote.getCantidad() - cantidad);
 
         DetalleVenta detalleVenta = modelFactoryController.venderProducto(producto,precioUnitario,cantidad,porcentajeDescuento);
-       /* detalleVenta.setProducto(lote.getListaProductosLote().get(0));
-        detalleVenta.setPrecioUnitario(lote.getPrecioUnitario());
-        detalleVenta.setSubTotalDetalleVenta(cantidad * lote.getPrecioUnitario());
-        detalleVenta.setCantidad(cantidad);
-
-        if (cantidad > 20) {
-            detalleVenta.setDescuentoDetalleVenta(detalleVenta.getSubTotalDetalleVenta() * 0.10);
-            detalleVenta.setTotalDetalleVenta(detalleVenta.getSubTotalDetalleVenta() - detalleVenta.getDescuentoDetalleVenta());
-        } else {
-            detalleVenta.setDescuentoDetalleVenta(0);
-            detalleVenta.setTotalDetalleVenta(detalleVenta.getSubTotalDetalleVenta());
-        }*/
 
         if (lote.getCantidad() == 0) {
             modelFactoryController.eliminarLote(lote);
@@ -1098,17 +1086,12 @@ public class InventarioController implements Initializable {
         ventas.add(detalleVenta);
         contador++;
         lblContador.setText(Integer.toString(contador));
+        if (facturaActual == null) {
+            Factura nuevaFactura = modelFactoryController.crearFactura(modelFactoryController.getUsuarioActual(),ventas);
+            modelFactoryController.setFacturaActual(nuevaFactura);
+            detalleVenta.setFactura(nuevaFactura);
+        }
     }
-
-    private double impuesto(double precio){
-        final double impuesto = 1.19;
-        double impuestoFinal = 0;
-        double division = 0;
-        division = precio/impuesto;
-        impuestoFinal = precio-division;
-        return impuestoFinal;
-    }
-
 
     @FXML
     void onActionLotes(ActionEvent event) {

@@ -6,10 +6,11 @@ import java.util.List;
 
 public class Factura implements Serializable {
     private static final long serialVersionUID = 1L;
-    private String id;
+    private int id;
     private Date fechaFactura;
     private double subtotalFactura;
     private  double totalFactura;
+    private double impuesto;
     private List<DetalleVenta> listaDetallesVenta;
     private Usuario empleadoEncargadoFactura;
 
@@ -17,11 +18,29 @@ public class Factura implements Serializable {
 
     }
 
-    public String getId() {
+    public Factura(int id, Date fechaFactura, double subtotalFactura, double totalFactura, List<DetalleVenta> listaDetallesVenta, Usuario empleadoEncargadoFactura,double impuesto) {
+        this.id = id;
+        this.fechaFactura = fechaFactura;
+        this.subtotalFactura = subtotalFactura;
+        this.totalFactura = totalFactura;
+        this.listaDetallesVenta = listaDetallesVenta;
+        this.empleadoEncargadoFactura = empleadoEncargadoFactura;
+        this.impuesto = impuesto;
+    }
+
+    public double getImpuesto() {
+        return impuesto;
+    }
+
+    public void setImpuesto(double impuesto) {
+        this.impuesto = impuesto;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
