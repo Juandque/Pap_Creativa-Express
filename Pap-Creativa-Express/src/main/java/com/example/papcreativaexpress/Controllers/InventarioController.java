@@ -1061,6 +1061,12 @@ public class InventarioController implements Initializable {
         }
     }
     private void venderProductos(Lote lote, int cantidad) throws IOException {
+        Producto producto= lote.getListaProductosLote().get(0);
+        double precioUnitario= lote.getPrecioUnitario();
+        double porcentajeDescuento=0;
+        if(cantidad>20){
+            porcentajeDescuento=0.10;
+        }
         if (cantidad <= 0) {
             MensajeUtil.mostrarMensaje("Error", "Número no válido.", "Ingrese por favor una cantidad válida", Alert.AlertType.ERROR);
             return;
@@ -1072,8 +1078,8 @@ public class InventarioController implements Initializable {
         }
         lote.setCantidad(lote.getCantidad() - cantidad);
 
-        DetalleVenta detalleVenta = new DetalleVenta();
-        detalleVenta.setProducto(lote.getListaProductosLote().get(0));
+        DetalleVenta detalleVenta = modelFactoryController.venderProducto(producto,precioUnitario,cantidad,porcentajeDescuento);
+       /* detalleVenta.setProducto(lote.getListaProductosLote().get(0));
         detalleVenta.setPrecioUnitario(lote.getPrecioUnitario());
         detalleVenta.setSubTotalDetalleVenta(cantidad * lote.getPrecioUnitario());
         detalleVenta.setCantidad(cantidad);
@@ -1084,7 +1090,7 @@ public class InventarioController implements Initializable {
         } else {
             detalleVenta.setDescuentoDetalleVenta(0);
             detalleVenta.setTotalDetalleVenta(detalleVenta.getSubTotalDetalleVenta());
-        }
+        }*/
 
         if (lote.getCantidad() == 0) {
             modelFactoryController.eliminarLote(lote);
