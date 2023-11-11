@@ -462,9 +462,8 @@ public class PapCreativaExpress implements Serializable {
     }
 
     public Lote getLoteActual() {
-        // Asegurarse de que usuarioActual no sea null antes de devolverlo
         if (loteActual == null) {
-            loteActual = new Lote(); // o inicializarlo de alguna otra manera
+            loteActual = new Lote();
         }
         return loteActual;
     }
@@ -520,7 +519,21 @@ public class PapCreativaExpress implements Serializable {
         double total=subTotal-descuento;
         DetalleVenta detalleVenta= new DetalleVenta(idDetallesVenta,cantidad,precioUnitario,subTotal,descuento,total,null,producto);
         idDetallesVenta++;
+        listaDetalleVentas.add(detalleVenta);
         return detalleVenta;
+    }
+    public Factura crearFactura(Usuario empleado,List<DetalleVenta>detallesVentaList){
+        double precio = 0;
+        for(DetalleVenta detalleVenta: detallesVentaList){
+            precio += detalleVenta.getSubTotalDetalleVenta();
+        }
+        double impuesto = precio/1.19;
+        impuesto = impuesto-precio;
+        double total = precio+impuesto;
+        Factura factura = new Factura(idFacturas,new Date(),precio,total,detallesVentaList,empleado,impuesto);
+        idFacturas++;
+        listaFacturas.add(factura);
+        return factura;
     }
 
 }

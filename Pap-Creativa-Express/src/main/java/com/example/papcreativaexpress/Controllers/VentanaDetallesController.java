@@ -66,8 +66,6 @@ public class VentanaDetallesController implements Initializable {
         cerrarVentana(stage);
 
     }
-
-    // Método para cerrar la ventana de detalles
     private void cerrarVentana(Stage ventana) {
         ventana.close();
     }

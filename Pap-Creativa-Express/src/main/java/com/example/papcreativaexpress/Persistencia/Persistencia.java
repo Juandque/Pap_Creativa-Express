@@ -1,19 +1,11 @@
 package com.example.papcreativaexpress.Persistencia;//package co.edu.uniquindio.proyectohotel.Persistencia;
 
 import com.example.papcreativaexpress.Model.*;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.Optional;
 

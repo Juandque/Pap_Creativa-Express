@@ -197,6 +197,12 @@ public class ModelFactoryController {
     public Lote getLoteActual() {
         return papCreativaExpress.getLoteActual();
     }
+    public Factura getFacturaActual() {
+        return papCreativaExpress.getFacturaActual();
+    }public void setFacturaActual(Factura facturaActual) {
+         papCreativaExpress.setFacturaActual(facturaActual);
+    }
+
 
     public void setLoteActual(Lote loteActual) {
         papCreativaExpress.setLoteActual(loteActual);
@@ -220,9 +226,7 @@ public class ModelFactoryController {
     public ArrayList<Proveedor> getProveedores(){
         return  papCreativaExpress.getListaProveedores();
     }
-    public double SumaTotalPrecios(List<Producto>productoList){
-        return papCreativaExpress.calcularPrecioTotal(productoList);
-    }
+   public ArrayList<Factura>getFacturas(){return  papCreativaExpress.getListaFacturas();}
     public void cargarResourceBinario() {
         papCreativaExpress = (PapCreativaExpress) Persistencia.cargar().orElse(new PapCreativaExpress());
     }
@@ -273,8 +277,13 @@ public class ModelFactoryController {
 
     public DetalleVenta venderProducto(Producto producto,double precioUnitario, int cantidad, double porcentajeDescuento){
         DetalleVenta detalleVenta= papCreativaExpress.crearDetalleVenta(producto,precioUnitario,cantidad,porcentajeDescuento);
+        cargarResourceBinario();
         return detalleVenta;
     }
-
+    public Factura crearFactura(Usuario empleado,List<DetalleVenta>detallesVentaList){
+        Factura factura = papCreativaExpress.crearFactura(empleado,detallesVentaList);
+        cargarResourceBinario();
+        return factura;
+    }
 }
 
