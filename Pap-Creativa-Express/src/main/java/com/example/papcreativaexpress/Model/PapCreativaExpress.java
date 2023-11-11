@@ -514,4 +514,13 @@ public class PapCreativaExpress implements Serializable {
         this.facturaActual = factura;
     }
 
+    public DetalleVenta crearDetalleVenta(Producto producto,double precioUnitario, int cantidad, double porcentajeDescuento){
+        double subTotal=precioUnitario*cantidad;
+        double descuento= subTotal*porcentajeDescuento;
+        double total=subTotal-descuento;
+        DetalleVenta detalleVenta= new DetalleVenta(idDetallesVenta,cantidad,precioUnitario,subTotal,descuento,total,null,producto);
+        idDetallesVenta++;
+        return detalleVenta;
+    }
+
 }

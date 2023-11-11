@@ -271,5 +271,9 @@ public class ModelFactoryController {
         return papCreativaExpress.buscarLotePorId(id);
     }
 
+    public void venderProducto(Producto producto,double precioUnitario, int cantidad, double porcentajeDescuento){
+        DetalleVenta detalleVenta= new();
+    }
+
 }
 
