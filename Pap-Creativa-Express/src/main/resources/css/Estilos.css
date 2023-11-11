@@ -148,6 +148,15 @@
     -fx-border-width: 0.3px;
     -fx-border-radius: 10;
 }
+/* Estilo del contador en un círculo */
+.notification-badge {
+    -fx-background-color: #64595A;
+    -fx-text-fill: #fff;
+    -fx-border-radius: 50%;
+    -fx-padding: 0 5;
+    -fx-min-width: 20;
+    -fx-alignment: center;
+}
 
 
 

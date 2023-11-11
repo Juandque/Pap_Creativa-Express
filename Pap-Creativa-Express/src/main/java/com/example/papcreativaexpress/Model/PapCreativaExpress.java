@@ -29,6 +29,7 @@ public class PapCreativaExpress implements Serializable {
     private Usuario usuarioActual;
     private transient Image imagenActual;
     private Lote loteActual;
+    private Factura facturaActual;
 
 
     int idProductos;
@@ -502,4 +503,15 @@ public class PapCreativaExpress implements Serializable {
         }
         return null;
     }
+    public Factura getFacturaActual() {
+        if (facturaActual == null) {
+            facturaActual = new Factura();
+        }
+        return facturaActual;
+    }
+
+    public void setFacturaActual(Factura factura) {
+        this.facturaActual = factura;
+    }
+
 }

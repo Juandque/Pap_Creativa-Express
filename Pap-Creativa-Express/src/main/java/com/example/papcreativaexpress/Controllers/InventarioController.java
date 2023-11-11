@@ -39,6 +39,9 @@ import static com.example.papcreativaexpress.Utils.GenerarCodigoBarras.generarCo
 public class InventarioController implements Initializable {
     ModelFactoryController modelFactoryController;
     @FXML
+    private Label lblContador;
+    private int contador =0;
+    @FXML
     private ImageView imageCodigoBarras;
 
     @FXML
@@ -332,6 +335,7 @@ public class InventarioController implements Initializable {
     private Proveedor proveedorSeleccionado;
     private Usuario empleadoSeleccionado;
     private DetalleVenta ventaSeleccionada;
+    private Factura facturaActual;
     private ObservableList<Usuario> empleados = FXCollections.observableArrayList();
     private ObservableList<Proveedor> proveedores = FXCollections.observableArrayList();
     private ObservableList<Cargo> cargos = FXCollections.observableArrayList();
@@ -374,6 +378,8 @@ public class InventarioController implements Initializable {
             actualizarCostoTotal();
         });
         mostrarProductosCantidadBaja(modelFactoryController.getLotes());
+        lblContador.setText(Integer.toString(contador));
+
     }
 
 
@@ -994,10 +1000,26 @@ public class InventarioController implements Initializable {
 
     @FXML
     void OnActionBuscar(ActionEvent event) {
-        String buscar = tfBuscarProducto.getText().trim();
-        List<Lote>lotesEncontrados = lotes.stream().filter(lote -> lote.getListaProductosLote().get(0).getNombre().toLowerCase().contains(buscar.toLowerCase())).toList();
-        tableLotes.setItems(FXCollections.observableArrayList(lotesEncontrados));
+        String buscar = tfBuscarProducto.getText().trim().toLowerCase();
+        List<Lote> lotesEncontrados = lotes.stream()
+                .filter(lote -> lote.getListaProductosLote().get(0).getNombre().toLowerCase().contains(buscar))
+                .toList();
 
+        if (lotesEncontrados.isEmpty()) {
+            MensajeUtil.mostrarMensaje("Información","Sin resultados","No se encontraron lotes según el criterio de búsqueda.",Alert.AlertType.INFORMATION);
+            tblPoductos.setItems(FXCollections.observableArrayList(lotes));
+        } else {
+            tblPoductos.setItems(FXCollections.observableArrayList(lotesEncontrados));
+        }
+
+    }
+    @FXML
+    void OnActionRefrescar(ActionEvent event) {
+        tfBuscarProducto.clear();
+
+        tblPoductos.setItems(FXCollections.observableArrayList(lotes));
+
+        tblPoductos.refresh();
     }
 
     @FXML
@@ -1008,8 +1030,6 @@ public class InventarioController implements Initializable {
             DetallesVentasController detallesVentasController = loader.getController();
             detallesVentasController.setControladorPrincipal(this);
             detallesVentasController.agregarDetallesVenta(ventas);
-
-
 
             Scene scene = new Scene(root);
 
@@ -1034,14 +1054,10 @@ public class InventarioController implements Initializable {
                 try {
                     int cantidad = Integer.parseInt(cantidadStr);
                     venderProductos(loteSeleccionado, cantidad);
-                    Platform.runLater(()->{
-                        tableLotes.refresh();
-                    });
                 } catch (NumberFormatException | IOException e) {
                     MensajeUtil.mostrarMensaje("Error", "Número no válido.","Ingrese por favor una cantidad válida", Alert.AlertType.ERROR);
                 }
             });
-            tableLotes.refresh();
         }
     }
     private void venderProductos(Lote lote, int cantidad) throws IOException {
@@ -1058,8 +1074,6 @@ public class InventarioController implements Initializable {
 
         DetalleVenta detalleVenta = new DetalleVenta();
         detalleVenta.setProducto(lote.getListaProductosLote().get(0));
-        String id = UUID.randomUUID().toString();
-        detalleVenta.setId(id);
         detalleVenta.setPrecioUnitario(lote.getPrecioUnitario());
         detalleVenta.setSubTotalDetalleVenta(cantidad * lote.getPrecioUnitario());
         detalleVenta.setCantidad(cantidad);
@@ -1074,12 +1088,10 @@ public class InventarioController implements Initializable {
 
         if (lote.getCantidad() == 0) {
             modelFactoryController.eliminarLote(lote);
-            Platform.runLater(()->{
-                tableLotes.refresh();
-            });
         }
         ventas.add(detalleVenta);
-
+        contador++;
+        lblContador.setText(Integer.toString(contador));
     }
 
     private double impuesto(double precio){
@@ -1384,11 +1396,6 @@ public class InventarioController implements Initializable {
     }
 
 }
-
-
-
-
-
 
 
 

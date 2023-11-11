@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class DetalleVenta implements Serializable {
     private static final long serialVersionUID = 1L;
-    private String id;
+    private int id;
     private int cantidad;
     private double precioUnitario;
     private double subTotalDetalleVenta;
@@ -17,11 +17,22 @@ public class DetalleVenta implements Serializable {
 
     }
 
-    public String getId() {
+    public DetalleVenta(int id, int cantidad, double precioUnitario, double subTotalDetalleVenta, double descuentoDetalleVenta, double totalDetalleVenta, Factura factura, Producto producto) {
+        this.id = id;
+        this.cantidad = cantidad;
+        this.precioUnitario = precioUnitario;
+        this.subTotalDetalleVenta = subTotalDetalleVenta;
+        this.descuentoDetalleVenta = descuentoDetalleVenta;
+        this.totalDetalleVenta = totalDetalleVenta;
+        this.factura = factura;
+        this.producto = producto;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
