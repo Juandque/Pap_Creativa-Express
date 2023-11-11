@@ -277,12 +277,12 @@ public class ModelFactoryController {
 
     public DetalleVenta venderProducto(Producto producto,double precioUnitario, int cantidad, double porcentajeDescuento){
         DetalleVenta detalleVenta= papCreativaExpress.crearDetalleVenta(producto,precioUnitario,cantidad,porcentajeDescuento);
-        cargarResourceBinario();
+        guardarResourceBinario();
         return detalleVenta;
     }
     public Factura crearFactura(Usuario empleado,List<DetalleVenta>detallesVentaList){
         Factura factura = papCreativaExpress.crearFactura(empleado,detallesVentaList);
-        cargarResourceBinario();
+        guardarResourceBinario();
         return factura;
     }
 }
