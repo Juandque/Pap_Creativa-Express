@@ -118,17 +118,21 @@ public class InventarioController implements Initializable {
     @FXML
     private Button btnVerInfo;
     @FXML
+    private Button btnVerInfoVentas;
+    @FXML
     private Button btnCodigoBrras;
     @FXML
     private ComboBox<String> cbBoxFiltro;
-
-
     @FXML
     private ComboBox<Cargo> cbCargoEmpleado;
 
     @FXML
-    private ComboBox<Estado> cbEstadoEmpleado;
+    private ComboBox<EstadoCargo> cbEstadoCargo;
 
+    @FXML
+    private ComboBox<Estado> cbEstadoEmpleado;
+    @FXML
+    private ComboBox<EstadoProveedor> cbEstadoProveedor;
     @FXML
     private ComboBox<Proveedor> cbProveedorLote;
 
@@ -427,6 +431,7 @@ public class InventarioController implements Initializable {
             }
         });
         this.txtTelefonoProveedor.setTextFormatter(new TextFormatter<Object>(TextFormatterUtil::integerFormat));
+        this.cbEstadoProveedor.getItems().addAll(EstadoProveedor.values());
     }
 
     public void initializePaneCargos() {
@@ -443,6 +448,7 @@ public class InventarioController implements Initializable {
         });
         txtEmpleadosRequeridosCargo.setTextFormatter(new TextFormatter<>(TextFormatterUtil::integerFormat));
         txtSalarioCargo.setTextFormatter(new TextFormatter<>(TextFormatterUtil::doubleFormat));
+        this.cbEstadoCargo.getItems().addAll(EstadoCargo.values());
     }
 
     public void initializePaneLotes() {
@@ -1092,6 +1098,11 @@ public class InventarioController implements Initializable {
             modelFactoryController.setFacturaActual(nuevaFactura);
             detalleVenta.setFactura(nuevaFactura);
         }
+    }
+
+    @FXML
+    void onVerInfoVentasAction(ActionEvent event) {
+
     }
 
     @FXML
