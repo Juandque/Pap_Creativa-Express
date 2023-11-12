@@ -1,38 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="17.0.1" class="java.beans.XMLDecoder">
- <object class="com.example.papcreativaexpress.Model.PapCreativaExpress" id="PapCreativaExpress0">
-  <void property="listaEmpleados">
-   <void method="add">
-    <object class="com.example.papcreativaexpress.Model.Usuario">
-     <void property="contrasenia">
-      <string>10973</string>
-     </void>
-     <void property="direccion">
-      <string>Cra x N° xx-xx</string>
-     </void>
-     <void property="email">
-      <string>juans.orozcoa@uqvirtual.edu.co</string>
-     </void>
-     <void property="estado">
-      <object class="java.lang.Enum" method="valueOf">
-       <class>com.example.papcreativaexpress.Model.Estado</class>
-       <string>DISPONIBLE</string>
-      </object>
-     </void>
-     <void property="id">
-      <string>10963490</string>
-     </void>
-     <void property="nombre">
-      <string>Juan</string>
-     </void>
-     <void property="nombreUsuario">
-      <string>Juanse</string>
-     </void>
-     <void property="telefono">
-      <string>31948303</string>
-     </void>
-    </object>
-   </void>
-  </void>
- </object>
+<java version="17.0.6" class="java.beans.XMLDecoder">
+ <object class="com.example.papcreativaexpress.Model.PapCreativaExpress"/>
 </java>

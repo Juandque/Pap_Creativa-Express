@@ -522,7 +522,7 @@ public class PapCreativaExpress implements Serializable {
         listaDetalleVentas.add(detalleVenta);
         return detalleVenta;
     }
-    public Factura crearFactura(Usuario empleado,List<DetalleVenta>detallesVentaList){
+    public Factura crearFactura(Usuario empleado,ArrayList<DetalleVenta>detallesVentaList){
         double precio = 0;
         for(DetalleVenta detalleVenta: detallesVentaList){
             precio += detalleVenta.getSubTotalDetalleVenta();

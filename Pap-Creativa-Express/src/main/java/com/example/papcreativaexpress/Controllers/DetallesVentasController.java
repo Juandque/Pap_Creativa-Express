@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
@@ -96,7 +97,7 @@ public class DetallesVentasController implements Initializable {
     }
     @FXML
     void OnActionVolver(ActionEvent event){
-        try {
+       /* try {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("Inventario.fxml"));
             Parent root = loader.load();
 
@@ -107,10 +108,16 @@ public class DetallesVentasController implements Initializable {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+        }*/
+        try {
+            // Obtiene el Stage asociado al evento actual
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            // Cierra la ventana actual
+            currentStage.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
-
-
 
 }

@@ -1,6 +1,7 @@
 package com.example.papcreativaexpress.Model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,14 +12,14 @@ public class Factura implements Serializable {
     private double subtotalFactura;
     private  double totalFactura;
     private double impuesto;
-    private List<DetalleVenta> listaDetallesVenta;
+    private ArrayList<DetalleVenta> listaDetallesVenta;
     private Usuario empleadoEncargadoFactura;
 
     public Factura(){
 
     }
 
-    public Factura(int id, Date fechaFactura, double subtotalFactura, double totalFactura, List<DetalleVenta> listaDetallesVenta, Usuario empleadoEncargadoFactura,double impuesto) {
+    public Factura(int id, Date fechaFactura, double subtotalFactura, double totalFactura, ArrayList<DetalleVenta> listaDetallesVenta, Usuario empleadoEncargadoFactura,double impuesto) {
         this.id = id;
         this.fechaFactura = fechaFactura;
         this.subtotalFactura = subtotalFactura;
@@ -72,7 +73,7 @@ public class Factura implements Serializable {
         return listaDetallesVenta;
     }
 
-    public void setListaDetallesVenta(List<DetalleVenta> listaDetallesVenta) {
+    public void setListaDetallesVenta(ArrayList<DetalleVenta> listaDetallesVenta) {
         this.listaDetallesVenta = listaDetallesVenta;
     }
 

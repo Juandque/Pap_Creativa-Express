@@ -912,6 +912,7 @@ public class InventarioController implements Initializable {
         paneLotes.setVisible(false);
         paneProductos.setVisible(false);
         paneProveedores.setVisible(false);
+        paneVentas.setVisible(false);
     }
 
     @FXML
@@ -1087,7 +1088,7 @@ public class InventarioController implements Initializable {
         contador++;
         lblContador.setText(Integer.toString(contador));
         if (facturaActual == null) {
-            Factura nuevaFactura = modelFactoryController.crearFactura(modelFactoryController.getUsuarioActual(),ventas);
+            Factura nuevaFactura = modelFactoryController.crearFactura(modelFactoryController.getUsuarioActual(), new ArrayList<>(ventas));
             modelFactoryController.setFacturaActual(nuevaFactura);
             detalleVenta.setFactura(nuevaFactura);
         }
@@ -1100,6 +1101,7 @@ public class InventarioController implements Initializable {
         paneLotes.setVisible(true);
         paneProductos.setVisible(false);
         paneProveedores.setVisible(false);
+        paneVentas.setVisible(false);
     }
 
     private boolean mostrarMensajeConfirmacion(String mensaje) {

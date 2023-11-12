@@ -28,11 +28,8 @@ public class ModelFactoryController {
 
     public ModelFactoryController() {
         //inicializarDatos();
-        //guardarResourceXML();
         //guardarResourceBinario();
         cargarResourceBinario();
-
-
     }
 
     public void inicializarDatos(){
@@ -279,7 +276,7 @@ public class ModelFactoryController {
         guardarResourceBinario();
         return detalleVenta;
     }
-    public Factura crearFactura(Usuario empleado,List<DetalleVenta>detallesVentaList){
+    public Factura crearFactura(Usuario empleado,ArrayList<DetalleVenta>detallesVentaList){
         Factura factura = papCreativaExpress.crearFactura(empleado,detallesVentaList);
         guardarResourceBinario();
         return factura;
