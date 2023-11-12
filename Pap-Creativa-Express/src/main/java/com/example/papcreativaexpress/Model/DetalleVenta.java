@@ -91,4 +91,11 @@ public class DetalleVenta implements Serializable {
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
+
+    public void realizarDevolucion(int cantidadDevuelta){
+        if(cantidadDevuelta>cantidad){
+            throw new IllegalArgumentException("La cantidad a devolver es mayor que la cantidad vendida originalmente.");
+        }
+        cantidad-=cantidadDevuelta;
+    }
 }

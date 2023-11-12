@@ -15,10 +15,11 @@ public class Producto implements Serializable {
     private String descripcionDetallada;
     private Date fechaModificacion;
     private Proveedor proveedor;
+    private Lote lote;
     public Producto(){
     }
 
-    public Producto(String id, String nombre, double precioVenta, Date fechaCaducidad, double precioCosto, String marca, int nivelStockMinimo, String descripcionDetallada, Date fechaModificacion, Proveedor proveedor) {
+    public Producto(String id, String nombre, double precioVenta, Date fechaCaducidad, double precioCosto, String marca, int nivelStockMinimo, String descripcionDetallada, Date fechaModificacion, Proveedor proveedor, Lote lote) {
         this.id = id;
         this.nombre = nombre;
         this.precioVenta = precioVenta;
@@ -29,6 +30,7 @@ public class Producto implements Serializable {
         this.descripcionDetallada = descripcionDetallada;
         this.fechaModificacion = fechaModificacion;
         this.proveedor = proveedor;
+        this.lote=lote;
     }
 
     public String getId() {
@@ -109,5 +111,13 @@ public class Producto implements Serializable {
 
     public void setProveedor(Proveedor proveedor) {
         this.proveedor = proveedor;
+    }
+
+    public Lote getLote() {
+        return lote;
+    }
+
+    public void setLote(Lote lote) {
+        this.lote = lote;
     }
 }

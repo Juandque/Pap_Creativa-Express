@@ -128,8 +128,13 @@ public class Lote implements Serializable {
         this.codigoBarrasImage = codigoBarrasImage;
     }
 
-    public boolean crearProductosLote(String id,String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion, Proveedor proveedor){
-        Producto aux= new Producto(id, nombre, precioVenta, fechaCaducidad, costo, marca, 0, descripcion, new Date(), proveedor);
+    public void anadirProducto(Producto p){
+        listaProductosLote.add(p);
+        cantidad++;
+    }
+
+    public boolean crearProductosLote(String id,String nombre, double precioVenta, Date fechaCaducidad, double costo, String marca, String descripcion, Proveedor proveedor, Lote lote){
+        Producto aux= new Producto(id, nombre, precioVenta, fechaCaducidad, costo, marca, 0, descripcion, new Date(), proveedor,lote);
         if(aux==null){
             return false;
         }

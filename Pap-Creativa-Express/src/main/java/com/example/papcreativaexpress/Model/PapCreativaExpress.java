@@ -166,7 +166,7 @@ public class PapCreativaExpress implements Serializable {
         for (int i = 1; i <= cantidad; i++) {
             idProducto = crearId(idProductos);
             idProductos++;
-            loteAux.crearProductosLote(idProducto, nombre, precioVenta, fechaCaducidad, costo, marca, descripcion, proveedor);
+            loteAux.crearProductosLote(idProducto, nombre, precioVenta, fechaCaducidad, costo, marca, descripcion, proveedor,loteAux);
         }
         listaProductos.addAll(loteAux.getListaProductosLote());
         listaLotes.add(loteAux);
@@ -191,7 +191,7 @@ public class PapCreativaExpress implements Serializable {
             for (int i = 1; i <= cantidad - aux.getListaProductosLote().size(); i++) {
                 idProducto = crearId(idProductos);
                 idProductos++;
-                aux.crearProductosLote(idProducto, nombre, precioVenta, fechaCaducidad, costo, marca, descripcion, proveedor);
+                aux.crearProductosLote(idProducto, nombre, precioVenta, fechaCaducidad, costo, marca, descripcion, proveedor,aux);
             }
         }
         return true;
@@ -534,6 +534,21 @@ public class PapCreativaExpress implements Serializable {
         idFacturas++;
         listaFacturas.add(factura);
         return factura;
+    }
+
+    public void procesarDevolucion(DetalleVenta detalleVenta, int cantidadDevuelta){
+        detalleVenta.realizarDevolucion(cantidadDevuelta);
+        Producto productoDevuelto= detalleVenta.getProducto();
+        Lote loteDevuelto= null;
+        for (Lote l: listaLotes) {
+            if(l.getId().equals(productoDevuelto.getLote().getId())){
+                loteDevuelto=l;
+                break;
+            }
+        }
+        for(int i=0;i<cantidadDevuelta;i++ ) {
+            loteDevuelto.anadirProducto(productoDevuelto);
+        }
     }
 
 }
