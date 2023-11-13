@@ -158,6 +158,9 @@ public class InventarioController implements Initializable {
     private TableColumn<Usuario, String> colEmailEmpleado;
 
     @FXML
+    private TableColumn<DetalleVenta, String> colEmpleadoFacturas;
+
+    @FXML
     private TableColumn<Cargo, String> colEstadoCargo;
 
     @FXML
@@ -167,8 +170,16 @@ public class InventarioController implements Initializable {
     private TableColumn<Lote, Date> colFechaEntradaLote;
 
     @FXML
+    private TableColumn<DetalleVenta, Date> colFechaFacturas;
+
+    @FXML
     private TableColumn<Usuario, String> colIdEmpleado;
 
+    @FXML
+    private TableColumn<DetalleVenta, Integer> colIdFacturas;
+
+    @FXML
+    private TableColumn<DetalleVenta, Double> colImpuestoFacturas;
     @FXML
     private TableColumn<Lote, String> colMarca;
 
@@ -204,6 +215,9 @@ public class InventarioController implements Initializable {
 
     @FXML
     private TableColumn<Proveedor, String> colTelefonoProveedor;
+
+    @FXML
+    private TableColumn<DetalleVenta, Double> colTotalFacturas;
     @FXML
     private TableColumn<DetalleVenta, String> colProductoVentas;
     @FXML
@@ -238,7 +252,7 @@ public class InventarioController implements Initializable {
     @FXML
     private TableView<Cargo> tableCargos;
     @FXML
-    private TableView<DetalleVenta>tableRegistroVentas;
+    private TableView<Factura>tableRegistroVentas;
 
     @FXML
     private TableView<Usuario> tableEmpleados;
@@ -289,12 +303,6 @@ public class InventarioController implements Initializable {
     private TextField txtEmpleadosRequeridosCargo;
 
     @FXML
-    private TextField txtEstadoCargo;
-
-    @FXML
-    private TextField txtEstadoProveedor;
-
-    @FXML
     private TextField txtIdEmpleado;
 
     @FXML
@@ -338,13 +346,14 @@ public class InventarioController implements Initializable {
     private Lote loteSeleccionado;
     private Proveedor proveedorSeleccionado;
     private Usuario empleadoSeleccionado;
-    private DetalleVenta ventaSeleccionada;
+    private Factura ventaSeleccionada;
     private Factura facturaActual;
     private ObservableList<Usuario> empleados = FXCollections.observableArrayList();
     private ObservableList<Proveedor> proveedores = FXCollections.observableArrayList();
     private ObservableList<Cargo> cargos = FXCollections.observableArrayList();
     private ObservableList<Lote> lotes = FXCollections.observableArrayList();
-    private ObservableList<DetalleVenta> ventas = FXCollections.observableArrayList();
+    private ObservableList<Factura> ventas = FXCollections.observableArrayList();
+    private ObservableList<DetalleVenta> ventasVolatiles = FXCollections.observableArrayList();
 
 
     @Override
@@ -360,14 +369,14 @@ public class InventarioController implements Initializable {
         ArrayList<Proveedor> proveedoresArrayList = modelFactoryController.getProveedores();
         ArrayList<Cargo> cargosArrayList = modelFactoryController.getCargos();
         ArrayList<Lote> lotesArrayList = modelFactoryController.getLotes();
-        ArrayList<DetalleVenta> detalleVentaArrayList = modelFactoryController.getPapCreativaExpress().getListaDetalleVentas();
+        ArrayList<Factura> facturas = modelFactoryController.getPapCreativaExpress().getListaFacturas();
 
 
         empleados.addAll(empleadosArrayList);
         proveedores.addAll(proveedoresArrayList);
         cargos.addAll(cargosArrayList);
         lotes.addAll(lotesArrayList);
-        ventas.addAll(detalleVentaArrayList);
+        ventas.addAll(facturas);
 
         initializePaneAdmin();
         initializePaneProductos();
@@ -541,23 +550,28 @@ public class InventarioController implements Initializable {
         });
     }
     public void initializePaneVentas(){
-        this.colCantidadVentas.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
-        this.colDescuentoVentas.setCellValueFactory(new PropertyValueFactory<>("descuentoDetalleVenta"));
-        this.colSubTotalVentas.setCellValueFactory(new PropertyValueFactory<>("subTotalDetalleVenta"));
-        this.colProductoVentas.setCellValueFactory(((cellData -> {
-            Producto p = cellData.getValue().getProducto();
-            if (p != null) {
-                String nombre = p.getNombre();
+        this.colIdFacturas.setCellValueFactory(new PropertyValueFactory<>("id"));
+        this.colFechaFacturas.setCellValueFactory(new PropertyValueFactory<>("fechaFactura"));
+        this.colTotalFacturas.setCellValueFactory(new PropertyValueFactory<>("totalFactura"));
+        /*this.colEmpleadoFacturas.setCellValueFactory(((cellData -> {
+            Usuario u = cellData.getValue().;
+            if (u != null) {
+                String nombre = u.getNombre();
                 return new SimpleStringProperty(nombre);
             } else {
                 return new SimpleStringProperty("");
             }
         })));
-        this.colPrecioUnidadVentas.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
+        */
+        this.colImpuestoFacturas.setCellValueFactory(new PropertyValueFactory<>("impuesto"));
 
         tableRegistroVentas.setItems(ventas);
         tableRegistroVentas.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             ventaSeleccionada = newSelection;});
+    }
+
+    public ObservableList<DetalleVenta> getVentasVolatiles() {
+        return ventasVolatiles;
     }
 
     @FXML
@@ -1040,7 +1054,7 @@ public class InventarioController implements Initializable {
             Parent root = loader.load();
             DetallesVentasController detallesVentasController = loader.getController();
             detallesVentasController.setControladorPrincipal(this);
-            detallesVentasController.agregarDetallesVenta(ventas);
+            detallesVentasController.agregarDetallesVenta(ventasVolatiles);
 
             Scene scene = new Scene(root);
 
@@ -1094,11 +1108,11 @@ public class InventarioController implements Initializable {
         if (lote.getCantidad() == 0) {
             modelFactoryController.eliminarLote(lote);
         }
-        ventas.add(detalleVenta);
+        ventasVolatiles.add(detalleVenta);
         contador++;
         lblContador.setText(Integer.toString(contador));
         if (facturaActual == null) {
-            Factura nuevaFactura = modelFactoryController.crearFactura(modelFactoryController.getUsuarioActual(), new ArrayList<>(ventas));
+            Factura nuevaFactura = modelFactoryController.crearFactura(modelFactoryController.getUsuarioActual(), new ArrayList<>(ventasVolatiles));
             modelFactoryController.setFacturaActual(nuevaFactura);
             detalleVenta.setFactura(nuevaFactura);
         }
@@ -1111,7 +1125,7 @@ public class InventarioController implements Initializable {
             Parent root = loader.load();
             InformacionFacturaController informacionFacturaController = loader.getController();
             informacionFacturaController.setControladorPrincipal(this);
-            informacionFacturaController.agregarDetallesVenta((ObservableList<DetalleVenta>) facturaActual.getListaDetallesVenta());
+            informacionFacturaController.agregarDetallesVenta( ventaSeleccionada.getListaDetallesVenta());
 
             Scene scene = new Scene(root);
 

@@ -100,6 +100,7 @@ public class DetallesVentasController implements Initializable {
         try {
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
+            inventarioController.getVentasVolatiles().clear();
         } catch (Exception e) {
             e.printStackTrace();
         }

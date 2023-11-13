@@ -118,7 +118,7 @@
          <center>
             <StackPane prefHeight="606.0" prefWidth="634.0" BorderPane.alignment="CENTER">
                <children>
-                  <Pane fx:id="paneProductos" prefHeight="200.0" prefWidth="200.0">
+                  <Pane fx:id="paneProductos" prefHeight="200.0" prefWidth="200.0" visible="false">
                      <children>
                         <TableView fx:id="tblPoductos" layoutY="114.0" prefHeight="336.0" prefWidth="632.0">
                           <columns>
@@ -277,18 +277,18 @@
                         <ImageView fx:id="imageCodigoBarras" fitHeight="100.0" fitWidth="283.0" layoutX="15.0" layoutY="500.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </Pane>
-                  <Pane fx:id="paneVentas" prefHeight="200.0" prefWidth="200.0" visible="false">
+                  <Pane fx:id="paneVentas" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="tableRegistroVentas" layoutY="66.0" prefHeight="473.0" prefWidth="653.0" stylesheets="@../../../css/Estilos.css">
+                        <TableView fx:id="tableRegistroVentas" layoutY="57.0" prefHeight="482.0" prefWidth="653.0" stylesheets="@../../../css/Estilos.css">
                            <columns>
-                              <TableColumn fx:id="colProductoVentas" prefWidth="106.0" text="Producto" />
-                              <TableColumn fx:id="colCantidadVentas" prefWidth="86.0" text="Cantidad" />
-                              <TableColumn fx:id="colPrecioUnidadVentas" prefWidth="148.0" text="Precio Unidad" />
-                              <TableColumn fx:id="colSubTotalVentas" prefWidth="155.0" text="Subtotal" />
-                              <TableColumn fx:id="colDescuentoVentas" prefWidth="154.0" text="Descuento" />
+                              <TableColumn fx:id="colIdFacturas" prefWidth="106.0" text="ID" />
+                              <TableColumn fx:id="colFechaFacturas" prefWidth="86.0" text="Fecha" />
+                              <TableColumn fx:id="colTotalFacturas" prefWidth="148.0" text="Total Factura" />
+                              <TableColumn fx:id="colImpuestoFacturas" prefWidth="155.0" text="Impuesto" />
+                              <TableColumn fx:id="colEmpleadoFacturas" prefWidth="154.0" text="Empleado" />
                            </columns>
                         </TableView>
-                        <Label alignment="CENTER" layoutX="208.0" layoutY="28.0" text="Registro de ventas">
+                        <Label alignment="CENTER" layoutX="208.0" layoutY="14.0" text="Registro de ventas">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="23.0" />
                            </font>

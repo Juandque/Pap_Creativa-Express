@@ -10,7 +10,7 @@ public class Factura implements Serializable {
     private int id;
     private Date fechaFactura;
     private double subtotalFactura;
-    private  double totalFactura;
+    private double totalFactura;
     private double impuesto;
     private ArrayList<DetalleVenta> listaDetallesVenta;
     private Usuario empleadoEncargadoFactura;
@@ -69,7 +69,7 @@ public class Factura implements Serializable {
         this.totalFactura = totalFactura;
     }
 
-    public List<DetalleVenta> getListaDetallesVenta() {
+    public ArrayList<DetalleVenta> getListaDetallesVenta() {
         return listaDetallesVenta;
     }
 
