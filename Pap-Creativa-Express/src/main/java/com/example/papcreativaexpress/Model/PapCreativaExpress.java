@@ -1,16 +1,15 @@
 package com.example.papcreativaexpress.Model;
 
 import com.example.papcreativaexpress.Excepciones.CorreoNoExisteException;
+import com.example.papcreativaexpress.Utils.EnviarCorreo;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class PapCreativaExpress implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -334,8 +333,23 @@ public class PapCreativaExpress implements Serializable {
         }
         for (Usuario usuario : listaEmpleados) {
             if (usuario.getEmail().equals(correo) && usuario.getContrasenia().equals(contrasena)) {
-                intentosFallidos.clear();
-                return true;
+                String codigo= generarCodigo();
+                String asunto= "Verificacion de Inicio de sesion";
+                String destinatario= correo;
+                String remitente = "papcreativaexpress@gmail.com";
+                String cuerpo = "Cordial salud, su código de verificacion es: " + codigo;
+                EnviarCorreo correoVerificacion = new EnviarCorreo();
+                correoVerificacion.enviarCorreo(remitente,destinatario,asunto,cuerpo);
+                TextInputDialog dialog = new TextInputDialog();
+                dialog.setTitle("Verificacion de incio de sesion");
+                dialog.setHeaderText("Ingrese el codigo enviado a su correo:");
+                dialog.setContentText("Codigo:");
+                Optional<String> result = dialog.showAndWait();
+                String codigoIngresado = result.orElse("");
+                if(codigoIngresado.equals(codigo)){
+                    intentosFallidos.clear();
+                    return true;
+                }
             }
         }
         intentosFallidos.add(correo);
@@ -557,6 +571,13 @@ public class PapCreativaExpress implements Serializable {
             loteDevuelto.anadirProducto(productoDevuelto);
         }
         return procesoRealizado;
+    }
+
+    public String generarCodigo() {
+        Random random = new Random();
+        int codigoGenerado = 10000 + random.nextInt(90000);
+        String codigoGeneradoStr = String.valueOf(codigoGenerado);
+        return codigoGeneradoStr;
     }
 
 }

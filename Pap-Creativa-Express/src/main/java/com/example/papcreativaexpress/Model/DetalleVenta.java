@@ -1,5 +1,8 @@
 package com.example.papcreativaexpress.Model;
 
+import com.example.papcreativaexpress.Utils.MensajeUtil;
+import javafx.scene.control.Alert;
+
 import java.io.Serializable;
 
 public class DetalleVenta implements Serializable {
@@ -94,6 +97,8 @@ public class DetalleVenta implements Serializable {
 
     public void realizarDevolucion(int cantidadDevuelta){
         if(cantidadDevuelta>cantidad){
+            MensajeUtil m= new MensajeUtil();
+            m.mostrarMensaje("Devolucion","Cantidad invalida","La cantidad a devolver es mayor a la vendida", Alert.AlertType.ERROR);
             throw new IllegalArgumentException("La cantidad a devolver es mayor que la cantidad vendida originalmente.");
         }
         cantidad-=cantidadDevuelta;

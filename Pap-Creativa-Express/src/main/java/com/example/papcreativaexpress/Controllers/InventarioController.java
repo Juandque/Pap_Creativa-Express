@@ -158,7 +158,7 @@ public class InventarioController implements Initializable {
     private TableColumn<Usuario, String> colEmailEmpleado;
 
     @FXML
-    private TableColumn<DetalleVenta, String> colEmpleadoFacturas;
+    private TableColumn<Factura, String> colEmpleadoFacturas;
 
     @FXML
     private TableColumn<Cargo, String> colEstadoCargo;
@@ -170,16 +170,16 @@ public class InventarioController implements Initializable {
     private TableColumn<Lote, Date> colFechaEntradaLote;
 
     @FXML
-    private TableColumn<DetalleVenta, Date> colFechaFacturas;
+    private TableColumn<Factura, Date> colFechaFacturas;
 
     @FXML
     private TableColumn<Usuario, String> colIdEmpleado;
 
     @FXML
-    private TableColumn<DetalleVenta, Integer> colIdFacturas;
+    private TableColumn<Factura, Integer> colIdFacturas;
 
     @FXML
-    private TableColumn<DetalleVenta, Double> colImpuestoFacturas;
+    private TableColumn<Factura, Double> colImpuestoFacturas;
     @FXML
     private TableColumn<Lote, String> colMarca;
 
@@ -217,7 +217,7 @@ public class InventarioController implements Initializable {
     private TableColumn<Proveedor, String> colTelefonoProveedor;
 
     @FXML
-    private TableColumn<DetalleVenta, Double> colTotalFacturas;
+    private TableColumn<Factura, Double> colTotalFacturas;
     @FXML
     private TableColumn<DetalleVenta, String> colProductoVentas;
     @FXML
@@ -553,8 +553,8 @@ public class InventarioController implements Initializable {
         this.colIdFacturas.setCellValueFactory(new PropertyValueFactory<>("id"));
         this.colFechaFacturas.setCellValueFactory(new PropertyValueFactory<>("fechaFactura"));
         this.colTotalFacturas.setCellValueFactory(new PropertyValueFactory<>("totalFactura"));
-        /*this.colEmpleadoFacturas.setCellValueFactory(((cellData -> {
-            Usuario u = cellData.getValue().;
+        this.colEmpleadoFacturas.setCellValueFactory(((cellData -> {
+            Usuario u = cellData.getValue().getEmpleadoEncargadoFactura();
             if (u != null) {
                 String nombre = u.getNombre();
                 return new SimpleStringProperty(nombre);
@@ -562,7 +562,6 @@ public class InventarioController implements Initializable {
                 return new SimpleStringProperty("");
             }
         })));
-        */
         this.colImpuestoFacturas.setCellValueFactory(new PropertyValueFactory<>("impuesto"));
 
         tableRegistroVentas.setItems(ventas);
@@ -1075,7 +1074,6 @@ public class InventarioController implements Initializable {
             dialog.setTitle("Venta de Productos");
             dialog.setHeaderText("Ingrese la cantidad a vender:");
             dialog.setContentText("Cantidad:");
-
             Optional<String> result = dialog.showAndWait();
             result.ifPresent(cantidadStr -> {
                 try {
