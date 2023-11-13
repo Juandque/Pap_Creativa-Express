@@ -25,7 +25,7 @@ public class GenerarCodigoBarras {
         try {
             BitMatrix bitMatrix = new MultiFormatWriter().encode(id, barcodeFormat, 283, 100, hints);
 
-            String filePath = outputPath + File.separator + id + ".png";
+            String filePath = outputPath + "/" + id + ".png";
 
             File outputFile = new File(filePath);
             MatrixToImageWriter.writeToPath(bitMatrix, "png", outputFile.toPath());
