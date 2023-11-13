@@ -4,6 +4,8 @@ import com.example.papcreativaexpress.Excepciones.CorreoNoExisteException;
 import javafx.scene.image.Image;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -527,10 +529,13 @@ public class PapCreativaExpress implements Serializable {
         for(DetalleVenta detalleVenta: detallesVentaList){
             precio += detalleVenta.getSubTotalDetalleVenta();
         }
-        double impuesto = precio/1.19;
-        impuesto = impuesto-precio;
+        double impuesto = precio*0.19;
+        //impuesto = impuesto-precio;
         double total = precio+impuesto;
-        Factura factura = new Factura(idFacturas,new Date(),precio,total,detallesVentaList,empleado,impuesto);
+        double precioRedondeado= Math.round(precio);
+        double totalRedondeado=Math.round(total);
+        double impuestoRedondeado=Math.round(impuesto);
+        Factura factura = new Factura(idFacturas,new Date(),precioRedondeado,totalRedondeado,detallesVentaList,empleado,impuestoRedondeado);
         idFacturas++;
         listaFacturas.add(factura);
         return factura;

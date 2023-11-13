@@ -1045,6 +1045,8 @@ public class InventarioController implements Initializable {
         tblPoductos.setItems(FXCollections.observableArrayList(lotes));
 
         tblPoductos.refresh();
+
+        tableRegistroVentas.refresh();
     }
 
     @FXML
@@ -1087,7 +1089,7 @@ public class InventarioController implements Initializable {
     }
     private void venderProductos(Lote lote, int cantidad) throws IOException {
         Producto producto= lote.getListaProductosLote().get(0);
-        double precioUnitario= lote.getPrecioUnitario();
+        double precioUnitario= lote.getListaProductosLote().get(0).getPrecioVenta();
         double porcentajeDescuento=0;
         if(cantidad>20){
             porcentajeDescuento=0.10;
@@ -1116,24 +1118,27 @@ public class InventarioController implements Initializable {
             modelFactoryController.setFacturaActual(nuevaFactura);
             detalleVenta.setFactura(nuevaFactura);
         }
+        tableRegistroVentas.refresh();
     }
 
     @FXML
     void onVerInfoVentasAction(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("InformacionFactura.fxml"));
-            Parent root = loader.load();
-            InformacionFacturaController informacionFacturaController = loader.getController();
-            informacionFacturaController.setControladorPrincipal(this);
-            informacionFacturaController.agregarDetallesVenta( ventaSeleccionada.getListaDetallesVenta());
+        if(ventaSeleccionada!=null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("InformacionFactura.fxml"));
+                Parent root = loader.load();
+                InformacionFacturaController informacionFacturaController = loader.getController();
+                informacionFacturaController.setControladorPrincipal(this);
+                informacionFacturaController.agregarDetallesVenta(ventaSeleccionada.getListaDetallesVenta());
 
-            Scene scene = new Scene(root);
+                Scene scene = new Scene(root);
 
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

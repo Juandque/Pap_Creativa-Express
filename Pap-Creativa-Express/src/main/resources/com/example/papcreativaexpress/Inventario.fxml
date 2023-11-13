@@ -118,7 +118,7 @@
          <center>
             <StackPane prefHeight="606.0" prefWidth="634.0" BorderPane.alignment="CENTER">
                <children>
-                  <Pane fx:id="paneProductos" prefHeight="200.0" prefWidth="200.0" visible="false">
+                  <Pane fx:id="paneProductos" prefHeight="200.0" prefWidth="200.0">
                      <children>
                         <TableView fx:id="tblPoductos" layoutY="114.0" prefHeight="336.0" prefWidth="632.0">
                           <columns>
@@ -277,7 +277,7 @@
                         <ImageView fx:id="imageCodigoBarras" fitHeight="100.0" fitWidth="283.0" layoutX="15.0" layoutY="500.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </Pane>
-                  <Pane fx:id="paneVentas" prefHeight="200.0" prefWidth="200.0">
+                  <Pane fx:id="paneVentas" prefHeight="200.0" prefWidth="200.0" visible="false">
                      <children>
                         <TableView fx:id="tableRegistroVentas" layoutY="57.0" prefHeight="482.0" prefWidth="653.0" stylesheets="@../../../css/Estilos.css">
                            <columns>
