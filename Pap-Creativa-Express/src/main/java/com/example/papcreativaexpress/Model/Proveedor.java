@@ -12,7 +12,7 @@ public class Proveedor implements Serializable {
     private String telefono;
     private String nombreContacto;
     private String comentarios;
-    private String estado;
+    private EstadoProveedor estado;
     private Date fechaRegistro;
     private Date fechaModificacion;
     private List<Producto> listaProductosProveedor;
@@ -21,7 +21,7 @@ public class Proveedor implements Serializable {
 
     }
 
-    public Proveedor(String id, String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado, Date fechaRegistro) {
+    public Proveedor(String id, String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, EstadoProveedor estado, Date fechaRegistro) {
         this.id = id;
         this.nombreEmpresa = nombreEmpresa;
         this.direccion = direccion;
@@ -80,11 +80,11 @@ public class Proveedor implements Serializable {
         this.comentarios = comentarios;
     }
 
-    public String getEstado() {
+    public EstadoProveedor getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoProveedor estado) {
         this.estado = estado;
     }
 

@@ -205,7 +205,7 @@ public class PapCreativaExpress implements Serializable {
         return true;
     }
 
-    public Cargo anadirCargo(String nombre, String descripcion, double salario, String estado, int empleadosRequeridos) {
+    public Cargo anadirCargo(String nombre, String descripcion, double salario, EstadoCargo estado, int empleadosRequeridos) {
         String id = crearId(idCargos);
         idCargos++;
         Cargo aux = new Cargo(nombre, id, descripcion, salario, new Date(), estado, empleadosRequeridos);
@@ -213,7 +213,7 @@ public class PapCreativaExpress implements Serializable {
         return aux;
     }
 
-    public boolean actualizarCargo(String id, String nombre, String descripcion, double salario, String estado, int empleadosRequeridos) {
+    public boolean actualizarCargo(String id, String nombre, String descripcion, double salario, EstadoCargo estado, int empleadosRequeridos) {
         Cargo aux = buscarCargoId(id);
         if (aux == null) {
             return false;
@@ -235,7 +235,7 @@ public class PapCreativaExpress implements Serializable {
         return true;
     }
 
-    public Proveedor anadirProveedor(String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado) {
+    public Proveedor anadirProveedor(String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, EstadoProveedor estado) {
         String id = crearId(idProveedores);
         idProveedores++;
         Proveedor aux = new Proveedor(id, nombreEmpresa, direccion, telefono, nombreContacto, comentarios, estado, new Date());
@@ -243,7 +243,7 @@ public class PapCreativaExpress implements Serializable {
         return aux;
     }
 
-    public boolean actualizarProveedor(String idProveedor, String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado) {
+    public boolean actualizarProveedor(String idProveedor, String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, EstadoProveedor estado) {
         Proveedor aux = buscarProveedorId(idProveedor);
         if (aux == null) {
             return false;
@@ -536,19 +536,22 @@ public class PapCreativaExpress implements Serializable {
         return factura;
     }
 
-    public void procesarDevolucion(DetalleVenta detalleVenta, int cantidadDevuelta){
+    public boolean procesarDevolucion(DetalleVenta detalleVenta, int cantidadDevuelta){
+        boolean procesoRealizado=false;
         detalleVenta.realizarDevolucion(cantidadDevuelta);
         Producto productoDevuelto= detalleVenta.getProducto();
         Lote loteDevuelto= null;
         for (Lote l: listaLotes) {
             if(l.getId().equals(productoDevuelto.getLote().getId())){
                 loteDevuelto=l;
+                procesoRealizado=true;
                 break;
             }
         }
         for(int i=0;i<cantidadDevuelta;i++ ) {
             loteDevuelto.anadirProducto(productoDevuelto);
         }
+        return procesoRealizado;
     }
 
 }

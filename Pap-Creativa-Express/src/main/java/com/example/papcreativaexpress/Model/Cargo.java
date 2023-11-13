@@ -12,7 +12,7 @@ public class Cargo implements Serializable {
     private double salario;
     private Date fechaCreacion;
     private Date fechaModificacion;
-    private String estado;
+    private EstadoCargo estado;
     private int empleadosRequeridos;
     private List<Usuario> listaEmpleadosCargo;
 
@@ -20,7 +20,7 @@ public class Cargo implements Serializable {
 
     }
 
-    public Cargo(String nombre, String id, String descripcion, double salario, Date fechaCreacion, String estado, int empleadosRequeridos) {
+    public Cargo(String nombre, String id, String descripcion, double salario, Date fechaCreacion, EstadoCargo estado, int empleadosRequeridos) {
         this.nombre = nombre;
         this.id = id;
         this.descripcion = descripcion;
@@ -78,11 +78,11 @@ public class Cargo implements Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public String getEstado() {
+    public EstadoCargo getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoCargo estado) {
         this.estado = estado;
     }
 

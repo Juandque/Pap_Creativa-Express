@@ -89,7 +89,7 @@ public class ModelFactoryController {
         return flagActualizado;
     }
 
-    public Cargo crearCargo(String nombre, String descripcion, double salario, String estado, int empleadosRequeridos) throws IOException {
+    public Cargo crearCargo(String nombre, String descripcion, double salario, EstadoCargo estado, int empleadosRequeridos) throws IOException {
         Cargo cargo = papCreativaExpress.anadirCargo(nombre, descripcion, salario, estado, empleadosRequeridos);
         guardarResourceBinario();
         return cargo;
@@ -101,7 +101,7 @@ public class ModelFactoryController {
         return flagEliminado;
     }
 
-    public boolean actualizarCargo(String idCargo, String nombre, String descripcion, double salario, String estado, int empleadosRequeridos) throws IOException {
+    public boolean actualizarCargo(String idCargo, String nombre, String descripcion, double salario, EstadoCargo estado, int empleadosRequeridos) throws IOException {
         boolean flagActualizado = papCreativaExpress.actualizarCargo(idCargo, nombre, descripcion, salario, estado, empleadosRequeridos);
         guardarResourceBinario();
 
@@ -127,7 +127,7 @@ public class ModelFactoryController {
         return flagActualizado;
     }
 
-    public Proveedor anadirProveedor(String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado) throws IOException {
+    public Proveedor anadirProveedor(String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, EstadoProveedor estado) throws IOException {
         Proveedor proveedor = papCreativaExpress.anadirProveedor(nombreEmpresa, direccion, telefono, nombreContacto, comentarios, estado);
         guardarResourceBinario();
         return proveedor;
@@ -139,7 +139,7 @@ public class ModelFactoryController {
         return flagEliminado;
     }
 
-    public boolean actualizarProveedor(String idProveedor, String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado) throws IOException {
+    public boolean actualizarProveedor(String idProveedor, String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, EstadoProveedor estado) throws IOException {
         boolean flagActualizado = papCreativaExpress.actualizarProveedor(idProveedor, nombreEmpresa, direccion, telefono, nombreContacto, comentarios, estado);
         guardarResourceBinario();
         return flagActualizado;
@@ -204,8 +204,6 @@ public class ModelFactoryController {
         papCreativaExpress.setLoteActual(loteActual);
     }
 
-
-
     public ArrayList<Usuario> getEmpleados(){
         return  papCreativaExpress.getListaEmpleados();
     }
@@ -217,6 +215,10 @@ public class ModelFactoryController {
 
     public ArrayList<Cargo> getCargos(){
         return  papCreativaExpress.getListaCargos();
+    }
+
+    public ArrayList<DetalleVenta> getDetallesVenta(){
+        return papCreativaExpress.getListaDetalleVentas();
     }
 
     public ArrayList<Proveedor> getProveedores(){
@@ -280,6 +282,11 @@ public class ModelFactoryController {
         Factura factura = papCreativaExpress.crearFactura(empleado,detallesVentaList);
         guardarResourceBinario();
         return factura;
+    }
+
+    public boolean procesarDevolucion(DetalleVenta detalleVenta, int cantidad){
+        boolean devolucionRealizada= papCreativaExpress.procesarDevolucion(detalleVenta,cantidad);
+        return devolucionRealizada;
     }
 }
 

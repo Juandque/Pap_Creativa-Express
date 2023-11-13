@@ -197,7 +197,7 @@ public class Persistencia {
 			cargo.setId(linea.split("@@")[0]);
 			cargo.setNombre((linea.split("@@")[1]));
 			cargo.setDescripcion((linea.split("@@")[2]));
-			cargo.setEstado((linea.split("@@")[3]));
+			//.setEstado((linea.split("@@")[3]));
 			cargo.setEmpleadosRequeridos(Integer.parseInt((linea.split("@@")[4])));
 			cargo.setSalario(Double.parseDouble(linea.split("@@")[5]));
 			String fechaCreacionstr = linea.split("@@")[6];
@@ -232,7 +232,7 @@ public class Persistencia {
 			Proveedor proveedor = new Proveedor();
 			proveedor.setId(linea.split("@@")[0]);
 			proveedor.setDireccion(linea.split("@@")[1]);
-			proveedor.setEstado(String.valueOf(Estado.valueOf(linea.split("@@")[2])));
+			//proveedor.setEstado(String.valueOf(Estado.valueOf(linea.split("@@")[2])));
 			proveedor.setTelefono(linea.split("@@")[3]);
 			proveedor.setNombreEmpresa(linea.split("@@")[4]);
 			proveedor.setComentarios(linea.split("@@")[5]);

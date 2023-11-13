@@ -118,9 +118,9 @@
          <center>
             <StackPane prefHeight="606.0" prefWidth="634.0" BorderPane.alignment="CENTER">
                <children>
-                  <Pane fx:id="paneProductos" prefHeight="200.0" prefWidth="200.0" visible="false">
+                  <Pane fx:id="paneProductos" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="tblPoductos" layoutY="114.0" prefHeight="336.0" prefWidth="617.0">
+                        <TableView fx:id="tblPoductos" layoutY="114.0" prefHeight="336.0" prefWidth="632.0">
                           <columns>
                             <TableColumn fx:id="colProductos" prefWidth="113.0" text="Producto" />
                             <TableColumn fx:id="colCantidadProductos" prefWidth="99.0" text="Cantidad" />
@@ -140,7 +140,7 @@
 
                            </stylesheets>
                         </TableView>
-                        <ScrollBar layoutX="613.0" layoutY="113.0" orientation="VERTICAL" prefHeight="326.0" prefWidth="14.0" />
+                        <ScrollBar layoutX="632.0" layoutY="114.0" orientation="VERTICAL" prefHeight="326.0" prefWidth="14.0" />
                         <TextField fx:id="tfBuscarProducto" layoutX="3.0" layoutY="61.0" prefHeight="36.0" prefWidth="339.0" promptText="Buscar Producto" styleClass="tfBuscarProducto" stylesheets="@../../../css/Estilos.css" />
                         <Button fx:id="btnVerInfo" layoutX="97.0" layoutY="468.0" mnemonicParsing="false" onAction="#OnActionVerInfo" prefHeight="25.0" prefWidth="171.0" stylesheets="@../../../css/Estilos.css" text="Ver info" />
                         <ComboBox fx:id="cbBoxFiltro" layoutX="460.0" layoutY="67.0" prefHeight="25.0" prefWidth="166.0" stylesheets="@../../../css/Estilos.css" />
@@ -171,13 +171,13 @@
                         <TextField fx:id="txtTelefonoEmpleado" alignment="CENTER" layoutX="342.0" layoutY="398.0" prefHeight="25.0" prefWidth="279.0" promptText="Telefono" stylesheets="@../../../css/Estilos.css" />
                         <TextField fx:id="txtIdEmpleado" alignment="CENTER" layoutX="14.0" layoutY="398.0" prefHeight="25.0" prefWidth="277.0" promptText="N° Documento" stylesheets="@../../../css/Estilos.css" />
                         <TextField fx:id="txtDireccionEmpleado" alignment="CENTER" layoutX="15.0" layoutY="440.0" prefHeight="25.0" prefWidth="277.0" promptText="Direccion" stylesheets="@../../../css/Estilos.css" />
-                        <TableView fx:id="tableEmpleados" layoutY="8.0" prefHeight="277.0" prefWidth="635.0" stylesheets="@../../../css/Estilos.css">
+                        <TableView fx:id="tableEmpleados" prefHeight="285.0" prefWidth="653.0" stylesheets="@../../../css/Estilos.css">
                           <columns>
                             <TableColumn fx:id="colNombreEmpleado" prefWidth="102.0" text="Nombre" />
                             <TableColumn fx:id="colTelefonoEmpleado" prefWidth="115.0" text="Telefono" />
                               <TableColumn fx:id="colEmailEmpleado" prefWidth="114.0" text="Email" />
                               <TableColumn fx:id="colIdEmpleado" prefWidth="145.0" text="N° Documento" />
-                              <TableColumn fx:id="colDireccionEmpleado" prefWidth="158.0" text="Direccion" />
+                              <TableColumn fx:id="colDireccionEmpleado" prefWidth="176.0" text="Direccion" />
                           </columns>
                            <styleClass>
                               <String fx:value="column-header-background" />
@@ -205,12 +205,12 @@
                         <Button fx:id="btnActualizarCargo" layoutX="171.0" layoutY="324.0" mnemonicParsing="false" onAction="#onActionActualizarCargo" stylesheets="@../../../css/Estilos.css" text="Actualizar Cargo" />
                         <Button fx:id="btnEliminarCargo" layoutX="366.0" layoutY="324.0" mnemonicParsing="false" onAction="#onActionEliminarCargo" stylesheets="@../../../css/Estilos.css" text="Eliminar Cargo" />
                         <Button fx:id="btnCancelarCargo" layoutX="519.0" layoutY="324.0" mnemonicParsing="false" onAction="#onActionCancelarCargo" stylesheets="@../../../css/Estilos.css" text="Cancelar Accion" />
-                        <TableView fx:id="tableCargos" prefHeight="311.0" prefWidth="634.0" stylesheets="@../../../css/Estilos.css">
+                        <TableView fx:id="tableCargos" prefHeight="311.0" prefWidth="653.0" stylesheets="@../../../css/Estilos.css">
                           <columns>
                             <TableColumn fx:id="colNombreCargo" prefWidth="149.0" text="Nombre" />
                             <TableColumn fx:id="colSalarioCargo" prefWidth="191.0" text="Salario" />
-                              <TableColumn fx:id="colEstadoCargo" prefWidth="151.0" text="Estado" />
-                              <TableColumn fx:id="colCantidadEmpleadosCargo" prefWidth="141.0" text="Cantidad de Empleados" />
+                              <TableColumn fx:id="colEstadoCargo" prefWidth="169.0" text="Estado" />
+                              <TableColumn fx:id="colCantidadEmpleadosCargo" prefWidth="142.0" text="Cantidad de Empleados" />
                           </columns>
                         </TableView>
                         <ComboBox fx:id="cbEstadoCargo" layoutX="14.0" layoutY="402.0" prefHeight="25.0" prefWidth="278.0" promptText="Estado" stylesheets="@../../../css/Estilos.css" />
@@ -226,13 +226,13 @@
                         <Button fx:id="btnActualizarProveedor" layoutX="160.0" layoutY="357.0" mnemonicParsing="false" onAction="#onActionActualizarProveedor" stylesheets="@../../../css/Estilos.css" text="Actualizar Proveedor" />
                         <Button fx:id="btnEliminarProveedor" layoutX="346.0" layoutY="357.0" mnemonicParsing="false" onAction="#onActionEliminarProveedor" stylesheets="@../../../css/Estilos.css" text="Eliminar Proveedor" />
                         <Button fx:id="btnCancelarProveedor" layoutX="519.0" layoutY="357.0" mnemonicParsing="false" onAction="#onActionCancelarProveedor" stylesheets="@../../../css/Estilos.css" text="Cancelar Accion" />
-                        <TableView fx:id="tableProveedores" prefHeight="346.0" prefWidth="634.0" stylesheets="@../../../css/Estilos.css">
+                        <TableView fx:id="tableProveedores" prefHeight="346.0" prefWidth="653.0" stylesheets="@../../../css/Estilos.css">
                           <columns>
                             <TableColumn fx:id="colNombreEmpresaProveedor" prefWidth="150.0" text="Nombre de la Empresa" />
                             <TableColumn fx:id="colTelefonoProveedor" minWidth="0.0" prefWidth="104.0" text="Telefono" />
                               <TableColumn fx:id="colDireccionProveedor" prefWidth="110.0" text="Direccion" />
                               <TableColumn fx:id="colNombreContactoProveedor" prefWidth="146.0" text="Nombre del Contacto" />
-                              <TableColumn fx:id="colEstadoProveedor" prefWidth="122.0" text="Estado" />
+                              <TableColumn fx:id="colEstadoProveedor" prefWidth="140.0" text="Estado" />
                           </columns>
                         </TableView>
                         <ComboBox fx:id="cbEstadoProveedor" layoutX="319.0" layoutY="476.0" prefHeight="25.0" prefWidth="302.0" promptText="Estado" stylesheets="@../../../css/Estilos.css" />
@@ -240,13 +240,13 @@
                   </Pane>
                   <Pane fx:id="paneLotes" prefHeight="529.0" prefWidth="634.0" visible="false">
                      <children>
-                        <TableView fx:id="tableLotes" prefHeight="232.0" prefWidth="635.0" stylesheets="@../../../css/Estilos.css">
+                        <TableView fx:id="tableLotes" prefHeight="232.0" prefWidth="653.0" stylesheets="@../../../css/Estilos.css">
                           <columns>
                             <TableColumn fx:id="colNombreProductoLote" prefWidth="117.0" text="Nombre" />
                             <TableColumn fx:id="colCantidadLote" prefWidth="58.0" text="Cantidad" />
                               <TableColumn fx:id="colFechaEntradaLote" prefWidth="157.0" text="Fecha de Entrada" />
                               <TableColumn fx:id="colPrecioUnitarioLote" prefWidth="154.0" text="Precio Unitario" />
-                              <TableColumn fx:id="colCostoTotalLote" prefWidth="147.0" text="Costo Total" />
+                              <TableColumn fx:id="colCostoTotalLote" prefWidth="165.0" text="Costo Total" />
                           </columns>
                         </TableView>
                         <Button fx:id="btnAnadirLote" layoutX="23.0" layoutY="245.0" mnemonicParsing="false" onAction="#onActionAnadirLote" stylesheets="@../../../css/Estilos.css" text="Añadir Lote" />
@@ -277,23 +277,23 @@
                         <ImageView fx:id="imageCodigoBarras" fitHeight="100.0" fitWidth="283.0" layoutX="15.0" layoutY="500.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </Pane>
-                  <Pane fx:id="paneVentas" prefHeight="200.0" prefWidth="200.0">
+                  <Pane fx:id="paneVentas" prefHeight="200.0" prefWidth="200.0" visible="false">
                      <children>
-                        <TableView fx:id="tableRegistroVentas" layoutX="65.0" layoutY="131.0" prefHeight="346.0" prefWidth="495.0" stylesheets="@../../../css/Estilos.css">
+                        <TableView fx:id="tableRegistroVentas" layoutY="66.0" prefHeight="473.0" prefWidth="653.0" stylesheets="@../../../css/Estilos.css">
                            <columns>
-                              <TableColumn fx:id="colProductoVentas" prefWidth="75.0" text="Producto" />
-                              <TableColumn fx:id="colCantidadVentas" prefWidth="108.0" text="Cantidad" />
-                              <TableColumn fx:id="colPrecioUnidadVentas" prefWidth="121.0" text="Precio Unidad" />
-                              <TableColumn fx:id="colSubTotalVentas" prefWidth="88.0" text="Subtotal" />
-                              <TableColumn fx:id="colDescuentoVentas" prefWidth="102.0" text="Descuento" />
+                              <TableColumn fx:id="colProductoVentas" prefWidth="106.0" text="Producto" />
+                              <TableColumn fx:id="colCantidadVentas" prefWidth="86.0" text="Cantidad" />
+                              <TableColumn fx:id="colPrecioUnidadVentas" prefWidth="148.0" text="Precio Unidad" />
+                              <TableColumn fx:id="colSubTotalVentas" prefWidth="155.0" text="Subtotal" />
+                              <TableColumn fx:id="colDescuentoVentas" prefWidth="154.0" text="Descuento" />
                            </columns>
                         </TableView>
-                        <Label alignment="CENTER" layoutX="208.0" layoutY="56.0" text="Registro de ventas">
+                        <Label alignment="CENTER" layoutX="208.0" layoutY="28.0" text="Registro de ventas">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="23.0" />
                            </font>
                         </Label>
-                        <Button fx:id="btnVerInfoVentas" layoutX="265.0" layoutY="503.0" mnemonicParsing="false" onAction="#onVerInfoVentasAction" prefHeight="25.0" prefWidth="96.0" stylesheets="@../../../css/Estilos.css" text="Ver Info" />
+                        <Button fx:id="btnVerInfoVentas" layoutX="265.0" layoutY="551.0" mnemonicParsing="false" onAction="#onVerInfoVentasAction" prefHeight="25.0" prefWidth="96.0" stylesheets="@../../../css/Estilos.css" text="Ver Info" />
                      </children>
                   </Pane>
                </children>

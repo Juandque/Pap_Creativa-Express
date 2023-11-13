@@ -603,6 +603,10 @@ public class InventarioController implements Initializable {
 
     }
 
+    public Factura getFacturaActual() {
+        return facturaActual;
+    }
+
     @FXML
     void OnActionVerInfo(ActionEvent event) {
         Lote loteActual;
@@ -653,11 +657,11 @@ public class InventarioController implements Initializable {
     void onActionActualizarCargo(ActionEvent event) throws IOException {
         String nombre = txtNombreCargo.getText();
         double salario = Double.parseDouble(txtSalarioCargo.getText());
-        String estado = txtEstadoCargo.getText();
+        EstadoCargo estado = cbEstadoCargo.getValue();
         int cantidadEmpleados = Integer.parseInt(txtEmpleadosRequeridosCargo.getText());
         String descripcion = txtDescripcionCargo.getText();
 
-        if (datosValidosCargo(nombre, String.valueOf(salario), String.valueOf(cantidadEmpleados), descripcion, estado)) {
+        if (datosValidosCargo(nombre, String.valueOf(salario), String.valueOf(cantidadEmpleados), descripcion)) {
             boolean actualizado = modelFactoryController.actualizarCargo(cargoSeleccionado.getId(), nombre, descripcion, salario, estado, cantidadEmpleados);
 
             if (actualizado) {
@@ -741,8 +745,8 @@ public class InventarioController implements Initializable {
         String telefono = txtTelefonoProveedor.getText();
         String nombreContacto = txtNombreContactoProveedor.getText();
         String comentarios = txtComentariosProveedor.getText();
-        String estado = txtEstadoProveedor.getText();
-        if (datosValidosProveedor(nombreEmpresa, direccion, telefono, nombreContacto, comentarios, estado)) {
+        EstadoProveedor estado = cbEstadoProveedor.getValue();
+        if (datosValidosProveedor(nombreEmpresa, direccion, telefono, nombreContacto, comentarios)) {
             boolean actualizado = false;
             actualizado = modelFactoryController.actualizarProveedor(proveedorSeleccionado.getId(), nombreEmpresa, direccion, telefono, nombreContacto, comentarios, estado);
             if (actualizado) {
@@ -763,10 +767,10 @@ public class InventarioController implements Initializable {
     void onActionAnadirCargo(ActionEvent event) throws IOException {
         String nombre = txtNombreCargo.getText();
         double salario = Double.parseDouble(txtSalarioCargo.getText());
-        String estado = txtEstadoCargo.getText();
+        EstadoCargo estado = cbEstadoCargo.getValue();
         int cantidadEmpleados = Integer.parseInt(txtEmpleadosRequeridosCargo.getText());
         String descripcion = txtDescripcionCargo.getText();
-        if (datosValidosCargo(nombre, String.valueOf(salario), String.valueOf(cantidadEmpleados), descripcion, estado)) {
+        if (datosValidosCargo(nombre, String.valueOf(salario), String.valueOf(cantidadEmpleados), descripcion)) {
             Cargo nuevo = null;
             nuevo = modelFactoryController.crearCargo(nombre, descripcion, salario, estado, cantidadEmpleados);
             if (nuevo != null) {
@@ -869,8 +873,8 @@ public class InventarioController implements Initializable {
         String telefono = txtTelefonoProveedor.getText();
         String nombreContacto = txtNombreContactoProveedor.getText();
         String comentarios = txtComentariosProveedor.getText();
-        String estado = txtEstadoProveedor.getText();
-        if (datosValidosProveedor(nombreEmpresa, direccion, telefono, nombreContacto, comentarios, estado)) {
+        EstadoProveedor estado = cbEstadoProveedor.getValue();
+        if (datosValidosProveedor(nombreEmpresa, direccion, telefono, nombreContacto, comentarios)) {
             Proveedor nuevo = null;
             nuevo = modelFactoryController.anadirProveedor(nombreEmpresa, direccion, telefono, nombreContacto, comentarios, estado);
             if (nuevo != null) {
@@ -1102,7 +1106,21 @@ public class InventarioController implements Initializable {
 
     @FXML
     void onVerInfoVentasAction(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("InformacionFactura.fxml"));
+            Parent root = loader.load();
+            InformacionFacturaController informacionFacturaController = loader.getController();
+            informacionFacturaController.setControladorPrincipal(this);
+            informacionFacturaController.agregarDetallesVenta((ObservableList<DetalleVenta>) facturaActual.getListaDetallesVenta());
 
+            Scene scene = new Scene(root);
+
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -1160,14 +1178,14 @@ public class InventarioController implements Initializable {
     private void mostrarInformacionProveedor(Proveedor p){
         txtComentariosProveedor.setText(p.getComentarios());
         txtDireccionProveedor.setText(p.getDireccion());
-        txtEstadoProveedor.setText(p.getEstado());
+        cbEstadoProveedor.setValue(p.getEstado());
         txtTelefonoProveedor.setText(p.getTelefono());
         txtNombreContactoProveedor.setText(p.getNombreContacto());
         txtNombreEmpresaProveedor.setText(p.getNombreEmpresa());
     }
 
     private void mostrarInformacionCargo(Cargo c){
-        txtEstadoCargo.setText(c.getEstado());
+        cbEstadoCargo.setValue(c.getEstado());
         txtNombreCargo.setText(c.getNombre());
         txtSalarioCargo.setText(String.valueOf(c.getSalario()));
         txtEmpleadosRequeridosCargo.setText(String.valueOf(c.getEmpleadosRequeridos()));
@@ -1200,7 +1218,7 @@ public class InventarioController implements Initializable {
     }
 
     private void limpiarCamposCargo(){
-        txtEstadoCargo.setText("");
+        cbEstadoCargo.setValue(null);
         txtNombreCargo.setText("");
         txtSalarioCargo.setText("");
         txtEmpleadosRequeridosCargo.setText("");
@@ -1210,7 +1228,7 @@ public class InventarioController implements Initializable {
     private void limpiarCamposProveedores(){
         txtComentariosProveedor.setText("");
         txtDireccionProveedor.setText("");
-        txtEstadoProveedor.setText("");
+        cbEstadoProveedor.setValue(null);
         txtTelefonoProveedor.setText("");
         txtNombreContactoProveedor.setText("");
         txtNombreEmpresaProveedor.setText("");
@@ -1259,7 +1277,7 @@ public class InventarioController implements Initializable {
         }
     }
 
-    private boolean datosValidosProveedor(String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios, String estado) {
+    private boolean datosValidosProveedor(String nombreEmpresa, String direccion, String telefono, String nombreContacto, String comentarios) {
         String mensaje= "";
         if(nombreEmpresa == null || nombreEmpresa.equals("")) {
             mensaje += "El nombre de laEmpresa es invalido \n" ;
@@ -1276,9 +1294,6 @@ public class InventarioController implements Initializable {
         if(comentarios==null || comentarios.equals("")){
             mensaje+="Los comentarios son invalidos\n";
         }
-        if(estado==null || estado.equals("")){
-            mensaje+="El estado es invalido\n";
-        }
         if(mensaje.equals("")){
             return true;
         }else{
@@ -1287,7 +1302,7 @@ public class InventarioController implements Initializable {
         }
     }
 
-    private boolean datosValidosCargo(String nombreCargo, String salario, String cantidadEmpleados, String descripcion,String estadoCargo) {
+    private boolean datosValidosCargo(String nombreCargo, String salario, String cantidadEmpleados, String descripcion) {
         String mensaje= "";
         if(nombreCargo == null || nombreCargo.equals("")) {
             mensaje += "El nombre del cargo es invalido \n" ;
@@ -1300,9 +1315,6 @@ public class InventarioController implements Initializable {
         }
         if(descripcion==null || descripcion.equals("")){
             mensaje+="La descripcion es invalida\n";
-        }
-        if(estadoCargo==null || estadoCargo.equals("")){
-            mensaje+="El estado es invalido\n";
         }
         if(mensaje.equals("")){
             return true;

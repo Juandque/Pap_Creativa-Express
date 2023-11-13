@@ -1,31 +1,29 @@
 package com.example.papcreativaexpress.Controllers;
 
-import com.example.papcreativaexpress.HelloApplication;
 import com.example.papcreativaexpress.Model.DetalleVenta;
 import com.example.papcreativaexpress.Model.Producto;
-import javafx.application.Platform;
+import com.example.papcreativaexpress.Utils.MensajeUtil;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class DetallesVentasController implements Initializable {
+public class InformacionFacturaController implements Initializable {
     ModelFactoryController modelFactoryController;
-
     @FXML
     private TableColumn<DetalleVenta, Integer> colCantidad;
 
@@ -43,6 +41,7 @@ public class DetallesVentasController implements Initializable {
 
     @FXML
     private TableView<DetalleVenta> tableDetallesVenta;
+
     private ObservableList<DetalleVenta> detallesVentasList= FXCollections.observableArrayList();
     private DetalleVenta detallesVentaSeleccionado;
     private InventarioController inventarioController;
@@ -68,35 +67,37 @@ public class DetallesVentasController implements Initializable {
         tableDetallesVenta.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             detallesVentaSeleccionado = newSelection;});
     }
-
-
     @FXML
-    void OnActionGenerarFactura(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("factura.fxml"));
-            Parent root = loader.load();
-            FacturaController facturaController = loader.getController();
-            facturaController.agregarFactura(detallesVentasList);
-
-            Scene scene = new Scene(root);
-
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+    void OnActionGenerarDevolucion(ActionEvent event) {
+        if(detallesVentaSeleccionado != null){
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Devolucion de producto");
+            dialog.setHeaderText("Ingrese la cantidad a devolver:");
+            dialog.setContentText("Cantidad:");
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(cantidadStr -> {
+                try {
+                    int cantidad = Integer.parseInt(cantidadStr);
+                    generarDevolucion(cantidad);
+                } catch (NumberFormatException | IOException e) {
+                    MensajeUtil.mostrarMensaje("Error", "Número no válido.","Ingrese por favor una cantidad válida", Alert.AlertType.ERROR);
+                }
+            });
         }
 
     }
-    public void agregarDetallesVenta(ObservableList<DetalleVenta> detallesVentas) {
-        detallesVentasList.addAll(detallesVentas);
-        tableDetallesVenta.refresh();
+
+    private void generarDevolucion(int cantidad)throws IOException{
+        boolean devolucionRalizada=modelFactoryController.procesarDevolucion(detallesVentaSeleccionado,cantidad);
+        if(!devolucionRalizada){
+            mostrarMensaje("Devolucion","Devolucion Fallida", "La devolucion no se pudo realizar", Alert.AlertType.ERROR);
+        }else {
+            mostrarMensaje("Devolucion", "Devolucion Realizada", "La devolucion se realizo con exito", Alert.AlertType.INFORMATION);
+        }
     }
-    public void setControladorPrincipal(InventarioController inventarioController) {
-        this.inventarioController = inventarioController;
-    }
+
     @FXML
-    void OnActionVolver(ActionEvent event){
+    void OnActionVolver(ActionEvent event) {
         try {
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
@@ -105,4 +106,22 @@ public class DetallesVentasController implements Initializable {
         }
     }
 
+    public void setControladorPrincipal(InventarioController inventarioController) {
+        this.inventarioController = inventarioController;
+    }
+    public void agregarDetallesVenta(ObservableList<DetalleVenta> detallesVentas) {
+        detallesVentasList.addAll(detallesVentas);
+        tableDetallesVenta.refresh();
+    }
+
+
+
+    private void mostrarMensaje(String titulo, String header, String contenido, Alert.AlertType alertType) {
+
+        Alert aler = new Alert(alertType);
+        aler.setTitle(titulo);
+        aler.setHeaderText(header);
+        aler.setContentText(contenido);
+        aler.showAndWait();
+    }
 }
