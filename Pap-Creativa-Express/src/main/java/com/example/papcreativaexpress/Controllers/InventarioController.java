@@ -1352,8 +1352,9 @@ public class InventarioController implements Initializable {
         if(telefono == null || telefono.equals("")){
             mensaje += "El telefono es invalido \n" ;
         }
-        if(contrasena==null || contrasena.equals("")){
-            mensaje+="La contrasena es invalida\n";
+        if(!validarContrasenia(contrasena)){
+            mostrarMensaje("Contraseña","Requisitos contraseña","La contraseña no cumple con los requisitos: \nLetra mayuscula \nLetra minuscula \nNumero \nCaracter especial \nMas de 8 caracteres", Alert.AlertType.WARNING);
+            mensaje+="La contraseña es invalida\n";
         }
         if(nombre==null || nombre.equals("")){
             mensaje+="El nombre es invalido\n";
@@ -1370,12 +1371,17 @@ public class InventarioController implements Initializable {
         if(estado==null){
             mensaje+="El estado no fue seleccionado correctamente";
         }
-        if(mensaje.equals("")){
-            return true;
-        }else{
-            mostrarMensaje("Notificacion Usuario","Datos invalidos",mensaje, Alert.AlertType.WARNING);
-            return false;
-        }
+        return mensaje.equals("");
+
+    }
+
+    private boolean validarContrasenia(String contrasenia) {
+        boolean uppercase = contrasenia.matches(".*[A-Z].*");
+        boolean lowercase = contrasenia.matches(".*[a-z].*");
+        boolean digit = contrasenia.matches(".*\\d.*");
+        boolean specialChar = contrasenia.matches(".*[^A-Za-z0-9].*");
+        boolean length = contrasenia.length()>=8;
+        return uppercase && lowercase && digit && specialChar && length;
     }
 
     @FXML
