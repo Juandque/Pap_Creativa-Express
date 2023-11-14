@@ -337,7 +337,7 @@ public class PapCreativaExpress implements Serializable {
                 String asunto= "Verificacion de Inicio de sesion";
                 String destinatario= correo;
                 String remitente = "papcreativaexpress@gmail.com";
-                String cuerpo = "Cordial salud, su código de verificacion es: " + codigo;
+                String cuerpo = "Cordial saludo, su código de verificacion es: " + codigo;
                 EnviarCorreo correoVerificacion = new EnviarCorreo();
                 correoVerificacion.enviarCorreo(remitente,destinatario,asunto,cuerpo);
                 TextInputDialog dialog = new TextInputDialog();
@@ -416,6 +416,20 @@ public class PapCreativaExpress implements Serializable {
         usuarioNuevo.setFechaRegistro(fechaDate);
         usuarioNuevo.setUltimoInicioSesion(fechaDate);
         listaEmpleados.add(usuarioNuevo);
+        String asunto= "Bienvenido/a a Papeleria Creativa Express - Registro Exitoso";
+        String destinatario= correo;
+        String remitente = "papcreativaexpress@gmail.com";
+        String cuerpo = "Estimado/a "+nombre+"\n" +
+                "\n" +
+                "¡Bienvenido/a a Papeleria Creativa Express! Nos complace informarte que tu registro en nuestro sistema se ha completado con éxito.\n" +
+                "\n" +
+                "Agradecemos tu decisión de formar parte de nuestro equipo. Estamos emocionados de trabajar contigo y esperamos que tu experiencia en Papeleria Creativa Express sea gratificante y exitosa.\n" +
+                "\n" +
+                "La informacion de credenciales te las proporcionara tu supervisor de forma presencial en nuestras instalaciones. Si tienes alguna pregunta o necesitas asistencia, no dudes en ponerte en contacto a través nuestro correo papcreativaexpress@gmail.com.\n" +
+                "\n" +
+                "Atentamente, Papeleria Creativa Express";
+        EnviarCorreo correoVerificacion = new EnviarCorreo();
+        correoVerificacion.enviarCorreo(remitente,destinatario,asunto,cuerpo);
         return usuarioNuevo;
     }
 
@@ -423,6 +437,29 @@ public class PapCreativaExpress implements Serializable {
         Usuario aux = buscarEmpleadoNombreUsuario(nombreUsuario);
         if (aux == null) {
             return false;
+        }
+        if(!aux.getEmail().equals(email)){
+            aux.setEmail(email);
+            String asunto= "Actualización de Información - Correo Electrónico";
+            String destinatario= email;
+            String remitente = "papcreativaexpress@gmail.com";
+            String cuerpo = "Estimado/a "+nombre+"\n" +
+                    "\n" +
+                    "Esperamos que este mensaje te encuentre bien. Queremos informarte que tu dirección de correo electrónico en nuestros registros ha sido actualizada con éxito.\n" +
+                    "\n" +
+                    "La actualización se realizó con la siguiente información:\n" +
+                    "\n" +
+                    "Nueva dirección de correo electrónico: "+email+"\n" +
+                    "\n" +
+                    "Agradecemos tu cooperación al proporcionar esta información actualizada. Esta actualización nos ayudará a mantenernos en contacto contigo de manera efectiva.\n" +
+                    "\n" +
+                    "Si tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto a través de nuestro correo papcreativaexpress@gmail.com.\n" +
+                    "\n" +
+                    "Apreciamos tu atención a este asunto y agradecemos tu colaboración.\n" +
+                    "\n" +
+                    "Atentamente, Papeleria Creativa Express";
+            EnviarCorreo correoVerificacion = new EnviarCorreo();
+            correoVerificacion.enviarCorreo(remitente,destinatario,asunto,cuerpo);
         }
         aux.setNombreUsuario(nuevoNombreUsuario);
         aux.setContrasenia(contrasenia);
@@ -441,6 +478,22 @@ public class PapCreativaExpress implements Serializable {
             return false;
         }
         listaEmpleados.remove(usuario);
+        String asunto= "Notificación Importante - Eliminación de Registro";
+        String destinatario= usuario.getEmail();
+        String remitente = "papcreativaexpress@gmail.com";
+        String cuerpo = "Estimado/a "+usuario.getNombre()+"\n "+
+                "\n" +
+                "Esperamos que este mensaje te encuentre bien. Queremos informarte que, debido a cambios en nuestra base de datos, tu registro en nuestro sistema ha sido eliminado.\n" +
+                "\n" +
+                "Queremos expresar nuestro agradecimiento por tu contribución y servicio durante tu tiempo con nosotros. Valoramos tus esfuerzos y dedicación, y te deseamos mucho éxito en tus futuros empeños.\n" +
+                "\n" +
+                "Si tienes alguna pregunta o necesitas información adicional, no dudes en ponerte en contacto a través de nuestro correo papcreativaexpress@gmail.com.\n" +
+                "\n" +
+                "Agradecemos tu comprensión y colaboración.\n" +
+                "\n" +
+                "Atentamente, Papeleria Creativa Express";
+        EnviarCorreo correoVerificacion = new EnviarCorreo();
+        correoVerificacion.enviarCorreo(remitente,destinatario,asunto,cuerpo);
         return true;
     }
 

@@ -27,27 +27,7 @@ public class ModelFactoryController {
     }
 
     public ModelFactoryController() {
-        //inicializarDatos();
-        //guardarResourceBinario();
         cargarResourceBinario();
-    }
-
-    public void inicializarDatos(){
-
-        papCreativaExpress = new PapCreativaExpress();
-
-        Usuario usr= new Usuario();
-        usr.setNombreUsuario("Juanse");
-        usr.setDireccion("Cra x N° xx-xx");
-        usr.setId("10963490");
-        usr.setTelefono("31948303");
-        usr.setNombre("Juan");
-        Image imagen = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/imagenes_usuarios/Juan.png")));
-        usr.setFotoUsuario(imagen);
-        usr.setEmail("juans.orozcoa@uqvirtual.edu.co");
-        usr.setContrasenia("10973");
-        usr.setEstado(Estado.DISPONIBLE);
-        papCreativaExpress.getListaEmpleados().add(usr);
     }
 
     public PapCreativaExpress getPapCreativaExpress(){
@@ -246,11 +226,9 @@ public class ModelFactoryController {
         File archivoImagen = new File(rutaImagen);
 
         if (archivoImagen.exists()) {
-            System.out.println("NO APARECE");
-
             return new Image(archivoImagen.toURI().toString());
         } else {
-            System.out.println("ES NULLA");
+            System.out.println("Imagen de empleado Nula");
             return null;
         }
     }
