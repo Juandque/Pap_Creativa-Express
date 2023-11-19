@@ -3,6 +3,7 @@ package com.example.papcreativaexpress.Controllers;
 import com.example.papcreativaexpress.HelloApplication;
 import com.example.papcreativaexpress.Model.*;
 import com.example.papcreativaexpress.Persistencia.Persistencia;
+import com.example.papcreativaexpress.Utils.GenerarCodigoBarras;
 import com.example.papcreativaexpress.Utils.MensajeUtil;
 import com.example.papcreativaexpress.Utils.TextFormatterUtil;
 import javafx.application.Platform;
@@ -229,6 +230,13 @@ public class InventarioController implements Initializable {
     @FXML
     private TableColumn<DetalleVenta, Double> colDescuentoVentas;
     @FXML
+    private TableColumn<DetalleVenta, String> colProductoDevoluciones;
+    @FXML
+    private TableColumn<DetalleVenta, Integer> colCantidadDevoluciones;
+    @FXML
+    private TableColumn<DetalleVenta, String> colMotivoDevoluciones;
+
+    @FXML
     private DatePicker dpFechaCaducidadProductoLote;
 
     @FXML
@@ -245,6 +253,8 @@ public class InventarioController implements Initializable {
 
     @FXML
     private Pane paneProductos;
+    @FXML
+    private Pane paneDevoluciones;
 
     @FXML
     private Pane paneProveedores;
@@ -262,6 +272,8 @@ public class InventarioController implements Initializable {
 
     @FXML
     private TableView<Proveedor> tableProveedores;
+    @FXML
+    private TableView<DetalleVenta> tableDevoluciones;
 
     @FXML
     private TableView<Lote> tblPoductos;
@@ -344,6 +356,8 @@ public class InventarioController implements Initializable {
     private Image imagenLote;
     private Cargo cargoSeleccionado;
     private Lote loteSeleccionado;
+    private DetalleVenta devolucionSeleccionada;
+
     private Proveedor proveedorSeleccionado;
     private Usuario empleadoSeleccionado;
     private Factura ventaSeleccionada;
@@ -353,6 +367,8 @@ public class InventarioController implements Initializable {
     private ObservableList<Cargo> cargos = FXCollections.observableArrayList();
     private ObservableList<Lote> lotes = FXCollections.observableArrayList();
     private ObservableList<Factura> ventas = FXCollections.observableArrayList();
+    private ObservableList<DetalleVenta> devoluciones = FXCollections.observableArrayList();
+
     private ObservableList<DetalleVenta> ventasVolatiles = FXCollections.observableArrayList();
 
 
@@ -370,6 +386,7 @@ public class InventarioController implements Initializable {
         ArrayList<Cargo> cargosArrayList = modelFactoryController.getCargos();
         ArrayList<Lote> lotesArrayList = modelFactoryController.getLotes();
         ArrayList<Factura> facturas = modelFactoryController.getPapCreativaExpress().getListaFacturas();
+        ArrayList<DetalleVenta> devolucionesArrayList = modelFactoryController.getPapCreativaExpress().getListaProductosDevoluciones();
 
 
         empleados.addAll(empleadosArrayList);
@@ -377,13 +394,18 @@ public class InventarioController implements Initializable {
         cargos.addAll(cargosArrayList);
         lotes.addAll(lotesArrayList);
         ventas.addAll(facturas);
-
+        if (devolucionesArrayList != null) {
+            devoluciones.addAll(devolucionesArrayList);
+        } else {
+            System.out.println("devolucionesArrayList es nula");
+        }
         initializePaneAdmin();
         initializePaneProductos();
         initializePaneCargos();
         initializePaneLotes();
         initializePaneProveedores();
         initializePaneVentas();
+        initializePaneDevoluciones();
         txtCantidadLote.textProperty().addListener((observable, oldValue, newValue) -> {
             actualizarCostoTotal();
         });
@@ -458,6 +480,30 @@ public class InventarioController implements Initializable {
         txtEmpleadosRequeridosCargo.setTextFormatter(new TextFormatter<>(TextFormatterUtil::integerFormat));
         txtSalarioCargo.setTextFormatter(new TextFormatter<>(TextFormatterUtil::doubleFormat));
         this.cbEstadoCargo.getItems().addAll(EstadoCargo.values());
+    }
+    public void initializePaneDevoluciones(){
+        this.colProductoDevoluciones.setCellValueFactory(((cellData -> {
+            Producto p = cellData.getValue().getProducto();
+            if (p != null) {
+                String nombre = p.getNombre();
+                return new SimpleStringProperty(nombre);
+            } else {
+                return new SimpleStringProperty("");
+            }
+        })));
+        colCantidadDevoluciones.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+        this.colMotivoDevoluciones.setCellValueFactory(((cellData -> {
+            Producto p = cellData.getValue().getProducto();
+            if (p != null) {
+                String detalle = p.getDescripcionDetallada();
+                return new SimpleStringProperty(detalle);
+            } else {
+                return new SimpleStringProperty("");
+            }
+        })));
+        tableDevoluciones.setItems(devoluciones);
+        tableDevoluciones.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            devolucionSeleccionada = newSelection;});
     }
 
     public void initializePaneLotes() {
@@ -581,6 +627,8 @@ public class InventarioController implements Initializable {
         paneProductos.setVisible(false);
         paneProveedores.setVisible(false);
         paneVentas.setVisible(false);
+        paneDevoluciones.setVisible(false);
+
 
     }
 
@@ -592,6 +640,8 @@ public class InventarioController implements Initializable {
         paneProductos.setVisible(true);
         paneProveedores.setVisible(false);
         paneVentas.setVisible(false);
+        paneDevoluciones.setVisible(false);
+
 
     }
 
@@ -603,6 +653,8 @@ public class InventarioController implements Initializable {
         paneProductos.setVisible(false);
         paneProveedores.setVisible(true);
         paneVentas.setVisible(false);
+        paneDevoluciones.setVisible(false);
+
 
     }
     @FXML
@@ -613,13 +665,18 @@ public class InventarioController implements Initializable {
         paneProductos.setVisible(false);
         paneProveedores.setVisible(false);
         paneVentas.setVisible(true);
+        paneDevoluciones.setVisible(false);
+
 
     }
 
     public Factura getFacturaActual() {
         return facturaActual;
     }
-
+    @FXML
+    void OnActionRefrescarRegistroVentas(ActionEvent event){
+        ventas.removeIf(factura -> factura.getListaDetallesVenta().stream().anyMatch(detalle -> detalle.getCantidad() <= 0));
+        tableRegistroVentas.refresh();    }
     @FXML
     void OnActionVerInfo(ActionEvent event) {
         Lote loteActual;
@@ -936,6 +993,18 @@ public class InventarioController implements Initializable {
         paneProductos.setVisible(false);
         paneProveedores.setVisible(false);
         paneVentas.setVisible(false);
+        paneDevoluciones.setVisible(false);
+
+    }
+    @FXML
+    void onActionDevoluciones(ActionEvent event){
+        paneAdmin.setVisible(false);
+        paneCargos.setVisible(false);
+        paneLotes.setVisible(false);
+        paneProductos.setVisible(false);
+        paneProveedores.setVisible(false);
+        paneVentas.setVisible(false);
+        paneDevoluciones.setVisible(true);
     }
 
     @FXML
@@ -1056,6 +1125,8 @@ public class InventarioController implements Initializable {
             DetallesVentasController detallesVentasController = loader.getController();
             detallesVentasController.setControladorPrincipal(this);
             detallesVentasController.agregarDetallesVenta(ventasVolatiles);
+            contador = 0;
+            lblContador.setText(Integer.toString(contador));
 
             Scene scene = new Scene(root);
 
@@ -1079,6 +1150,7 @@ public class InventarioController implements Initializable {
                 try {
                     int cantidad = Integer.parseInt(cantidadStr);
                     venderProductos(loteSeleccionado, cantidad);
+                    tableLotes.refresh();
                 } catch (NumberFormatException | IOException e) {
                     MensajeUtil.mostrarMensaje("Error", "Número no válido.","Ingrese por favor una cantidad válida", Alert.AlertType.ERROR);
                 }
@@ -1148,6 +1220,7 @@ public class InventarioController implements Initializable {
         paneProductos.setVisible(false);
         paneProveedores.setVisible(false);
         paneVentas.setVisible(false);
+        paneDevoluciones.setVisible(false);
     }
 
     private boolean mostrarMensajeConfirmacion(String mensaje) {
@@ -1387,12 +1460,12 @@ public class InventarioController implements Initializable {
     @FXML
     void OnActionCodigoBarras(ActionEvent event) {
         String uniqueId = txtCostoTotalLote.getText();
-        generarCodigoDeBarras(uniqueId);
-        Image imagenCodigoBarras = new Image("file:///src/main/resources/Imagenes_Productos/" + uniqueId + ".png");
+        Image imagenCodigoBarras = GenerarCodigoBarras.generarCodigoDeBarras(uniqueId);
         imageCodigoBarras.setImage(imagenCodigoBarras);
-
         MensajeUtil.mensajeInformacion("Código de barras generado con éxito y guardado en la carpeta de recursos.");
     }
+
+
 
     @FXML
     void OnActionInsertarImagen(ActionEvent event) {
@@ -1430,6 +1503,9 @@ public class InventarioController implements Initializable {
 
             MensajeUtil.mensajeInformacion("Imagen guardada en la carpeta de recursos con el nombre: " + nombreArchivo + ".png");
         }
+    }
+    public TableView<DetalleVenta> getTableDevoluciones() {
+        return tableDevoluciones;
     }
 
 }

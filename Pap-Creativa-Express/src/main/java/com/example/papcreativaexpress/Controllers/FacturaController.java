@@ -70,7 +70,7 @@ public class FacturaController implements Initializable {
         labelSubtotal.setText("$" + modelFactoryController.getFacturaActual().getSubtotalFactura());
         labelTotal.setText("$" + modelFactoryController.getFacturaActual().getTotalFactura());
         labelTotal1.setText("$"+ modelFactoryController.getFacturaActual().getImpuesto());
-        labelSubtotal1.setText(""+ modelFactoryController.getFacturaActual().getEmpleadoEncargadoFactura());
+        labelSubtotal1.setText(""+ modelFactoryController.getFacturaActual().getEmpleadoEncargadoFactura().getNombre());
     }
     public void agregarFactura(ObservableList<DetalleVenta> detallesVentas) {
         facturas.addAll(detallesVentas);

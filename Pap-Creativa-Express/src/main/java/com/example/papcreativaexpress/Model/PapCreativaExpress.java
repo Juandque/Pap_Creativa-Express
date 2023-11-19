@@ -23,6 +23,8 @@ public class PapCreativaExpress implements Serializable {
     Inventario iventario;
     ArrayList<Lote> listaLotes;
     ArrayList<Producto> listaProductos;
+    ArrayList<DetalleVenta> listaProductosDevoluciones;
+
     ArrayList<Proveedor> listaProveedores;
     ArrayList<Usuario> listaEmpleados;
     ArrayList<String> listaEmpleadosBloqueados;
@@ -57,6 +59,7 @@ public class PapCreativaExpress implements Serializable {
         listaProveedores = new ArrayList<>();
         listaEmpleados = new ArrayList<>();
         intentosFallidos = new ArrayList<>();
+        listaProductosDevoluciones = new ArrayList<>();
         listaEmpleadosBloqueados = new ArrayList<String>();
         idEmpleados = 1;
         idProveedores = 1;
@@ -597,7 +600,6 @@ public class PapCreativaExpress implements Serializable {
             precio += detalleVenta.getSubTotalDetalleVenta();
         }
         double impuesto = precio*0.19;
-        //impuesto = impuesto-precio;
         double total = precio+impuesto;
         double precioRedondeado= Math.round(precio);
         double totalRedondeado=Math.round(total);
@@ -606,6 +608,18 @@ public class PapCreativaExpress implements Serializable {
         idFacturas++;
         listaFacturas.add(factura);
         return factura;
+    }
+
+    public ArrayList<DetalleVenta> getListaProductosDevoluciones() {
+        if (listaProductosDevoluciones == null) {
+            listaProductosDevoluciones = new ArrayList<>();
+        }
+        return listaProductosDevoluciones;
+    }
+
+
+    public void setListaProductosDevoluciones(ArrayList<DetalleVenta> listaProductosDevoluciones) {
+        this.listaProductosDevoluciones = listaProductosDevoluciones;
     }
 
     public boolean procesarDevolucion(DetalleVenta detalleVenta, int cantidadDevuelta){
@@ -617,12 +631,17 @@ public class PapCreativaExpress implements Serializable {
             if(l.getId().equals(productoDevuelto.getLote().getId())){
                 loteDevuelto=l;
                 procesoRealizado=true;
+                if (listaProductosDevoluciones == null) {
+                    listaProductosDevoluciones = new ArrayList<>();
+                }
+                listaProductosDevoluciones.add(detalleVenta);
                 break;
             }
         }
         for(int i=0;i<cantidadDevuelta;i++ ) {
             loteDevuelto.anadirProducto(productoDevuelto);
         }
+
         return procesoRealizado;
     }
 

@@ -7,34 +7,48 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 
+import javax.imageio.ImageIO;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class GenerarCodigoBarras {
 
-    public static void generarCodigoDeBarras(String id) {
+    public static Image generarCodigoDeBarras(String id) {
         BarcodeFormat barcodeFormat = BarcodeFormat.CODE_128;
-        String outputPath = "Pap-Creativa-Express/src/main/resources/Imagenes_Productos";
-
         Map<EncodeHintType, Object> hints = new HashMap<>();
         hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
 
         try {
             BitMatrix bitMatrix = new MultiFormatWriter().encode(id, barcodeFormat, 283, 100, hints);
 
-            String filePath = outputPath + "/" + id + ".png";
+            // Convertir BitMatrix directamente a Image de JavaFX
+            Image image = SwingFXUtils.toFXImage(MatrixToImageWriter.toBufferedImage(bitMatrix), null);
 
-            File outputFile = new File(filePath);
-            MatrixToImageWriter.writeToPath(bitMatrix, "png", outputFile.toPath());
-            System.out.println("Código de barras generado con éxito en '" + filePath + "'.");
+            // Guardar la imagen si es necesario
+            guardarImagen(id, bitMatrix);
+
+            return image;
         } catch (WriterException e) {
             e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+            return null;
         }
     }
 
+    private static void guardarImagen(String id, BitMatrix bitMatrix) {
+        String outputPath = "Pap-Creativa-Express/src/main/resources/Imagenes_Productos";
+        String filePath = outputPath + "/" + id + ".png";
+        try {
+            File outputFile = new File(filePath);
+            ImageIO.write(MatrixToImageWriter.toBufferedImage(bitMatrix), "png", outputFile);
+            System.out.println("Código de barras generado con éxito en '" + filePath + "'.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
+
