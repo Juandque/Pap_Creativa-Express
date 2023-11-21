@@ -179,6 +179,13 @@ public class ModelFactoryController {
          papCreativaExpress.setFacturaActual(facturaActual);
     }
 
+    public DetalleVenta getDetalleVentaActual(){
+        return papCreativaExpress.getDetalleVentaActual();
+    }
+    public void setDetalleVentaActual(DetalleVenta detalleVenta){
+        papCreativaExpress.setDetalleVentaActual(detalleVenta);
+    }
+
 
     public void setLoteActual(Lote loteActual) {
         papCreativaExpress.setLoteActual(loteActual);
@@ -247,6 +254,7 @@ public class ModelFactoryController {
     public void asignarLoteActual(String id) {
         papCreativaExpress.asignarUsuarioActual(id);
     }
+
     public Lote buscarLotePorId(String id){
         return papCreativaExpress.buscarLotePorId(id);
     }
@@ -262,9 +270,12 @@ public class ModelFactoryController {
         return factura;
     }
 
-    public boolean procesarDevolucion(DetalleVenta detalleVenta, int cantidad){
+    public boolean procesarDevolucion(DetalleVenta detalleVenta, int cantidad) {
         boolean devolucionRealizada= papCreativaExpress.procesarDevolucion(detalleVenta,cantidad);
         return devolucionRealizada;
+    }
+    public void asignarDetalleVenta(DetalleVenta detalleVenta){
+        papCreativaExpress.asignarDetalleVenta(detalleVenta);
     }
 }
 

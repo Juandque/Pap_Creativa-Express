@@ -25,6 +25,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
+import javax.swing.text.DefaultEditorKit;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -394,11 +395,7 @@ public class InventarioController implements Initializable {
         cargos.addAll(cargosArrayList);
         lotes.addAll(lotesArrayList);
         ventas.addAll(facturas);
-        if (devolucionesArrayList != null) {
-            devoluciones.addAll(devolucionesArrayList);
-        } else {
-            System.out.println("devolucionesArrayList es nula");
-        }
+        devoluciones.addAll(devolucionesArrayList);
         initializePaneAdmin();
         initializePaneProductos();
         initializePaneCargos();
@@ -610,8 +607,15 @@ public class InventarioController implements Initializable {
         })));
         this.colImpuestoFacturas.setCellValueFactory(new PropertyValueFactory<>("impuesto"));
 
-        tableRegistroVentas.setItems(ventas);
-        tableRegistroVentas.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+        for(Factura factura: ventas){
+            for(DetalleVenta detalleVenta: factura.getListaDetallesVenta()){
+                if(detalleVenta.getCantidad()<=0){
+                    ventas.remove(detalleVenta);
+                }
+            }
+        }
+            tableRegistroVentas.setItems(ventas);
+            tableRegistroVentas.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             ventaSeleccionada = newSelection;});
     }
 

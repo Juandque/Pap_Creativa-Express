@@ -3,6 +3,7 @@ package com.example.papcreativaexpress.Controllers;
 import com.example.papcreativaexpress.Model.DetalleVenta;
 import com.example.papcreativaexpress.Model.Producto;
 import com.example.papcreativaexpress.Utils.MensajeUtil;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -75,6 +76,7 @@ public class InformacionFacturaController implements Initializable {
 
     @FXML
     void OnActionGenerarDevolucion(ActionEvent event) {
+        int cantidadAux = detallesVentaSeleccionado.getCantidad();
         if (detallesVentaSeleccionado != null) {
             // Crea un diálogo de entrada de cantidad
             TextInputDialog cantidadDialog = new TextInputDialog();
@@ -113,16 +115,19 @@ public class InformacionFacturaController implements Initializable {
                             // Si se proporciona un motivo específico, procesa la devolución
                             motivoEspecificoResult.ifPresent(motivoEspecifico -> {
                                 try {
-                                    detallesVentaSeleccionado.getProducto().setDescripcionDetallada(motivoEspecifico);
                                     generarDevolucion(cantidad);
+                                    asignarDetalles(detallesVentaSeleccionado);
+                                    modelFactoryController.getDetalleVentaActual().getProducto().setDescripcionDetallada(motivoEspecifico);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
                             });
                         } else {
                             try {
-                                detallesVentaSeleccionado.getProducto().setDescripcionDetallada(motivo);
                                 generarDevolucion(cantidad);
+                                asignarDetalles(detallesVentaSeleccionado);
+                                modelFactoryController.getDetalleVentaActual().getProducto().setDescripcionDetallada(motivo);
+
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -135,6 +140,8 @@ public class InformacionFacturaController implements Initializable {
             if (detallesVentaSeleccionado.getCantidad() <= 0) {
                 detallesVentasList.remove(detallesVentaSeleccionado);
             }
+            modelFactoryController.getDetalleVentaActual().setCantidad(cantidadAux);
+            inventarioController.getTableDevoluciones().getItems().add(modelFactoryController.getDetalleVentaActual());
         }
     }
 
@@ -145,14 +152,9 @@ public class InformacionFacturaController implements Initializable {
 
     private void generarDevolucion(int cantidad) throws IOException {
         boolean devolucionRalizada = modelFactoryController.procesarDevolucion(detallesVentaSeleccionado, cantidad);
-        modelFactoryController.getPapCreativaExpress().getListaProductosDevoluciones().add(detallesVentaSeleccionado);
         if (!devolucionRalizada) {
             mostrarMensaje("Devolucion", "Devolucion Fallida", "La devolucion no se pudo realizar", Alert.AlertType.ERROR);
         } else {
-            TableView<DetalleVenta> tableDevoluciones = inventarioController.getTableDevoluciones();
-            if (tableDevoluciones != null) {
-                tableDevoluciones.refresh();
-            }
             mostrarMensaje("Devolucion", "Devolucion Realizada", "La devolucion se realizo con exito", Alert.AlertType.INFORMATION);
         }
     }
@@ -183,5 +185,8 @@ public class InformacionFacturaController implements Initializable {
         aler.setHeaderText(header);
         aler.setContentText(contenido);
         aler.showAndWait();
+    }
+    private void asignarDetalles(DetalleVenta detalleVenta){
+        modelFactoryController.asignarDetalleVenta(detalleVenta);
     }
 }

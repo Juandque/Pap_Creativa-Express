@@ -30,6 +30,7 @@ public class PapCreativaExpress implements Serializable {
     ArrayList<String> listaEmpleadosBloqueados;
     ArrayList<String> intentosFallidos = new ArrayList<>();
     private Usuario usuarioActual;
+    private DetalleVenta detalleVentaActual;
     private transient Image imagenActual;
     private Lote loteActual;
     private Factura facturaActual;
@@ -509,6 +510,10 @@ public class PapCreativaExpress implements Serializable {
             }
         }
     }
+    public void asignarDetalleVenta(DetalleVenta detalleVenta){
+        detalleVentaActual = new DetalleVenta();
+        detalleVentaActual.copiarAtributos(detalleVenta);
+    }
 
     public Usuario getUsuarioActual() {
         // Asegurarse de que usuarioActual no sea null antes de devolverlo
@@ -518,9 +523,20 @@ public class PapCreativaExpress implements Serializable {
         return usuarioActual;
     }
 
+    public void setDetalleVentaActual(DetalleVenta detalleVenta) {
+        this.detalleVentaActual = detalleVenta;
+    }
+    public DetalleVenta getDetalleVentaActual() {
+        if (detalleVentaActual == null) {
+            detalleVentaActual = new DetalleVenta(); // o inicializarlo de alguna otra manera
+        }
+        return detalleVentaActual;
+    }
+
     public void setUsuarioActual(Usuario usuario) {
         this.usuarioActual = usuario;
     }
+
 
     public void setImagenActual(Image imagenActual) {
         this.imagenActual = imagenActual;
@@ -553,17 +569,6 @@ public class PapCreativaExpress implements Serializable {
         }
 
         return precioTotal;
-    }
-
-    public void asignarLoteActual(String id) {
-        for (Lote lote : listaLotes) {
-            if (lote.getId().equals(id)) {
-                loteActual = new Lote();
-                loteActual.copiarAtributos(lote);
-                break;
-            }
-        }
-
     }
     public Lote buscarLotePorId(String id) {
         List<Lote> aux = getListaLotes();
@@ -622,28 +627,29 @@ public class PapCreativaExpress implements Serializable {
         this.listaProductosDevoluciones = listaProductosDevoluciones;
     }
 
-    public boolean procesarDevolucion(DetalleVenta detalleVenta, int cantidadDevuelta){
-        boolean procesoRealizado=false;
+    public boolean procesarDevolucion(DetalleVenta detalleVenta, int cantidadDevuelta) {
+        boolean procesoRealizado = false;
         detalleVenta.realizarDevolucion(cantidadDevuelta);
-        Producto productoDevuelto= detalleVenta.getProducto();
-        Lote loteDevuelto= null;
-        for (Lote l: listaLotes) {
-            if(l.getId().equals(productoDevuelto.getLote().getId())){
-                loteDevuelto=l;
-                procesoRealizado=true;
-                if (listaProductosDevoluciones == null) {
-                    listaProductosDevoluciones = new ArrayList<>();
-                }
-                listaProductosDevoluciones.add(detalleVenta);
+        Producto productoDevuelto = detalleVenta.getProducto();
+        Lote loteDevuelto = null;
+
+        for (Lote l : listaLotes) {
+            if (l.getId().equals(productoDevuelto.getLote().getId())) {
+                loteDevuelto = l;
+                procesoRealizado = true;
                 break;
             }
         }
-        for(int i=0;i<cantidadDevuelta;i++ ) {
-            loteDevuelto.anadirProducto(productoDevuelto);
+
+        if (loteDevuelto != null) {
+            for (int i = 0; i < cantidadDevuelta; i++) {
+                loteDevuelto.anadirProducto(productoDevuelto);
+            }
         }
 
         return procesoRealizado;
     }
+
 
     public String generarCodigo() {
         Random random = new Random();
@@ -651,5 +657,4 @@ public class PapCreativaExpress implements Serializable {
         String codigoGeneradoStr = String.valueOf(codigoGenerado);
         return codigoGeneradoStr;
     }
-
 }

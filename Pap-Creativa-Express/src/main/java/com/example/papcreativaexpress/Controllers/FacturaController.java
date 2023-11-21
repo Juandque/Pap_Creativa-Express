@@ -3,6 +3,8 @@ package com.example.papcreativaexpress.Controllers;
 import com.example.papcreativaexpress.Model.DetalleVenta;
 import com.example.papcreativaexpress.Model.Factura;
 import com.example.papcreativaexpress.Model.Producto;
+import com.example.papcreativaexpress.Model.Usuario;
+import com.example.papcreativaexpress.Utils.EnviarCorreo;
 import com.google.zxing.qrcode.decoder.Mode;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -78,6 +80,20 @@ public class FacturaController implements Initializable {
     }
     @FXML
     void OnActionImprimir(ActionEvent event){
+        if (modelFactoryController.getUsuarioActual().getEmail()!= null) {
+            String asunto = "Productos Compra";
+            String destinatario = modelFactoryController.getUsuarioActual().getEmail();
+            String remitente = "papcreativaexpress@gmail.com";
+            String cuerpo = "Cordial saludo, su lista de productos es:\n";
+
+            for (DetalleVenta detalleVenta : facturas) {
+                String nombreProducto = detalleVenta.getProducto().getNombre();
+                int cantidad = detalleVenta.getCantidad();
+
+                cuerpo += nombreProducto + ": " + cantidad + " unidades\n";
+            }
+        modelFactoryController.enviarCorreo(remitente,destinatario,asunto,cuerpo);
+        }
         iniciarNuevaVenta();
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         cerrarVentana(stage);
