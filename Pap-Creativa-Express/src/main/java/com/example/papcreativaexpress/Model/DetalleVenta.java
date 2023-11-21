@@ -103,4 +103,8 @@ public class DetalleVenta implements Serializable {
         }
         cantidad-=cantidadDevuelta;
     }
+    public void copiarAtributos(DetalleVenta otroDetalleVenta){
+        this.setCantidad(otroDetalleVenta.getCantidad());
+        this.setProducto(otroDetalleVenta.getProducto());
+    }
 }

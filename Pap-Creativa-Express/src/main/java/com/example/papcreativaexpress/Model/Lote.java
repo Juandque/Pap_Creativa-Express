@@ -164,16 +164,5 @@ public class Lote implements Serializable {
             p.setPrecioVenta(precioVenta);
         }
     }
-    public void copiarAtributos(Lote otroLote){
-        this.setId(otroLote.getId());
-        this.setCantidad(otroLote.getCantidad());
-        this.setFechaRegistro(otroLote.getFechaRegistro());
-        this.setFechaEntrada(otroLote.getFechaEntrada());
-        this.setFactura(otroLote.getFactura());
-        this.setProveedor(otroLote.getProveedor());
-        this.setPrecioUnitario(otroLote.getPrecioUnitario());
-        this.setCostoTotalLote(otroLote.getCostoTotalLote());
-        this.setNombre(otroLote.getNombre());
-    }
 
 }
