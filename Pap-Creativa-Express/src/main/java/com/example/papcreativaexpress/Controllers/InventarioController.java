@@ -1117,7 +1117,7 @@ public class InventarioController implements Initializable {
         tblPoductos.setItems(FXCollections.observableArrayList(lotes));
 
         tblPoductos.refresh();
-
+        tableRegistroVentas.setItems(FXCollections.observableArrayList(modelFactoryController.getPapCreativaExpress().getListaFacturas()));
         tableRegistroVentas.refresh();
     }
 
@@ -1191,6 +1191,7 @@ public class InventarioController implements Initializable {
             Factura nuevaFactura = modelFactoryController.crearFactura(modelFactoryController.getUsuarioActual(), new ArrayList<>(ventasVolatiles));
             modelFactoryController.setFacturaActual(nuevaFactura);
             detalleVenta.setFactura(nuevaFactura);
+            ventas.add(nuevaFactura);
         }
         tableRegistroVentas.refresh();
     }
